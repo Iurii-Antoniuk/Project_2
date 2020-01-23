@@ -6,23 +6,34 @@ namespace Project_2
 {
     public class Administrator : Person
     {
+        private int _password;
+        private string _name;
 
-        public Client Client
+        public string Name   // property
         {
-            get => default;
-            set
-            {
-            }
+            get { return _name; }   // get method
+            set { _name = value; }  // set method
         }
 
-        public void CreateAccount()
+        public int Password   // property
         {
-            throw new System.NotImplementedException();
+            get { return _password; }   // get method
+            set { _password = value; }  // set method
         }
 
-        public void DeleteAccount()
+        public Dictionary<string, int> CreateClients(string name, int password)
         {
-            throw new System.NotImplementedException();
+            Client client = new Client(name, password);
+            clientDict.Add(name, password);
+            return clientDict;
+
+        }
+
+        public Dictionary<string, int> DeleteClient(Client client)
+        {
+            clientDict.Remove(client.Name);
+            client = null;
+            return clientDict;
         }
     }
 }

@@ -4,10 +4,13 @@ using System.Text;
 
 namespace Project_2
 {
-    public class Person
+    public abstract class Person
     {
-        private int _Name;
-        private int _id;
-        private int _password;
+        protected string _name;
+        protected int _id;
+        protected int _password;
+        protected Dictionary<string, int> clientDict;
+
+        
     }
 }
