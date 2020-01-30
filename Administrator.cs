@@ -6,7 +6,7 @@ namespace Project_2
 {
     public class Administrator : Person
     {
-        public void CreateClients(string name, int password)
+        public void CreateClient(string name, string password)
         {
             Client client = new Client(name, password);
             Console.WriteLine(client.Name + " has been created.");
@@ -26,5 +26,6 @@ namespace Project_2
 
             }
         }
+
     }
 }

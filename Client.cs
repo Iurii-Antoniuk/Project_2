@@ -6,13 +6,14 @@ namespace Project_2
 {
     public class Client : Person
     { 
-        public string Name { get; set; }  
-        public int Password { get; set; }
+        // public string Name { get; set; }  
+        // public int Password { get; set; }
+        
         private static int _accountNumber = 0;
 
         public CurrentAccount currentAccount { get; set; }
 
-        public Client (string name, int password, double amount)
+        public Client (string name, string password, double amount)
         {
             Name = name;
             Password = password;
@@ -21,7 +22,9 @@ namespace Project_2
             CurrentAccount currentAccount = new CurrentAccount(accountNumber, amount);
         }
 
+        
     }
 
    
 }
+ 

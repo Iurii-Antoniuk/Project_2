@@ -6,8 +6,8 @@ namespace Project_2
 {
     public class Account
     {
-        public int AccountNumber { get; set; }
-        public double Amount { get; set; }
+        public static int AccountNumber { get; set; }
+        public static double Amount { get; set; }
         public DateTime OpeningDate { get; set; }
 
         public Account (int accountNumber, double amount)
@@ -23,6 +23,17 @@ namespace Project_2
             {
                 Amount = amount;
             }
+        }
+
+        public static void WithdrawMoney(Account accounts, double amount)
+        {
+            Console.WriteLine("There are : " + Amount + " of money from " + AccountNumber);
+            double money = Amount - amount;
+
+            Amount = money;
+
+            Console.WriteLine("You have withdraw " + amount + " euros.");
+            Console.WriteLine("There are : " + Amount + " of money left");
         }
     }
 }

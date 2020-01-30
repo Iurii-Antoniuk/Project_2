@@ -10,5 +10,19 @@ namespace Project_2
         protected DateTime DateTransaction { get; set; }
         protected double Amount { get; set; }
         protected Account DestinationAccount { get; set; }
+
+        public static void MoneyTransfer(Account DebitAccount, Account CreditAccount, double amount)
+        {
+            Console.WriteLine("Money on debit account before transfer: " + DebitAccount.Amount);
+            Console.WriteLine("Money on credit account before transfer: " + CreditAccount.Amount);
+
+            double money = DebitAccount.Amount - amount;
+            DebitAccount.Amount = money;
+            CreditAccount.Amount = CreditAccount.Amount + amount;
+
+            Console.WriteLine("Money on debit account after transfer: " + DebitAccount.Amount);
+            Console.WriteLine("Money on credit account after transfer: " + CreditAccount.Amount);
+
+        }
     }
 }
