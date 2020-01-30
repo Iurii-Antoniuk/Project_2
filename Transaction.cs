@@ -6,10 +6,9 @@ namespace Project_2
 {
     public class Transaction
     {
-        private int _actualAccount;
-        private int __date;
-        private int _amount;
-
-        private int _recipientAccount;
+        protected Account ActualAccount { get; set; }
+        protected DateTime DateTransaction { get; set; }
+        protected double Amount { get; set; }
+        protected Account DestinationAccount { get; set; }
     }
 }

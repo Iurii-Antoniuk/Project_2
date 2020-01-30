@@ -6,11 +6,8 @@ namespace Project_2
 {
     public abstract class Person
     {
-        protected string _name;
-        protected int _id;
-        protected int _password;
-        protected Dictionary<string, int> clientDict;
-
-        
+        protected string Name { get; set; }
+        protected int ID { get; set; }
+        protected int Password { get; set; }        
     }
 }

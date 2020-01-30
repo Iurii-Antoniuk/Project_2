@@ -5,29 +5,22 @@ using System.Text;
 namespace Project_2
 {
     public class Client : Person
-    {
-        public Client(string name, int password)
+    { 
+        public string Name { get; set; }  
+        public int Password { get; set; }
+        private static int _accountNumber = 0;
+
+        public CurrentAccount currentAccount { get; set; }
+
+        public Client (string name, int password, double amount)
         {
-            _name = name;
-            _password = password;
+            Name = name;
+            Password = password;
+            int accountNumber = _accountNumber;
+            _accountNumber++;
+            CurrentAccount currentAccount = new CurrentAccount(accountNumber, amount);
         }
 
-        ~Client()
-        {
-            System.Console.WriteLine("The client has been erased !");
-        }
-
-        public string Name   // property
-        {
-            get { return _name; }   // get method
-            set { _name = value; }  // set method
-        }
-
-        public int Password   // property
-        {
-            get { return _password; }   // get method
-            set { _password = value; }  // set method
-        }
     }
 
    

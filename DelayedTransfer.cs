@@ -6,6 +6,7 @@ namespace Project_2
 {
     public class DelayedTransfer : Transaction
     {
-        private int _executionDate;
+        public DateTime DateTimeTransaction { get; set; }
+        public DateTimeOffset Delay { get; set; }
     }
 }

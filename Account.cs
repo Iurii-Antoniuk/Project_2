@@ -6,19 +6,23 @@ namespace Project_2
 {
     public class Account
     {
-        private int _user;
-        private int _number;
-        private int _amount;
-        private int _openingDate;
+        public int AccountNumber { get; set; }
+        public double Amount { get; set; }
+        public DateTime OpeningDate { get; set; }
 
-        public void Credit()
+        public Account (int accountNumber, double amount)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void Debit()
-        {
-            throw new System.NotImplementedException();
+            AccountNumber = accountNumber;
+            OpeningDate = DateTime.Today;
+            if (amount < 10)
+            {
+                Console.WriteLine("Invalid amount");
+                //Terminer la condition: empêcher l'instanciation si montant trop faible
+            }
+            else
+            {
+                Amount = amount;
+            }
         }
     }
 }

@@ -6,34 +6,25 @@ namespace Project_2
 {
     public class Administrator : Person
     {
-        private int _password;
-        private string _name;
-
-        public string Name   // property
-        {
-            get { return _name; }   // get method
-            set { _name = value; }  // set method
-        }
-
-        public int Password   // property
-        {
-            get { return _password; }   // get method
-            set { _password = value; }  // set method
-        }
-
-        public Dictionary<string, int> CreateClients(string name, int password)
+        public void CreateClients(string name, int password)
         {
             Client client = new Client(name, password);
-            clientDict.Add(name, password);
-            return clientDict;
-
+            Console.WriteLine(client.Name + " has been created.");
+            CurrentAccount currentAccount = new CurrentAccount(client);
         }
 
-        public Dictionary<string, int> DeleteClient(Client client)
+        public void DeleteClient(Client client)
         {
-            clientDict.Remove(client.Name);
             client = null;
-            return clientDict;
+            Console.WriteLine(client.Name + " has been erased.");
+        }
+
+        public void CreateCurrentAccount(Client client, double overdraft)
+        {
+            if (client.CurrentAccount)
+            {
+
+            }
         }
     }
 }
