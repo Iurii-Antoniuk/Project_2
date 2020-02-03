@@ -5,6 +5,8 @@ namespace Project_2
 {
     class Program
     {
+        
+       
         [Verb("login", HelpText = "authentification")]
         class LoginOptions
         {
@@ -49,12 +51,10 @@ namespace Project_2
             public bool DeleteAccount { get; set; }
 
             [Option('n',"name", HelpText ="Client Name")]
-            public string ClientName { get; set; }
-
-            
-
+            public string ClientName { get; set; } 
         }
-        class Options
+        [Verb("Info", HelpText = "Get information")]
+        class InfoOptions
         {
             [Option('i', "informations", HelpText = "Get informations on your accounts")]
             public bool GetInfo { get; set; }
@@ -62,16 +62,16 @@ namespace Project_2
 
         static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<LoginOptions, WithdrawOptions, TransferOptions, AccountOptions, Options>(args)
+            Parser.Default.ParseArguments<LoginOptions, WithdrawOptions, TransferOptions, AccountOptions, InfoOptions>(args)
             .WithParsed<LoginOptions>(RunLoginOptions)
             .WithParsed<WithdrawOptions>(RunWithdrawOptions)
             .WithParsed<TransferOptions>(RunTransferOptions)
             .WithParsed<AccountOptions>(RunAccountOptions)
-            .WithParsed<Options>(RunOptions);
+            .WithParsed<InfoOptions>(RunInfoOptions);
 
         }
 
-        static void RunOptions(Options options)
+        static void RunInfoOptions(InfoOptions options)
         {
             if (options.GetInfo)
             {
@@ -88,7 +88,7 @@ namespace Project_2
         }
         static void RunWithdrawOptions(WithdrawOptions options)
         {
-            Account.WithdrawMoney(options.AccountId, options.Amount);
+            Transaction.WithdrawMoney(options.AccountId, options.Amount);
         }
 
         static void RunTransferOptions(TransferOptions options)
@@ -111,12 +111,12 @@ namespace Project_2
             if (options.CreateAccount)
             {
                 Console.WriteLine("Create Account : ");
-                Administrator.CreateClient(options.ClientName);
+                //Administrator.CreateClient(options.ClientName);
             }
             if (options.DeleteAccount)
             {
                 Console.WriteLine("Delete Account : ");
-                Administrator.DeleteClient();
+                //Administrator.DeleteClient();
 
             }
         }

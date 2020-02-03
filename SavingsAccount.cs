@@ -6,11 +6,11 @@ namespace Project_2
 {
     public class SavingsAccount : Account
     {
-        public double Ceiling { get; set; }
-        public double Interest { get; set; }
+        public double Ceiling { get; set; } = 10000;
+        public double Interest { get; set; } = 0.01;
         public List<Account> AllowedCreditors { get; set; } = new List<Account>();
 
-        public SavingsAccount(int accountNumber, double amount) : base(accountNumber, amount)
+        public SavingsAccount(string accountNumber, double amount)
         {
 
         }

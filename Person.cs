@@ -12,24 +12,9 @@ namespace Project_2
 
 
         
-        public static void Login(string id, string password)
-        {
-            if (ID==id && Password == password)
-            {
-                Console.WriteLine("Hello");
+        
 
-                // Faire la différence entre clients et admin avec if et else              
-                
-            
-            }
-            else
-            {
-               Console.WriteLine("Error of authentification");
-                
-            }
-        }
-
-        public void PasswordGenerator()
+        public string PasswordGenerator()
         {
             string caracteres = "azertyuiopqsdfghjklmwxcvbn1234567890";
             Random caracteAlea = new Random();
@@ -48,13 +33,14 @@ namespace Project_2
                     password += carac.ToLower();
                 }
             }
-            Password = password;
+            return Password = password;
         }
 
-        public void IdGenerator()
+        public string IdGenerator()
         {
             ID = Guid.NewGuid().ToString("N").Substring(0, 12);
             // generate a unique id (length = 12)
+            return ID;
         }
 
     }
