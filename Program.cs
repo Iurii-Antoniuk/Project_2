@@ -1,5 +1,11 @@
 ﻿using System;
 using CommandLine;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data.SqlClient;
+
 
 namespace Project_2
 {
@@ -69,57 +75,80 @@ namespace Project_2
             .WithParsed<AccountOptions>(RunAccountOptions)
             .WithParsed<InfoOptions>(RunInfoOptions);
 
-        }
+            Console.WriteLine("Getting Connection ...");
+            SqlConnection conn = DBUtils.GetDBConnection();
 
-        static void RunInfoOptions(InfoOptions options)
-        {
-            if (options.GetInfo)
+            try
             {
-                Console.WriteLine("Your current account situation : ");
-                // metohde
+                Console.WriteLine("Openning Connection ...");
+
+                conn.Open();
+
+                Console.WriteLine("Connection successful!");
             }
-        }
-
-        static void RunLoginOptions(LoginOptions options)
-        {
-            Console.WriteLine("Your log");
-
-            Person.Login(options.Username, options.Password);
-        }
-        static void RunWithdrawOptions(WithdrawOptions options)
-        {
-            Transaction.WithdrawMoney(options.AccountId, options.Amount);
-        }
-
-        static void RunTransferOptions(TransferOptions options)
-        {
-            if (options.Delayed)
+            catch (Exception e)
             {
-
+                Console.WriteLine("Error: " + e.Message);
             }
-            if(options.Instant)
-            {
 
-            }
-            if(options.Permanent)
-            {
+            // Ecrire commande SQL dans c#
+            SqlCommand command = conn.CreateCommand();
+            command.CommandText = "Entrer ici le texte en code SQL";
 
-            }                   
+            Console.Read();
+            conn.Close();
+
         }
-        static void RunAccountOptions(AccountOptions options)
+
+    
+
+    static void RunInfoOptions(InfoOptions options)
+    {
+        if (options.GetInfo)
         {
-            if (options.CreateAccount)
-            {
-                Console.WriteLine("Create Account : ");
-                //Administrator.CreateClient(options.ClientName);
-            }
-            if (options.DeleteAccount)
-            {
-                Console.WriteLine("Delete Account : ");
-                //Administrator.DeleteClient();
-
-            }
+            Console.WriteLine("Your current account situation : ");
+            // metohde
         }
+    }
 
+    static void RunLoginOptions(LoginOptions options)
+    {
+        Console.WriteLine("Your log");
+
+        Person.Login(options.Username, options.Password);
+    }
+    static void RunWithdrawOptions(WithdrawOptions options)
+    {
+        Transaction.WithdrawMoney(options.AccountId, options.Amount);
+    }
+
+    static void RunTransferOptions(TransferOptions options)
+    {
+        if (options.Delayed)
+        {
+
+        }
+        if(options.Instant)
+        {
+
+        }
+        if(options.Permanent)
+        {
+
+        }                   
+    }
+    static void RunAccountOptions(AccountOptions options)
+    {
+        if (options.CreateAccount)
+        {
+            Console.WriteLine("Create Account : ");
+            //Administrator.CreateClient(options.ClientName);
+        }
+        if (options.DeleteAccount)
+        {
+            Console.WriteLine("Delete Account : ");
+            //Administrator.DeleteClient();
+
+        }
     }
 }
