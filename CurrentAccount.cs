@@ -6,6 +6,13 @@ namespace Project_2
 {
     public class CurrentAccount : Account
     {
-        private int _overdraft;
+        public double Overdraft {get; set;}
+        public Client client { get; set; }
+        
+        public CurrentAccount(int accountNumber, double amount) : base (accountNumber, amount)
+        {
+
+        }
+
     }
 }

@@ -6,8 +6,8 @@ namespace Project_2
 {
     public class PermanentTransfer : Transaction
     {
-        private int _numberIterations;
-        private int _frequency;
-        private int _dateFirstExecution;
+        public int NumberIteration { get; set; }
+        public DateTimeOffset Frequency { get; set; }
+        public DateTime FirstExecution { get; set; }
     }
 }

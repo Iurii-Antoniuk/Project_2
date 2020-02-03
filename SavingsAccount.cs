@@ -6,8 +6,14 @@ namespace Project_2
 {
     public class SavingsAccount : Account
     {
-        private int _ceiling;
-        private int _interest;
-        private int _allowedCreditors;
+        public double Ceiling { get; set; }
+        public double Interest { get; set; }
+        public List<Account> AllowedCreditors { get; set; } = new List<Account>();
+
+        public SavingsAccount(int accountNumber, double amount) : base(accountNumber, amount)
+        {
+
+        }
+
     }
 }
