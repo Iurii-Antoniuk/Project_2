@@ -8,7 +8,7 @@ namespace Project_2
     {
         public static void Login(string id, string password)
         {
-            if (ID == id && Password == password)
+            /*if (ID == id && Password == password)
             {
                 Console.WriteLine("Hello");
 
@@ -20,7 +20,7 @@ namespace Project_2
             {
                 Console.WriteLine("Error of authentification");
 
-            }
+            }*/
         }
     }
 }
