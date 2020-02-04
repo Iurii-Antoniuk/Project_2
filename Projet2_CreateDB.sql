@@ -1,5 +1,6 @@
 USE Projet2_BancAppli;
 
+BEGIN TRANSACTION
 CREATE TABLE Person (
 id INT PRIMARY KEY IDENTITY(1,1),
 "name" VARCHAR(50) NOT NULL,
@@ -14,7 +15,7 @@ amount DECIMAL(10,2) NOT NULL,
 overdraft INT NOT NULL,
 openingDate DATETIME NOT NULL,
 closeDate DATETIME,
-CONSTRAINT fk_client FOREIGN KEY (client_id) REFERENCES Person(id)
+FOREIGN KEY (client_id) REFERENCES Person(id)
 ON UPDATE CASCADE 
 ON DELETE CASCADE
 );
@@ -27,7 +28,7 @@ amount DECIMAL(10,2) NOT NULL,
 "ceiling" INT NOT NULL,
 openingDate DATETIME NOT NULL,
 closeDate DATETIME,
-CONSTRAINT fk_client FOREIGN KEY (client_id) REFERENCES Person(id)
+FOREIGN KEY (client_id) REFERENCES Person(id)
 ON UPDATE CASCADE 
 ON DELETE CASCADE
 );
@@ -42,6 +43,7 @@ transactionType VARCHAR(80) NOT NULL,
 beneficiaryAccount VARCHAR(80),
 amount DECIMAL(10,2) NOT NULL,
 "date" DATETIME NOT NULL
-CONSTRAINT fk_current FOREIGN KEY (currentAccount_id) REFERENCES CurrentAccounts(id),
-CONSTRAINT fk_saving FOREIGN KEY (savingAccount_id) REFERENCES SavingAccounts(id)
+FOREIGN KEY (currentAccount_id) REFERENCES CurrentAccounts(id),
+FOREIGN KEY (savingAccount_id) REFERENCES SavingAccounts(id)
 );
+COMMIT TRANSACTION
