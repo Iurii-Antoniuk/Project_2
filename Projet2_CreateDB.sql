@@ -1,3 +1,4 @@
+--CREATE DATABASE Projet2_BancAppli;
 USE Projet2_BancAppli;
 
 CREATE TABLE Person (
@@ -27,7 +28,7 @@ amount DECIMAL(10,2) NOT NULL,
 "ceiling" INT NOT NULL,
 openingDate DATETIME NOT NULL,
 closeDate DATETIME,
-CONSTRAINT fk_client FOREIGN KEY (client_id) REFERENCES Person(id)
+CONSTRAINT fk_client_SA FOREIGN KEY (client_id) REFERENCES Person(id)
 ON UPDATE CASCADE 
 ON DELETE CASCADE
 );
