@@ -66,5 +66,28 @@ namespace Project_2
             
         }
 
+        public static int ReturnID(string queryString)
+        {
+            int id = 0;
+            try
+            {
+                SqlConnection connection = new SqlConnection(GetConnectionString());
+                connection.Open();
+                SqlCommand command = new SqlCommand(queryString, connection);
+                SqlDataReader dataread = command.ExecuteReader();
+                dataread.Read();
+                id = dataread.GetInt32(0);
+                dataread.Close();
+                connection.Close();
+                Console.WriteLine("DONE");
+                return id;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Not valid name or password" + e.Message);
+                return id;
+            }           
+        }
+
     }
 }
