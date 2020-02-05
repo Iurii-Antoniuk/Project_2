@@ -53,7 +53,7 @@ namespace Project_2
                     {
                         Console.Write(dataread[item].ToString() + "  ");
                     }
-                    //Console.WriteLine();
+                    Console.WriteLine();
                 }
                 dataread.Close();
                 connection.Close();

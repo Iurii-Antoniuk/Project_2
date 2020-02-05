@@ -21,6 +21,32 @@ namespace Project_2
                 Console.WriteLine("Error of authentification");
 
             }*/
+
+
+            if (Login && mot de passe == Admin)
+            {
+                new admin
+            }
+            else if (Login && mot de passe != admin)
+            {
+                new client
+            }
+            else (Login et mot de passe != BDD)
+            {
+                fuck you
+            }
+
+            try
+            {
+                    SELECT name, password FROM Person WHERE name = name && password = password;
+
+                if name = admin
+                    name = client
+            }
+            catch (Exception e)
+            {
+                "No login"
+            }
         }
     }
 }
