@@ -12,9 +12,17 @@ namespace Project_2
 {
     class Program
     {
+        class Options
+        {
+            [Option('l', "login", Required = true, HelpText = "enter your login")]
+            public string EnterLogin { get; set; }
 
+            [Option('v', "verbose", Required = true, HelpText = "enter your verb")]
+            public string EnterVerbose { get; set; }
+        }
 
-        [Verb("login", HelpText = "authentification")]
+        /* 
+         *[Verb("login", HelpText = "authentification")]
         class LoginOptions
         {
             [Option('u', "username", Required = true, HelpText = "enter your username")]
@@ -23,9 +31,10 @@ namespace Project_2
             [Option('p', "password", Required = true, HelpText = "enter your password")]
             public string Password { get; set; }
         }
+        */
 
         [Verb("withdraw", HelpText = "money withdraw")]
-        class WithdrawOptions
+        class WithdrawOptions : Options
         {
             [Option('a', "amount", HelpText = "amount to withdraw")]
             public double Amount { get; set; }
@@ -36,7 +45,7 @@ namespace Project_2
         }
 
         [Verb("transfer", HelpText = "money transaction")]
-        class TransferOptions
+        class TransferOptions : Options
         {
             [Option('d', "delayed", HelpText = "You want to do a delayed trasaction")]
             public bool Delayed { get; set; }
@@ -48,8 +57,21 @@ namespace Project_2
             public bool Permanent { get; set; }
         }
 
+        [Verb("Client", HelpText = "Client managment")]
+        class ClientOptions : Options
+        {
+            [Option('c', "create", HelpText = "Create client")]
+            public bool CreateClient { get; set; }
+
+            [Option('d', "delete", HelpText = "Delete client")]
+            public bool DeleteClient { get; set; }
+
+            [Option('n', "name", HelpText = "Client Name")]
+            public string ClientName { get; set; }
+        }
+
         [Verb("Account", HelpText = "Account managment")]
-        class AccountOptions
+        class AccountOptions : Options
         {
             [Option('c', "create", HelpText = "Create account")]
             public bool CreateAccount { get; set; }
@@ -61,7 +83,7 @@ namespace Project_2
             public string ClientName { get; set; }
         }
         [Verb("Info", HelpText = "Get information")]
-        class InfoOptions
+        class InfoOptions : Options
         {
             [Option('i', "informations", HelpText = "Get informations on your accounts")]
             public bool GetInfo { get; set; }
@@ -69,98 +91,23 @@ namespace Project_2
 
         static void Main(string[] args)
         {
-           /* Parser.Default.ParseArguments<LoginOptions, WithdrawOptions, TransferOptions, AccountOptions, InfoOptions>(args)
-            .WithParsed<LoginOptions>(RunLoginOptions)
+           Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, AccountOptions, InfoOptions, ClientOptions>(args)
+            .WithParsed<Options>(RunOptions)
             .WithParsed<WithdrawOptions>(RunWithdrawOptions)
             .WithParsed<TransferOptions>(RunTransferOptions)
             .WithParsed<AccountOptions>(RunAccountOptions)
-            .WithParsed<InfoOptions>(RunInfoOptions);
+            .WithParsed<InfoOptions>(RunInfoOptions)
+            .WithParsed<ClientOptions>(RunClientOptions);
 
             Console.WriteLine("Test de la seconde connexion en-dessous: ");
 
-            ConnectionDB.ConfigConnection();*/
-
-
-            //Create Table
-            Console.WriteLine("Create Table");
-            string query = @"CREATE TABLE Products(Id INT PRIMARY KEY IDENTITY(1,1), Name VARCHAR(100) NOT NULL, Price DECIMAL(3,2) NOT NULL)";
-            SqlConnection connection = new SqlConnection(@"Data Source = AG\SQLEXPRESS; Initial Catalog = SQL1; Integrated Security = True");
-            connection.Open();
-            SqlCommand command = new SqlCommand(query, connection);
-            command.ExecuteNonQuery();
-            connection.Close();
-            Console.WriteLine("Table has created created");
-            Console.ReadLine();
-
-            // Insert data in the table
-            Console.WriteLine("Insert data in the table");
-            string query = @"INSERT INTO Products(Name, Price) VALUES ('Tomatoes', 5.47), ('Bananas', 2.78), ('Kiwi', 3.70), ('Eggplant', 7.99)";
-            SqlConnection connection = new SqlConnection(@"Data Source = AG\SQLEXPRESS; Initial Catalog = SQL1; Integrated Security = True");
-            connection.Open();
-            SqlCommand command = new SqlCommand(query, connection);
-            command.ExecuteNonQuery();
-            connection.Close();
-            Console.WriteLine("Table has succefully completed");
-            Console.ReadLine();
-
-            // UPDATE data in the table
-            Console.WriteLine("UPDATE data in the table");
-            string query = @"UPDATE Products SET Name='Grapes', Price=6.01 WHERE Id=3";
-            SqlConnection connection = new SqlConnection(@"Data Source = AG\SQLEXPRESS; Initial Catalog = SQL1; Integrated Security = True");
-            connection.Open();
-            SqlCommand command = new SqlCommand(query, connection);
-            command.ExecuteNonQuery();
-            connection.Close();
-            Console.WriteLine("Table has succefully UPDATED");
-            Console.ReadLine();
-
-            // DELETE data in the table
-            /*Console.WriteLine("DELETE data in the table");
-            string query = @"DELETE FROM Products WHERE Id=4";
-            SqlConnection connection = new SqlConnection(@"Data Source = AG\SQLEXPRESS; Initial Catalog = SQL1; Integrated Security = True");
-            connection.Open();
-            SqlCommand command = new SqlCommand(query, connection);
-            command.ExecuteNonQuery();
-            connection.Close();
-            Console.WriteLine("Data has succefully DELETED");
-            Console.ReadLine();*/
-
-            // SELECT data in the table
-            Console.WriteLine("SELECT data in the table");
-            string query = @"SELECT * FROM Products";
-            SqlConnection connection = new SqlConnection(@"Data Source = AG\SQLEXPRESS; Initial Catalog = SQL1; Integrated Security = True");
-            connection.Open();
-            SqlCommand command = new SqlCommand(query, connection);
-            SqlDataReader dataread = command.ExecuteReader();
-            while (dataread.Read())
-            {
-                Console.WriteLine(dataread["Id"].ToString() + "     " + dataread["Name"].ToString() + "     " + dataread["Price"].ToString());
-            }
-            dataread.Close();
-            connection.Close();
-            Console.WriteLine("SELECTION FINISHED");
-            Console.ReadLine();
-
-            // Transaction
-            Console.WriteLine("Transaction data in the table");
-            SqlConnection connection = new SqlConnection(@"Data Source = AG\SQLEXPRESS; Initial Catalog = SQL1; Integrated Security = True");
-            connection.Open();
-            SqlCommand command = new SqlCommand();
-            SqlTransaction transaction = connection.BeginTransaction();
-            command.Connection = connection;
-            command.CommandText = @"INSERT INTO Products(Name, Price) VALUES ('Kiwi', 3.70), ('Eggplant', 7.99)";
-            command.Transaction = transaction;
-            command.ExecuteNonQuery();
-            transaction.Commit();
-            connection.Close();
-            Console.WriteLine("Transaction commited");
-            Console.ReadLine();*/
-
-
+            ConnectionDB.GetConnectionString();
         }
 
+        static void RunOptions(Options options)
+        {
 
-
+        }
         static void RunInfoOptions(InfoOptions options)
         {
             if (options.GetInfo)
@@ -169,13 +116,7 @@ namespace Project_2
                 // metohde
             }
         }
-
-        static void RunLoginOptions(LoginOptions options)
-        {
-            Console.WriteLine("Your log");
-
-            //Person.Login(options.Username, options.Password);
-        }
+        
         static void RunWithdrawOptions(WithdrawOptions options)
         {
             Transaction.WithdrawMoney(options.AccountId, options.Amount);
@@ -207,6 +148,18 @@ namespace Project_2
             {
                 Console.WriteLine("Delete Account : ");
                 //Administrator.DeleteClient();
+
+            }
+        }
+
+        static void RunClientOptions (ClientOptions options)
+        {
+            if (options.CreateClient)
+            {
+
+            }
+            if (options.DeleteClient)
+            {
 
             }
         }
