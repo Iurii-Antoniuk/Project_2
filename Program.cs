@@ -69,93 +69,19 @@ namespace Project_2
 
         static void Main(string[] args)
         {
-           /* Parser.Default.ParseArguments<LoginOptions, WithdrawOptions, TransferOptions, AccountOptions, InfoOptions>(args)
-            .WithParsed<LoginOptions>(RunLoginOptions)
-            .WithParsed<WithdrawOptions>(RunWithdrawOptions)
-            .WithParsed<TransferOptions>(RunTransferOptions)
-            .WithParsed<AccountOptions>(RunAccountOptions)
-            .WithParsed<InfoOptions>(RunInfoOptions);
+            /* Parser.Default.ParseArguments<LoginOptions, WithdrawOptions, TransferOptions, AccountOptions, InfoOptions>(args)
+             .WithParsed<LoginOptions>(RunLoginOptions)
+             .WithParsed<WithdrawOptions>(RunWithdrawOptions)
+             .WithParsed<TransferOptions>(RunTransferOptions)
+             .WithParsed<AccountOptions>(RunAccountOptions)
+             .WithParsed<InfoOptions>(RunInfoOptions);
 
-            Console.WriteLine("Test de la seconde connexion en-dessous: ");
+             Console.WriteLine("Test de la seconde connexion en-dessous: ");
 
-            ConnectionDB.ConfigConnection();*/
+             ConnectionDB.ConfigConnection();*/
 
-
-            //Create Table
-            Console.WriteLine("Create Table");
-            string query = @"CREATE TABLE Products(Id INT PRIMARY KEY IDENTITY(1,1), Name VARCHAR(100) NOT NULL, Price DECIMAL(3,2) NOT NULL)";
-            SqlConnection connection = new SqlConnection(@"Data Source = AG\SQLEXPRESS; Initial Catalog = SQL1; Integrated Security = True");
-            connection.Open();
-            SqlCommand command = new SqlCommand(query, connection);
-            command.ExecuteNonQuery();
-            connection.Close();
-            Console.WriteLine("Table has created created");
-            Console.ReadLine();
-
-            // Insert data in the table
-            Console.WriteLine("Insert data in the table");
-            string query = @"INSERT INTO Products(Name, Price) VALUES ('Tomatoes', 5.47), ('Bananas', 2.78), ('Kiwi', 3.70), ('Eggplant', 7.99)";
-            SqlConnection connection = new SqlConnection(@"Data Source = AG\SQLEXPRESS; Initial Catalog = SQL1; Integrated Security = True");
-            connection.Open();
-            SqlCommand command = new SqlCommand(query, connection);
-            command.ExecuteNonQuery();
-            connection.Close();
-            Console.WriteLine("Table has succefully completed");
-            Console.ReadLine();
-
-            // UPDATE data in the table
-            Console.WriteLine("UPDATE data in the table");
-            string query = @"UPDATE Products SET Name='Grapes', Price=6.01 WHERE Id=3";
-            SqlConnection connection = new SqlConnection(@"Data Source = AG\SQLEXPRESS; Initial Catalog = SQL1; Integrated Security = True");
-            connection.Open();
-            SqlCommand command = new SqlCommand(query, connection);
-            command.ExecuteNonQuery();
-            connection.Close();
-            Console.WriteLine("Table has succefully UPDATED");
-            Console.ReadLine();
-
-            // DELETE data in the table
-            /*Console.WriteLine("DELETE data in the table");
-            string query = @"DELETE FROM Products WHERE Id=4";
-            SqlConnection connection = new SqlConnection(@"Data Source = AG\SQLEXPRESS; Initial Catalog = SQL1; Integrated Security = True");
-            connection.Open();
-            SqlCommand command = new SqlCommand(query, connection);
-            command.ExecuteNonQuery();
-            connection.Close();
-            Console.WriteLine("Data has succefully DELETED");
-            Console.ReadLine();*/
-
-            // SELECT data in the table
-            Console.WriteLine("SELECT data in the table");
-            string query = @"SELECT * FROM Products";
-            SqlConnection connection = new SqlConnection(@"Data Source = AG\SQLEXPRESS; Initial Catalog = SQL1; Integrated Security = True");
-            connection.Open();
-            SqlCommand command = new SqlCommand(query, connection);
-            SqlDataReader dataread = command.ExecuteReader();
-            while (dataread.Read())
-            {
-                Console.WriteLine(dataread["Id"].ToString() + "     " + dataread["Name"].ToString() + "     " + dataread["Price"].ToString());
-            }
-            dataread.Close();
-            connection.Close();
-            Console.WriteLine("SELECTION FINISHED");
-            Console.ReadLine();
-
-            // Transaction
-            Console.WriteLine("Transaction data in the table");
-            SqlConnection connection = new SqlConnection(@"Data Source = AG\SQLEXPRESS; Initial Catalog = SQL1; Integrated Security = True");
-            connection.Open();
-            SqlCommand command = new SqlCommand();
-            SqlTransaction transaction = connection.BeginTransaction();
-            command.Connection = connection;
-            command.CommandText = @"INSERT INTO Products(Name, Price) VALUES ('Kiwi', 3.70), ('Eggplant', 7.99)";
-            command.Transaction = transaction;
-            command.ExecuteNonQuery();
-            transaction.Commit();
-            connection.Close();
-            Console.WriteLine("Transaction commited");
-            Console.ReadLine();*/
-
+            Administrator admin = new Administrator();
+            admin.CreateClient("choupi", 500);
 
         }
 
