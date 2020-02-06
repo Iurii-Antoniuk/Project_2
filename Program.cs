@@ -91,6 +91,7 @@ namespace Project_2
 
         static void Main(string[] args)
         {
+
            Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, AccountOptions, InfoOptions, ClientOptions>(args)
             .WithParsed<Options>(RunOptions)
             .WithParsed<WithdrawOptions>(RunWithdrawOptions)
@@ -102,6 +103,10 @@ namespace Project_2
             Console.WriteLine("Test de la seconde connexion en-dessous: ");
 
             ConnectionDB.GetConnectionString();
+
+            Administrator admin = new Administrator();
+            admin.CreateClient("choupi", 500);
+
         }
 
         static void RunOptions(Options options)

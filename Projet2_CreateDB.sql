@@ -13,9 +13,8 @@ id INT PRIMARY KEY IDENTITY (100, 1),
 --CONSTRAINT FK_CurrentAccounts FOREIGN KEY (id) REFERENCES Person(id),
 client_id INT NOT NULL,
 amount DECIMAL(10,2) NOT NULL,
-overdraft INT NOT NULL,
+overdraft DECIMAL(10,2) NOT NULL,
 openingDate DATETIME NOT NULL,
-closeDate DATETIME,
 FOREIGN KEY (client_id) REFERENCES Person(id)
 ON UPDATE CASCADE 
 ON DELETE CASCADE
@@ -26,9 +25,9 @@ id INT PRIMARY KEY IDENTITY (100, 1),
 --CONSTRAINT FK_SavingAccounts FOREIGN KEY (id) REFERENCES Person(id),
 client_id INT NOT NULL,
 amount DECIMAL(10,2) NOT NULL,
-"ceiling" INT NOT NULL,
+rate DECIMAL(10, 2) NOT NULL,
+"ceiling" DECIMAL(10,2) NOT NULL,
 openingDate DATETIME NOT NULL,
-closeDate DATETIME,
 FOREIGN KEY (client_id) REFERENCES Person(id)
 ON UPDATE CASCADE 
 ON DELETE CASCADE
@@ -38,13 +37,14 @@ CREATE TABLE "Transaction" (
 id INT PRIMARY KEY IDENTITY (1, 1),
 --CONSTRAINT FK_TransactionC FOREIGN KEY (id) REFERENCES CurrentAccounts(id),
 --CONSTRAINT FK_TransactionS FOREIGN KEY (id) REFERENCES SavingAccounts(id),
-currentAccount_id INT NOT NULL,
-savingAccount_id INT NOT NULL,
+currentAccount_id INT,
+savingAccount_id INT,
 transactionType VARCHAR(80) NOT NULL,
-beneficiaryAccount VARCHAR(80),
+beneficiaryAccount_id INT,
 amount DECIMAL(10,2) NOT NULL,
 "date" DATETIME NOT NULL
 FOREIGN KEY (currentAccount_id) REFERENCES CurrentAccounts(id),
-FOREIGN KEY (savingAccount_id) REFERENCES SavingAccounts(id)
+FOREIGN KEY (savingAccount_id) REFERENCES SavingAccounts(id),
+FOREIGN KEY (beneficiaryAccount_id) REFERENCES CurrentAccounts(id)
 );
 COMMIT TRANSACTION

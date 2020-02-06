@@ -16,10 +16,17 @@ namespace Project_2
 
             CreateCurrentAccount(client, amount);
 
-            return password;
+            string queryString = $"INSERT INTO Person (name, password) VALUES ('{name}', '{password}');";
+            ConnectionDB.NonQuerySQL(queryString);
 
-            //lien entre client et compte dans BdD
+            queryString = $"SELECT * FROM Person WHERE name = '{name}';";
+            List<string> listeTest = new List<string> { "id", "name", "password" };
+            ConnectionDB.SelectSQL(queryString, listeTest);
+
+            return password;
         }
+
+       
 
         public void DeleteClient(Client client)
         {
