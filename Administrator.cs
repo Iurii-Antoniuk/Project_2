@@ -5,51 +5,66 @@ using System.Text;
 namespace Project_2
 {
     public class Administrator : Person
-    {
-        
-        
-        public string CreateClient(string name, double amount)
+    {       
+        public int CreateClient(string name, double amount)
         {
-            string password = PasswordGenerator();
-            Client client = new Client(name, password);
-            Console.WriteLine(name + " has been created.");
+            //Client client = new Client(name, password);
 
-            CreateCurrentAccount(client, amount);
-
+            string password = PasswordGenerator();           
+                               
             string queryString = $"INSERT INTO Person (name, password) VALUES ('{name}', '{password}');";
             ConnectionDB.NonQuerySQL(queryString);
 
-            queryString = $"SELECT * FROM Person WHERE name = '{name}';";
-            List<string> listeTest = new List<string> { "id", "name", "password" };
+            queryString = $"SELECT id FROM Person WHERE name = '{name}' AND password='{password}';";
+            List<string> listeTest = new List<string> { "id"};
             ConnectionDB.SelectSQL(queryString, listeTest);
 
-            return password;
+            int client_id = ConnectionDB.ReturnID(queryString);
+            CreateCurrentAccount(client_id, amount);
+
+            return ID = client_id;
+        }
+               
+
+        public void DeleteClient(int client_id)
+        {
+            string queryString = $"DELETE FROM Person WHERE id ='{client_id}');";
+            ConnectionDB.NonQuerySQL(queryString);
         }
 
-       
-
-        public void DeleteClient(Client client)
+        public void CreateCurrentAccount (int client_id, double amount)
         {
-            client = null;
-            Console.WriteLine(Name + " has been erased.");
+            //CurrentAccount currentAccount = new CurrentAccount(idAccount, amount);
 
-            //trouver le bon client à effacer dans la BdD et effacer tous ces comptes à condition qu'il soit = 0
-        }
+            Console.WriteLine("Enter the amount of the overdraft of the new account : ");
+            decimal overdraft = Convert.ToDecimal(Console.ReadLine());
 
-        public void CreateCurrentAccount (Client client, double amount)
-        {
-            string idAccount = IdGenerator();
+            DateTime openingDate = DateTime.Now;
 
-            CurrentAccount currentAccount = new CurrentAccount(idAccount, amount);
-            Console.WriteLine("Account number" + idAccount + "has been created");
+            string queryString = $"INSERT INTO CurrentAccounts (client_id, amount, overdraft, openingDate) " +
+                                $" VALUES ('{client_id}', '{amount}','{overdraft}','{openingDate}');";
+            ConnectionDB.NonQuerySQL(queryString);
+
         }
         
-        public void CreateSavingAccount(Client client, double amount)
+        public void CreateSavingAccount(int client_id, double amount)
         {
-            string idAccount = IdGenerator();
-            SavingsAccount savingsAccount = new SavingsAccount(idAccount, amount);
-            Console.WriteLine("Account number" + idAccount + "has been created");                       
+            //SavingsAccount savingsAccount = new SavingsAccount(idAccount, amount);
+
+            Console.WriteLine("Enter the rate (decimal) of the new account : ");
+            decimal rate = Convert.ToDecimal(Console.ReadLine());
+
+            Console.WriteLine("Enter the maximum amount you can have on the new account : ");
+            decimal ceiling = Convert.ToDecimal(Console.ReadLine());
+
+            DateTime openingDate = DateTime.Now;
+
+            string queryString = $"INSERT INTO SavingAccounts (client_id, amount, rate, ceiling, openingDate) " +
+                                $" VALUES ('{client_id}', '{amount}','{rate}','{ceiling}','{openingDate}');";
+            ConnectionDB.NonQuerySQL(queryString);
         }
+
+
 
     }
 }

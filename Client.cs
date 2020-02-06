@@ -6,19 +6,20 @@ namespace Project_2
 {
     public class Client : Person
     { 
-        public Client (string name, string password)
+        /*
+         * public Client (string name)
         {
             Name = name;
-            Password = password;
             
-        }
+        } */
 
-        public static void CheckAccounts(int id)
+        /*
+        public void CheckAccounts(int id)
         {
             try
             {
                 Console.WriteLine("Current account status: ");
-                CheckCurrentAccount(id);
+                //CheckCurrentAccount(id);
                 Console.WriteLine("Saving accounts status: ");
                 CheckSavingAccounts(id);
             }
@@ -27,16 +28,19 @@ namespace Project_2
                 Console.WriteLine("Cannot display accounts status. " + e.Message);
             }
         }
-
-        public static void CheckCurrentAccount(int id)
+        */
+        public void CheckCurrentAccount(int client_id)
         {
-            string queryString = $"SELECT * FROM CurrentAccounts WHERE id = {id};";
-            ConnectionDB.SelectSQL
+            string queryString = $"SELECT id, amount, overdraft, openingDate FROM CurrentAccounts WHERE client_id = '{client_id}';";
+            List<string> currentAccountInfo = new List<string> { "id", "amount", "overdraft","openingDate" };
+            ConnectionDB.SelectSQL(queryString, currentAccountInfo);
         }
 
-        public static void CheckSavingAccounts(int id)
+        public void CheckSavingAccounts(int client_id)
         {
-
+            string queryString = $"SELECT id, amount, rate, ceiling, openingDate FROM SavingAccounts WHERE client_id = '{client_id}';";
+            List<string> savingAccountInfo = new List<string> { "id", "amount", "rate", "ceiling", "openingDate" };
+            ConnectionDB.SelectSQL(queryString, savingAccountInfo);
         }
         
 
