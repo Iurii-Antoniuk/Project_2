@@ -6,21 +6,16 @@ namespace Project_2
 {
     public class Authentification
     {
-        public static void Login(string id, string password)
+        public static void Login(string name, string password)
         {
-            /*if (ID == id && Password == password)
+
+            string queryString = $"SELECT id FROM Person (name, password) VALUES ('{name}', '{password}');";
+            int id = ConnectionDB.ReturnID(queryString);
+
+            if (id == 1)
             {
-                Console.WriteLine("Hello");
-
-                // Faire la différence entre clients et admin avec if et else              
-
 
             }
-            else
-            {
-                Console.WriteLine("Error of authentification");
-
-            }*/
 
 
             if (Login && mot de passe == Admin)
