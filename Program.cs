@@ -6,13 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Configuration;
-
+using System.Security.Cryptography;
 
 namespace Project_2
 {
     class Program
     {
-        class Options
+       /* class Options
 
         {
             [Option('l', "login", Required = true, HelpText = "enter your login")]
@@ -84,22 +84,32 @@ namespace Project_2
             public int IdCurrentAccount { get; set; }
             [Option('s', "id saving account", HelpText = "Enter your saving account id")]
             public int IdSavingAccount { get; set; }
-        }
+        }*/
 
         static void Main(string[] args)
         {
 
-            Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, AccountOptions, InfoOptions, ClientOptions>(args)
+           /* Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, AccountOptions, InfoOptions, ClientOptions>(args)
              .WithParsed<Options>(RunOptions)
              .WithParsed<WithdrawOptions>(RunWithdrawOptions)
              .WithParsed<TransferOptions>(RunTransferOptions)
              .WithParsed<AccountOptions>(RunAccountOptions)
              .WithParsed<InfoOptions>(RunInfoOptions)
-             .WithParsed<ClientOptions>(RunClientOptions);
+             .WithParsed<ClientOptions>(RunClientOptions);*/
 
-            Console.WriteLine("Test de la seconde connexion en-dessous: ");
+            Console.WriteLine("Welcome on bank application");
 
-            ConnectionDB.GetConnectionString();
+            Console.WriteLine("give name :");
+            string name = Console.ReadLine();
+            Console.WriteLine("give password :");
+            string password = Console.ReadLine();
+            password = Person.CryptPassword(password);
+            string queryString = $"SELECT id FROM Person (name, password) VALUES ('{name}', '{password}');";
+            ConnectionDB.ReturnID(queryString);
+            Console.WriteLine("You are logged");
+        
+
+            //ConnectionDB.GetConnectionString();
 
             //Administrator admin = new Administrator();
             //admin.CreateClient("Claire", 3000);
@@ -110,11 +120,13 @@ namespace Project_2
             //client.CheckSavingAccounts(3);
 
 
-            /*Administrator admin = new Administrator();
-            admin.CreateClient("choupi", 500); */
-            Client.WithdrawMoney(102, 20);
+            //Administrator admin = new Administrator();
+            //admin.CreateClient("admin", 500);
+
+            //Client.WithdrawMoney(102, 20);
 
         }
+        /*
 
         static void RunOptions(Options options)
         {
@@ -175,7 +187,7 @@ namespace Project_2
             {
 
             }
-        }
+        }*/
     }
 }
     

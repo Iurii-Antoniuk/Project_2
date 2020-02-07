@@ -14,10 +14,7 @@ namespace Project_2
             string queryString = $"SELECT id FROM Person (name, password) VALUES ('{name}', '{password}');";
             int id = ConnectionDB.ReturnID(queryString);
 
-            if (id == 1)
-            {
 
-            }
 
            /* if (Login && mot de passe == Admin)
 

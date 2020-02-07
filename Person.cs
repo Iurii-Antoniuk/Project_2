@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 
 namespace Project_2
 {
-    public abstract class Person
+    public class Person
     {
         protected static string Name { get; set; }
         protected static int ID { get; set; }
@@ -33,7 +33,7 @@ namespace Project_2
             return Password = password;
         }
 
-        public string CryptPassword(string password)
+        public static string CryptPassword(string password)
         {
             byte[] encodPassword = Encoding.ASCII.GetBytes(password);
             encodPassword = new SHA256Managed().ComputeHash(encodPassword);
