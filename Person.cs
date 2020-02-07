@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Security.Cryptography;
 
 namespace Project_2
 {
     public abstract class Person
     {
         protected static string Name { get; set; }
-        protected static string ID { get; set; }
-        protected static string Password { get; set; }
-
-
-        
+        protected static int ID { get; set; }
+        protected static string Password { get; set; }       
         
 
         public string PasswordGenerator()
@@ -35,12 +33,12 @@ namespace Project_2
             }
             return Password = password;
         }
-
-        public string IdGenerator()
+        public string CryptPassword(string password)
         {
-            ID = Guid.NewGuid().ToString("N").Substring(0, 12);
-            // generate a unique id (length = 12)
-            return ID;
+            byte[] encodPassword = Encoding.ASCII.GetBytes(password);
+            encodPassword = new SHA256Managed().ComputeHash(encodPassword);
+            string cryptPassword = Encoding.ASCII.GetString(encodPassword);
+            return cryptPassword;
         }
 
     }
