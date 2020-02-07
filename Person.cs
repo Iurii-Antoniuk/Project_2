@@ -32,7 +32,6 @@ namespace Project_2
             }
             return Password = password;
         }
-
         public static string CryptPassword(string password)
         {
             byte[] encodPassword = Encoding.ASCII.GetBytes(password);
