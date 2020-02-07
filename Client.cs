@@ -22,7 +22,7 @@ namespace Project_2
         }
 
 
-        public static void WithdrawMoney2(int currentAccountID, double amount)
+        public static void WithdrawMoney(int currentAccountID, double amount)
         {
             string queryString1 = $"SELECT amount FROM CurrentAccounts WHERE id={currentAccountID};";
             decimal currentAmount = ConnectionDB.ReturnDecimal(queryString1);
