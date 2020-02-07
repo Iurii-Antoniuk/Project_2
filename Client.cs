@@ -6,36 +6,34 @@ namespace Project_2
 {
     public class Client : Person
     { 
-        public Client (string name, string password)
+        public void CheckCurrentAccount(int client_id)
         {
-            Name = name;
-            Password = password;
-            
+            string queryString = $"SELECT id, amount, overdraft, openingDate FROM CurrentAccounts WHERE client_id = '{client_id}';";
+            List<string> currentAccountInfo = new List<string> { "id", "amount", "overdraft","openingDate" };
+            ConnectionDB.SelectSQL(queryString, currentAccountInfo);
         }
 
-        public static void CheckAccounts(int id)
+
+        public void CheckSavingAccounts(int client_id)
         {
-            try
+            string queryString = $"SELECT id, amount, rate, ceiling, openingDate FROM SavingAccounts WHERE client_id = '{client_id}';";
+            List<string> savingAccountInfo = new List<string> { "id", "amount", "rate", "ceiling", "openingDate" };
+            ConnectionDB.SelectSQL(queryString, savingAccountInfo);
+        }
+
+
+        public static void WithdrawMoney(int currentAccountID, double amount)
+        {
+            string queryString1 = $"SELECT amount FROM CurrentAccounts WHERE id={currentAccountID};";
+            decimal currentAmount = ConnectionDB.ReturnDecimal(queryString1);
+            string queryString2 = $"SELECT overdraft FROM CurrentAccounts WHERE id={currentAccountID};";
+            decimal overdraft = ConnectionDB.ReturnDecimal(queryString2);
+
+            if (Convert.ToDouble(currentAmount - overdraft) >= amount)
             {
-                Console.WriteLine("Current account status: ");
-                CheckCurrentAccount(id);
-                Console.WriteLine("Saving accounts status: ");
-                CheckSavingAccounts(id);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Cannot display accounts status. " + e.Message);
-            }
-        }
-
-        public static void CheckCurrentAccount(int id)
-        {
-            string queryString = $"SELECT * FROM CurrentAccounts WHERE id = {id};";
-        }
-
-        public static void CheckSavingAccounts(int id)
-        {
-
+                DateTime dateOp = DateTime.Now;
+                string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE id = { currentAccountID }; INSERT INTO \"Transaction\" (currentAccount_id, transactionType, amount, \"date\") VALUES({currentAccountID}, 'withdrawal', {amount}, '{dateOp}')";
+                ConnectionDB.NonQuerySQL(queryString);
         }
 
         public static void ImmediateTransfer(double amount)
@@ -175,11 +173,6 @@ namespace Project_2
                 Console.WriteLine("Exiting program due to input error");
             }
         }
-        
-
-        
     }
-
-   
 }
  

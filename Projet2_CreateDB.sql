@@ -1,3 +1,4 @@
+--CREATE DATABASE Projet2_BancAppli;
 USE Projet2_BancAppli;
 
 BEGIN TRANSACTION

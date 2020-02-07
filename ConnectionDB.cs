@@ -9,16 +9,8 @@ namespace Project_2
     {
         public static string GetConnectionString()
         {
-            // Récupère la connectionString dans le fichier app.config
             string connectionString = ConfigurationManager.ConnectionStrings["Projet2_BancAppli"].ConnectionString;
-            
-                // Execute le code si la connexion est ouverte
-                /*if (connection.State == System.Data.ConnectionState.Open )
-                {
-                    Console.WriteLine("La connexion est ouverte");
-                }*/
-
-                return connectionString;
+            return connectionString;
         }
 
         public static void NonQuerySQL(string queryString)
@@ -35,8 +27,9 @@ namespace Project_2
             }
             catch (Exception e)
             {
-                Console.WriteLine("Fuck you dumbass, dickhead, cunt! And the client too... " + e.Message);
+                Console.WriteLine("Error " + e.Message);
             }
+
         }
 
         public static void SelectSQL(string queryString, List<string> columnsName)
@@ -61,7 +54,7 @@ namespace Project_2
             }
             catch (Exception e)
             {
-                Console.WriteLine("Fuck you dumbass, dickhead, cunt! And the client too... " + e.Message);
+                Console.WriteLine("Error " + e.Message);
             }
             
         }
@@ -89,5 +82,31 @@ namespace Project_2
             }           
         }
 
+
+        public static decimal ReturnDecimal(string queryString)
+        {
+            decimal decim = 0;
+            try
+            {
+               SqlConnection connection = new SqlConnection(GetConnectionString());
+                connection.Open();
+                SqlCommand command = new SqlCommand(queryString, connection);
+                SqlDataReader dataread = command.ExecuteReader();
+                dataread.Read();
+                decim = dataread.GetDecimal(0);
+                dataread.Close();
+                connection.Close();
+                Console.WriteLine("DONE");
+                return decim;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Not valid account number, bitch!" + e.Message);
+                return decim;
+            }
+        }
+          
     }
+
 }
+

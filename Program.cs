@@ -12,20 +12,19 @@ namespace Project_2
 {
     class Program
     {
+        class Options
 
-
-        [Verb("login", HelpText = "authentification")]
-        class LoginOptions
         {
-            [Option('u', "username", Required = true, HelpText = "enter your username")]
-            public string Username { get; set; }
+            [Option('l', "login", Required = true, HelpText = "enter your login")]
+            public string EnterLogin { get; set; }
 
-            [Option('p', "password", Required = true, HelpText = "enter your password")]
-            public string Password { get; set; }
+            [Option('v', "verbose", Required = true, HelpText = "enter your verb")]
+            public string EnterVerbose { get; set; }
         }
 
+
         [Verb("withdraw", HelpText = "money withdraw")]
-        class WithdrawOptions
+        class WithdrawOptions : Options
         {
             [Option('a', "amount", HelpText = "amount to withdraw")]
             public double Amount { get; set; }
@@ -36,7 +35,7 @@ namespace Project_2
         }
 
         [Verb("transfer", HelpText = "money transaction")]
-        class TransferOptions
+        class TransferOptions : Options
         {
             [Option('d', "delayed", HelpText = "You want to do a delayed trasaction")]
             public bool Delayed { get; set; }
@@ -48,8 +47,21 @@ namespace Project_2
             public bool Permanent { get; set; }
         }
 
+        [Verb("Client", HelpText = "Client managment")]
+        class ClientOptions : Options
+        {
+            [Option('c', "create", HelpText = "Create client")]
+            public bool CreateClient { get; set; }
+
+            [Option('d', "delete", HelpText = "Delete client")]
+            public bool DeleteClient { get; set; }
+
+            [Option('n', "name", HelpText = "Client Name")]
+            public string ClientName { get; set; }
+        }
+
         [Verb("Account", HelpText = "Account managment")]
-        class AccountOptions
+        class AccountOptions : Options
         {
             [Option('c', "create", HelpText = "Create account")]
             public bool CreateAccount { get; set; }
@@ -60,51 +72,66 @@ namespace Project_2
             [Option('n', "name", HelpText = "Client Name")]
             public string ClientName { get; set; }
         }
-        [Verb("Info", HelpText = "Get information")]
-        class InfoOptions
+
+        [Verb("info", HelpText = "Get information")]
+        class InfoOptions : Options
+
         {
-            [Option('i', "informations", HelpText = "Get informations on your accounts")]
-            public bool GetInfo { get; set; }
+            [Option('i', "client id", HelpText = "Enter your client id")]
+            public int IdClient { get; set; }
+
+            [Option('c', "id current account", HelpText = "Enter your current account id")]
+            public int IdCurrentAccount { get; set; }
+            [Option('s', "id saving account", HelpText = "Enter your saving account id")]
+            public int IdSavingAccount { get; set; }
         }
 
         static void Main(string[] args)
         {
-            /* Parser.Default.ParseArguments<LoginOptions, WithdrawOptions, TransferOptions, AccountOptions, InfoOptions>(args)
-             .WithParsed<LoginOptions>(RunLoginOptions)
+
+            Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, AccountOptions, InfoOptions, ClientOptions>(args)
+             .WithParsed<Options>(RunOptions)
              .WithParsed<WithdrawOptions>(RunWithdrawOptions)
              .WithParsed<TransferOptions>(RunTransferOptions)
              .WithParsed<AccountOptions>(RunAccountOptions)
-             .WithParsed<InfoOptions>(RunInfoOptions);
+             .WithParsed<InfoOptions>(RunInfoOptions)
+             .WithParsed<ClientOptions>(RunClientOptions);
 
-             Console.WriteLine("Test de la seconde connexion en-dessous: ");
+            Console.WriteLine("Test de la seconde connexion en-dessous: ");
 
-             ConnectionDB.ConfigConnection();*/
+            ConnectionDB.GetConnectionString();
 
-            Administrator admin = new Administrator();
-            admin.CreateClient("choupi", 500);
+            //Administrator admin = new Administrator();
+            //admin.CreateClient("Claire", 3000);
+            //admin.CreateSavingAccount(3, 1000);
+
+            //Client client = new Client();
+            //client.CheckCurrentAccount(4);
+            //client.CheckSavingAccounts(3);
+
+
+            /*Administrator admin = new Administrator();
+            admin.CreateClient("choupi", 500); */
+            Client.WithdrawMoney(102, 20);
 
         }
 
+        static void RunOptions(Options options)
+        {
 
-
+        }
         static void RunInfoOptions(InfoOptions options)
         {
-            if (options.GetInfo)
-            {
-                Console.WriteLine("Your current account situation : ");
-                // metohde
-            }
+            Console.WriteLine("Enter your password  : ");
+            string password = Console.ReadLine();
+            Client client = new Client();
         }
 
-        static void RunLoginOptions(LoginOptions options)
-        {
-            Console.WriteLine("Your log");
 
-            //Person.Login(options.Username, options.Password);
-        }
+
         static void RunWithdrawOptions(WithdrawOptions options)
         {
-            Transaction.WithdrawMoney(options.AccountId, options.Amount);
+            //Client.WithdrawMoney2(options.AccountId, options.Amount);
         }
 
         static void RunTransferOptions(TransferOptions options)
@@ -136,5 +163,20 @@ namespace Project_2
 
             }
         }
+
+
+        static void RunClientOptions(ClientOptions options)
+        {
+            if (options.CreateClient)
+            {
+
+            }
+            if (options.DeleteClient)
+            {
+
+            }
+        }
     }
 }
+    
+

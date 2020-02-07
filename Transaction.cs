@@ -26,27 +26,6 @@ namespace Project_2
             ConnectionDB.NonQuerySQL(queryString);
         }
 
-        //voir pour ajouter une méthode pour transférer de l'argent vers des comptes d'autres users (liste bénificiaires)
-
-        public static void WithdrawMoney(Account account, double amount)
-        {
-            Console.WriteLine("There are : " + account.Amount + " of money from " + account.AccountNumber);
-
-            account.Amount = account.Amount - amount;
-
-            Console.WriteLine("You have withdraw " + amount + " euros.");
-            Console.WriteLine("There are : " + account.Amount + " of money left");
-        }
-
-        public static void AddMoney(Account account, double amount)
-        {
-            Console.WriteLine("There are : " + account.Amount + " of money from " + account.AccountNumber);
-
-            account.Amount = account.Amount + amount;
-
-            Console.WriteLine("You have withdraw " + amount + " euros.");
-            Console.WriteLine("There are : " + account.Amount + " of money left");
-        }
 
         public static DateTime GetDate()
         {
