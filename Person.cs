@@ -33,6 +33,14 @@ namespace Project_2
             return Password = password;
         }
 
+        /*
+        public string IdGenerator()
+        {
+            ID = Guid.NewGuid().ToString("N").Substring(0, 12);
+            // generate a unique id (length = 12)
+            return ID;
+        }*/
+
         public string CryptPassword(string password)
         {
             byte[] encodPassword = Encoding.ASCII.GetBytes(password);
