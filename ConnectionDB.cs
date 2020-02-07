@@ -104,7 +104,9 @@ namespace Project_2
             }
         }
 
-        public static int ReturnIdAccount(int client_id)
+    
+
+        public static int ReturnIdCurrentAccount(int client_id)
         {
             try
             {
@@ -124,6 +126,29 @@ namespace Project_2
             {
                 Console.WriteLine("Error " + e.Message);
                 return 0 ;
+            }
+        }
+
+        public static int ReturnIdSavingAccount(int client_id)
+        {
+            try
+            {
+                string queryString = $"SELECT id FROM SavingAccounts WHERE client_id = '{client_id}'";
+                SqlConnection connection = new SqlConnection(GetConnectionString());
+                connection.Open();
+                SqlCommand command = new SqlCommand(queryString, connection);
+                SqlDataReader dataread = command.ExecuteReader();
+                dataread.Read();
+                int idCurrentAccount = dataread.GetInt32(0);
+                dataread.Close();
+                connection.Close();
+                Console.WriteLine("DONE");
+                return idCurrentAccount;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error " + e.Message);
+                return 0;
             }
         }
 

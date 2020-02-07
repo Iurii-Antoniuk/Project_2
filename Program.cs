@@ -70,7 +70,7 @@ namespace Project_2
             [Option('n', "name", HelpText = "Client Name")]
             public string ClientName { get; set; }
         }
-        [Verb("Info", HelpText = "Get information")]
+        [Verb("info", HelpText = "Get information")]
         class InfoOptions
         {
             /* [Option('i', "informations", HelpText = "Get informations on your accounts")]
@@ -87,24 +87,51 @@ namespace Project_2
 
         static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, AccountOptions, ClientOptions, InfoOptions>(args)
+            /*Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, AccountOptions, ClientOptions, InfoOptions>(args)
              .WithParsed<Options>(RunOptions)
              .WithParsed<WithdrawOptions>(RunWithdrawOptions)
              .WithParsed<TransferOptions>(RunTransferOptions)
              .WithParsed<AccountOptions>(RunAccountOptions)
              .WithParsed<ClientOptions>(RunClientOptions)
-             .WithParsed<InfoOptions>(RunInfoOptions);
+             .WithParsed<InfoOptions>(RunInfoOptions); */
 
              Console.WriteLine("Test de la seconde connexion");
              ConnectionDB.GetConnectionString();
 
-            Administrator admin = new Administrator();
+            //Administrator admin = new Administrator();
             //admin.CreateClient("Claire", 3000);
             //admin.CreateSavingAccount(3, 1000);
 
-            Client client = new Client();
+            //Client client = new Client();
             //client.CheckCurrentAccount(4);
-            client.CheckSavingAccounts(3);
+            //client.CheckSavingAccounts(3);
+
+            Console.WriteLine("Enter your password  : ");
+            string password = Console.ReadLine();
+            Client client = new Client();
+            if (password == ConnectionDB.ReturnPassword(3))
+            {
+                Console.WriteLine("You did it !");
+                /*if (100 == ConnectionDB.ReturnIdCurrentAccount(3))
+                {
+
+                    Console.WriteLine("Information about your current account : ");
+                    client.CheckCurrentAccount(100);
+                }
+                /*if (100 == ConnectionDB.ReturnIdSavingAccount(3))
+                {
+                    Console.WriteLine("Information about your savings account : ");
+                    client.CheckSavingAccounts(100);
+                }
+                else
+                {
+                    Console.WriteLine("You have entered a wrong account number");
+                }*/
+            }
+            else
+            {
+                Console.WriteLine("You have entered a wrong password");
+            }
 
         }
 
@@ -117,13 +144,13 @@ namespace Project_2
             Client client = new Client();
             if (password == ConnectionDB.ReturnPassword(options.IdClient))
             {
-                if (options.IdCurrentAccount =)
+                if (options.IdCurrentAccount == ConnectionDB.ReturnIdCurrentAccount(options.IdClient))
                 {
                     
                     Console.WriteLine("Information about your current account : ");
                     client.CheckCurrentAccount(options.IdCurrentAccount);
                 }
-                if (options.IdSavingAccount =)
+                if (options.IdSavingAccount == ConnectionDB.ReturnIdSavingAccount(options.IdClient))
                 {
                     Console.WriteLine("Information about your savings account : ");
                     client.CheckSavingAccounts(options.IdSavingAccount);
