@@ -15,15 +15,15 @@ namespace Project_2
             {
                 if (DateTime.Now == executionDate)
                 {
-                    MoneyTransfer(debitAccount, debitClient_id, creditAccount, creditClient_id, amount);
-                    string queryString = $"INSERT INTO [Transaction] (currentAccount_id, transactionType, beneficiaryAccount_id, amount, [date])" + 
+                    MoneyTransfer(debitAccount, debitClient_id, creditAccount, creditClient_id, amount, executionDate);
+                    /*string queryString = $"INSERT INTO [Transaction] (currentAccount_id, transactionType, beneficiaryAccount_id, amount, [date])" + 
                                             $"VALUES("+
                                             $"(SELECT id FROM {debitAccount} WHERE client_id = {debitClient_id}),"+
                                             $"'Money Transfer'," +
                                             $"(SELECT id FROM {creditAccount} WHERE client_id = {creditClient_id}),"+
                                             $"{amount},"+
                                             $"{executionDate});";
-                    ConnectionDB.NonQuerySQL(queryString);
+                    ConnectionDB.NonQuerySQL(queryString);*/
                 }
             }
         }

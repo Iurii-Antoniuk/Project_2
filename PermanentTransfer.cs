@@ -7,11 +7,11 @@ namespace Project_2
     public class PermanentTransfer : Transaction
     {
         
-        public static void ExecutePermanentTransfer(CurrentAccount debitAccount, CurrentAccount creditAccount, double amount)
+        public static void ExecutePermanentTransfer(string debitAccount, int debitClient_id, string creditAccount, int creditClient_id, double amount)
         {
             Console.WriteLine("Give the first date of the transfer (accepted format YYYY-MM-DD) : ");
             DateTime FirstExecution = GetDate();
-            Console.WriteLine("Give the first date of the transfer (accepted format YYYY-MM-DD) : ");
+            Console.WriteLine("Give the last date of the transfer (accepted format YYYY-MM-DD) : ");
             DateTime LastExecution = GetDate();
             Console.WriteLine("Give the periodicity (number of days between the transfers) ");
             int interval = Convert.ToInt32(Console.ReadLine());
@@ -21,7 +21,8 @@ namespace Project_2
             {
                 if (FirstExecution == DateTime.Now)
                 {
-                    MoneyTransfer(debitAccount, creditAccount, amount);
+                    DateTime todayDate = DateTime.Now;
+                    Transaction.MoneyTransfer(debitAccount, debitClient_id, creditAccount, creditClient_id, amount, todayDate);
                     FirstExecution += Interval;
                 }
                 
