@@ -9,9 +9,8 @@ namespace Project_2
     {
         protected static string Name { get; set; }
         protected static int ID { get; set; }
-        protected static string Password { get; set; }       
+        protected static string Password { get; set; }     
         
-
         public string PasswordGenerator()
         {
             string caracteres = "azertyuiopqsdfghjklmwxcvbn1234567890";
@@ -33,6 +32,7 @@ namespace Project_2
             }
             return Password = password;
         }
+
         public string CryptPassword(string password)
         {
             byte[] encodPassword = Encoding.ASCII.GetBytes(password);

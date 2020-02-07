@@ -12,20 +12,17 @@ namespace Project_2
 {
     class Program
     {
-
-
-        [Verb("login", HelpText = "authentification")]
-        class LoginOptions
+        class Options
         {
-            [Option('u', "username", Required = true, HelpText = "enter your username")]
-            public string Username { get; set; }
+            [Option('l', "login", Required = true, HelpText = "enter your login")]
+            public string EnterLogin { get; set; }
 
-            [Option('p', "password", Required = true, HelpText = "enter your password")]
+            [Option('v', "verbose", Required = true, HelpText = "enter your verbose")]
             public string Password { get; set; }
         }
 
         [Verb("withdraw", HelpText = "money withdraw")]
-        class WithdrawOptions
+        class WithdrawOptions : Options
         {
             [Option('a', "amount", HelpText = "amount to withdraw")]
             public double Amount { get; set; }
@@ -36,7 +33,7 @@ namespace Project_2
         }
 
         [Verb("transfer", HelpText = "money transaction")]
-        class TransferOptions
+        class TransferOptions : Options
         {
             [Option('d', "delayed", HelpText = "You want to do a delayed trasaction")]
             public bool Delayed { get; set; }
@@ -49,7 +46,7 @@ namespace Project_2
         }
 
         [Verb("Account", HelpText = "Account managment")]
-        class AccountOptions
+        class AccountOptions : Options
         {
             [Option('c', "create", HelpText = "Create account")]
             public bool CreateAccount { get; set; }
@@ -60,29 +57,87 @@ namespace Project_2
             [Option('n', "name", HelpText = "Client Name")]
             public string ClientName { get; set; }
         }
-        [Verb("Info", HelpText = "Get information")]
+
+        [Verb("Client", HelpText = "Client managment")]
+        class ClientOptions : Options
+        {
+            [Option('c', "create", HelpText = "Create client")]
+            public bool CreateClient { get; set; }
+
+            [Option('d', "delete", HelpText = "Delete client")]
+            public bool DeleteClient { get; set; }
+
+            [Option('n', "name", HelpText = "Client Name")]
+            public string ClientName { get; set; }
+        }
+        [Verb("info", HelpText = "Get information")]
         class InfoOptions
         {
-            [Option('i', "informations", HelpText = "Get informations on your accounts")]
-            public bool GetInfo { get; set; }
+            /* [Option('i', "informations", HelpText = "Get informations on your accounts")]
+            public bool GetInfo { get; set; } */
+
+            [Option('i', "client id", HelpText = "Enter your client id")]
+            public int IdClient { get; set; }
+
+            [Option('c', "id current account", HelpText ="Enter your current account id")]
+            public int IdCurrentAccount { get; set; }
+            [Option('s', "id saving account", HelpText = "Enter your saving account id")]
+            public int IdSavingAccount { get; set; }
         }
 
         static void Main(string[] args)
         {
-            /* Parser.Default.ParseArguments<LoginOptions, WithdrawOptions, TransferOptions, AccountOptions, InfoOptions>(args)
-             .WithParsed<LoginOptions>(RunLoginOptions)
+            /*Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, AccountOptions, ClientOptions, InfoOptions>(args)
+             .WithParsed<Options>(RunOptions)
              .WithParsed<WithdrawOptions>(RunWithdrawOptions)
              .WithParsed<TransferOptions>(RunTransferOptions)
              .WithParsed<AccountOptions>(RunAccountOptions)
-             .WithParsed<InfoOptions>(RunInfoOptions);
+             .WithParsed<ClientOptions>(RunClientOptions)
+             .WithParsed<InfoOptions>(RunInfoOptions); */
 
-             Console.WriteLine("Test de la seconde connexion en-dessous: ");
+             Console.WriteLine("Test de la seconde connexion");
+             ConnectionDB.GetConnectionString();
 
-             ConnectionDB.ConfigConnection();*/
+            //Administrator admin = new Administrator();
+            //admin.CreateClient("Claire", 3000);
+            //admin.CreateSavingAccount(3, 1000);
+
+
+            //Client client = new Client();
+            //client.CheckCurrentAccount(4);
+            //client.CheckSavingAccounts(3);
+
+            Console.WriteLine("Enter your password  : ");
+            string password = Console.ReadLine();
+            Client client = new Client();
+            if (password == ConnectionDB.ReturnPassword(3))
+            {
+                Console.WriteLine("You did it !");
+                /*if (100 == ConnectionDB.ReturnIdCurrentAccount(3))
+                {
+
+                    Console.WriteLine("Information about your current account : ");
+                    client.CheckCurrentAccount(100);
+                }
+                /*if (100 == ConnectionDB.ReturnIdSavingAccount(3))
+                {
+                    Console.WriteLine("Information about your savings account : ");
+                    client.CheckSavingAccounts(100);
+                }
+                else
+                {
+                    Console.WriteLine("You have entered a wrong account number");
+                }*/
+            }
+            else
+            {
+                Console.WriteLine("You have entered a wrong password");
+            }
 
             /*Administrator admin = new Administrator();
             admin.CreateClient("choupi", 500); */
             //Client.WithdrawMoney2(101, 100);
+
 
         }
 
@@ -90,14 +145,35 @@ namespace Project_2
 
         static void RunInfoOptions(InfoOptions options)
         {
-            if (options.GetInfo)
+            Console.WriteLine("Enter your password  : ");
+            string password = Console.ReadLine();
+            Client client = new Client();
+            if (password == ConnectionDB.ReturnPassword(options.IdClient))
             {
-                Console.WriteLine("Your current account situation : ");
-                // metohde
+                if (options.IdCurrentAccount == ConnectionDB.ReturnIdCurrentAccount(options.IdClient))
+                {
+                    
+                    Console.WriteLine("Information about your current account : ");
+                    client.CheckCurrentAccount(options.IdCurrentAccount);
+                }
+                if (options.IdSavingAccount == ConnectionDB.ReturnIdSavingAccount(options.IdClient))
+                {
+                    Console.WriteLine("Information about your savings account : ");
+                    client.CheckSavingAccounts(options.IdSavingAccount);
+                }
+                else
+                {
+                    Console.WriteLine("You have entered a wrong account number");
+                }
             }
+            else
+            {
+                Console.WriteLine("You have entered a wrong password");
+            }
+            
         }
 
-        static void RunLoginOptions(LoginOptions options)
+        static void RunOptions(Options options)
         {
             Console.WriteLine("Your log");
 
@@ -136,6 +212,11 @@ namespace Project_2
                 //Administrator.DeleteClient();
 
             }
+        }
+
+        static void RunClientOptions(ClientOptions options)
+        {
+
         }
     }
 }

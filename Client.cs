@@ -6,14 +6,15 @@ namespace Project_2
 {
     public class Client : Person
     { 
-        public Client (string name, string password)
+        /*
+         * public Client (string name)
         {
             Name = name;
-            Password = password;
             
-        }
+        } */
 
-        public static void CheckAccounts(int id)
+        /*
+        public void CheckAccounts(int id)
         {
             try
             {
@@ -28,15 +29,20 @@ namespace Project_2
             }
         }
 
-        //public static void CheckCurrentAccount(int id)
-        //{
-        //    string queryString = $"SELECT * FROM CurrentAccounts WHERE id = {id};";
-        //    ConnectionDB.SelectSQL
-        //}
-
-        public static void CheckSavingAccounts(int id)
+        */
+        public void CheckCurrentAccount(int client_id)
         {
+            string queryString = $"SELECT id, amount, overdraft, openingDate FROM CurrentAccounts WHERE client_id = '{client_id}';";
+            List<string> currentAccountInfo = new List<string> { "id", "amount", "overdraft","openingDate" };
+            ConnectionDB.SelectSQL(queryString, currentAccountInfo);
+        }
 
+
+        public void CheckSavingAccounts(int client_id)
+        {
+            string queryString = $"SELECT id, amount, rate, ceiling, openingDate FROM SavingAccounts WHERE client_id = '{client_id}';";
+            List<string> savingAccountInfo = new List<string> { "id", "amount", "rate", "ceiling", "openingDate" };
+            ConnectionDB.SelectSQL(queryString, savingAccountInfo);
         }
 
         //public static void WithdrawMoney(int currentAccountID, double amount)
