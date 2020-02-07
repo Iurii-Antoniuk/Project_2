@@ -9,16 +9,8 @@ namespace Project_2
     {
         public static string GetConnectionString()
         {
-            // Récupère la connectionString dans le fichier app.config
             string connectionString = ConfigurationManager.ConnectionStrings["Projet2_BancAppli"].ConnectionString;
-            
-                // Execute le code si la connexion est ouverte
-                /*if (connection.State == System.Data.ConnectionState.Open )
-                {
-                    Console.WriteLine("La connexion est ouverte");
-                }*/
-
-                return connectionString;
+            return connectionString;
         }
 
         public static void NonQuerySQL(string queryString)
@@ -35,8 +27,9 @@ namespace Project_2
             }
             catch (Exception e)
             {
-                Console.WriteLine("Fuck you dumbass, dickhead, cunt! And the client too... " + e.Message);
+                Console.WriteLine("Error " + e.Message);
             }
+
         }
 
         public static void SelectSQL(string queryString, List<string> columnsName)
@@ -61,7 +54,7 @@ namespace Project_2
             }
             catch (Exception e)
             {
-                Console.WriteLine("Fuck you dumbass, dickhead, cunt! And the client too... " + e.Message);
+                Console.WriteLine("Error " + e.Message);
             }
             
         }
@@ -87,6 +80,125 @@ namespace Project_2
                 Console.WriteLine("Not valid name or password" + e.Message);
                 return id;
             }           
+        }
+
+        public static string ReturnPassword(int client_id)
+        {
+            try
+            {
+                string queryString = $"SELECT password FROM Person WHERE id = '{client_id}'";
+                SqlConnection connection = new SqlConnection(GetConnectionString());
+                connection.Open();
+                SqlCommand command = new SqlCommand(queryString, connection);
+                SqlDataReader dataread = command.ExecuteReader();
+                dataread.Read();
+                string password = dataread.GetString(2);
+                dataread.Close();
+                connection.Close();
+                Console.WriteLine("DONE");
+                return password;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error " + e.Message);
+                return null;
+            }
+        }
+
+        public static decimal ReturnAmount(string queryString)
+        {
+            decimal amount = 0;
+            try
+            {
+               SqlConnection connection = new SqlConnection(GetConnectionString());
+                connection.Open();
+                SqlCommand command = new SqlCommand(queryString, connection);
+                SqlDataReader dataread = command.ExecuteReader();
+                dataread.Read();
+              amount = dataread.GetDecimal(0);
+                dataread.Close();
+                connection.Close();
+                Console.WriteLine("DONE");
+                return amount;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Not valid account number, bitch!" + e.Message);
+                return amount;
+            }
+        }
+
+        public static decimal ReturnOverdraft(string queryString)
+        {
+            decimal overdraft = 10000;
+            try
+            {
+                SqlConnection connection = new SqlConnection(GetConnectionString());
+                connection.Open();
+                SqlCommand command = new SqlCommand(queryString, connection);
+                SqlDataReader dataread = command.ExecuteReader();
+                dataread.Read();
+              overdraft = dataread.GetDecimal(0);
+                dataread.Close();
+                connection.Close();
+                Console.WriteLine("DONE");
+                return overdraft;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Not valid account number, bitch!" + e.Message);
+                return overdraft;
+            }
+    
+
+        public static int ReturnIdCurrentAccount(int client_id)
+        {
+            try
+            {
+                string queryString = $"SELECT id FROM CurrentAccounts WHERE client_id = '{client_id}'";
+
+                SqlConnection connection = new SqlConnection(GetConnectionString());
+                connection.Open();
+                SqlCommand command = new SqlCommand(queryString, connection);
+                SqlDataReader dataread = command.ExecuteReader();
+                dataread.Read();
+
+                int idCurrentAccount = dataread.GetInt32(0);
+                dataread.Close();
+                connection.Close();
+                Console.WriteLine("DONE");
+                return idCurrentAccount ;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error " + e.Message);
+                return 0 ;
+            }
+        }
+
+        public static int ReturnIdSavingAccount(int client_id)
+        {
+            try
+            {
+                string queryString = $"SELECT id FROM SavingAccounts WHERE client_id = '{client_id}'";
+                SqlConnection connection = new SqlConnection(GetConnectionString());
+                connection.Open();
+                SqlCommand command = new SqlCommand(queryString, connection);
+                SqlDataReader dataread = command.ExecuteReader();
+                dataread.Read();
+                int idCurrentAccount = dataread.GetInt32(0);
+                dataread.Close();
+                connection.Close();
+                Console.WriteLine("DONE");
+                return idCurrentAccount;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error " + e.Message);
+                return 0;
+            }
+        }
+                
         }
 
     }
