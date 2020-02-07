@@ -8,9 +8,10 @@ namespace Project_2
     {
         
         
-        public string CreateClient(string name, double amount)
+        public int CreateClient(string name, double amount)
         {
-            string password = PasswordGenerator();
+            PasswordGenerator();
+            string password = CryptPassword(Password);
             Client client = new Client(name, password);
             Console.WriteLine(name + " has been created.");
 
@@ -19,11 +20,10 @@ namespace Project_2
             string queryString = $"INSERT INTO Person (name, password) VALUES ('{name}', '{password}');";
             ConnectionDB.NonQuerySQL(queryString);
 
-            queryString = $"SELECT * FROM Person WHERE name = '{name}';";
-            List<string> listeTest = new List<string> { "id", "name", "password" };
-            ConnectionDB.SelectSQL(queryString, listeTest);
-
-            return password;
+            queryString = $"SELECT id FROM Person WHERE name = '{name}' AND password = '{password}';";
+            List<string> listeTest = new List<string> { "id"};
+            int id = ConnectionDB.ReturnID(queryString);
+            return id;
         }
 
        
@@ -50,6 +50,8 @@ namespace Project_2
             SavingsAccount savingsAccount = new SavingsAccount(idAccount, amount);
             Console.WriteLine("Account number" + idAccount + "has been created");                       
         }
+
+
 
     }
 }
