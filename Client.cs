@@ -34,6 +34,7 @@ namespace Project_2
                 DateTime dateOp = DateTime.Now;
                 string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE id = { currentAccountID }; INSERT INTO \"Transaction\" (currentAccount_id, transactionType, amount, \"date\") VALUES({currentAccountID}, 'withdrawal', {amount}, '{dateOp}')";
                 ConnectionDB.NonQuerySQL(queryString);
+            }
         }
 
         public static void ImmediateTransfer(double amount)
