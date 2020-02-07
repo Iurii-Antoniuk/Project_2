@@ -99,15 +99,18 @@ namespace Project_2
 
             Console.WriteLine("Welcome on bank application");
 
-            //Authentification authentification = new Authentification();
-            //authentification.Login();
+
+            Authentification authentification = new Authentification();
+            authentification.Login();
+            //authentification.ModifyPassword(3);
 
 
             //ConnectionDB.GetConnectionString();
 
             //Administrator admin = new Administrator();
             //admin.CreateClient("Claire", 3000);
-            //admin.CreateSavingAccount(3, 1000);
+            //Console.WriteLine(Person.Password);
+            //admin.CreateSavingAccount(3, 5000);
 
             //Client client = new Client();
             //client.CheckCurrentAccount(4);
@@ -118,6 +121,8 @@ namespace Project_2
             //admin.CreateClient("admin", 500);
 
             //Client.WithdrawMoney(102, 20);
+            Client client = new Client();
+            client.ImmediateTransfer(100);
 
         }
         /*

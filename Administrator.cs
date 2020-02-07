@@ -15,19 +15,14 @@ namespace Project_2
             queryString = $"SELECT id FROM Person WHERE name = '{name}' AND password='{password}';";
             int client_id = ConnectionDB.ReturnID(queryString);
             CreateCurrentAccount(client_id, amount);
-
-        }
-               
-
+        }              
         public void DeleteClient(int client_id)
         {
             string queryString = $"DELETE FROM Person WHERE id ='{client_id}');";
             ConnectionDB.NonQuerySQL(queryString);
         }
-
         public void CreateCurrentAccount (int client_id, double amount)
         {
-
             Console.WriteLine("Enter the amount of the overdraft of the new account : ");
             decimal overdraft = Convert.ToDecimal(Console.ReadLine());
 
@@ -36,12 +31,9 @@ namespace Project_2
             string queryString = $"INSERT INTO CurrentAccounts (client_id, amount, overdraft, openingDate) " +
                                 $" VALUES ('{client_id}', '{amount}','{overdraft}','{openingDate}');";
             ConnectionDB.NonQuerySQL(queryString);
-
-        }
-        
+        }        
         public void CreateSavingAccount(int client_id, double amount)
         {
-
             Console.WriteLine("Enter the rate (decimal) of the new account : ");
             decimal rate = Convert.ToDecimal(Console.ReadLine());
 
