@@ -19,8 +19,8 @@ namespace Project_2
 
             }
 
-
            /* if (Login && mot de passe == Admin)
+
             {
                 new admin
             }
@@ -43,6 +43,7 @@ namespace Project_2
             catch (Exception e)
             {
                 "No login"
+
             }
             */
             
@@ -80,6 +81,9 @@ namespace Project_2
             password.MakeReadOnly(); */
 
             return password;
+
+            }*/
+
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Security.Cryptography;
 
 namespace Project_2
 {
@@ -30,6 +31,14 @@ namespace Project_2
                 }
             }
             return Password = password;
+        }
+
+        public string CryptPassword(string password)
+        {
+            byte[] encodPassword = Encoding.ASCII.GetBytes(password);
+            encodPassword = new SHA256Managed().ComputeHash(encodPassword);
+            string cryptPassword = Encoding.ASCII.GetString(encodPassword);
+            return cryptPassword;
         }
 
     }

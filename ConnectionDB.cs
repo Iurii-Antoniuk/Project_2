@@ -29,6 +29,7 @@ namespace Project_2
             {
                 Console.WriteLine("Error " + e.Message);
             }
+
         }
 
         public static void SelectSQL(string queryString, List<string> columnsName)
@@ -104,6 +105,50 @@ namespace Project_2
             }
         }
 
+        public static decimal ReturnAmount(string queryString)
+        {
+            decimal amount = 0;
+            try
+            {
+               SqlConnection connection = new SqlConnection(GetConnectionString());
+                connection.Open();
+                SqlCommand command = new SqlCommand(queryString, connection);
+                SqlDataReader dataread = command.ExecuteReader();
+                dataread.Read();
+              amount = dataread.GetDecimal(0);
+                dataread.Close();
+                connection.Close();
+                Console.WriteLine("DONE");
+                return amount;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Not valid account number, bitch!" + e.Message);
+                return amount;
+            }
+        }
+
+        public static decimal ReturnOverdraft(string queryString)
+        {
+            decimal overdraft = 10000;
+            try
+            {
+                SqlConnection connection = new SqlConnection(GetConnectionString());
+                connection.Open();
+                SqlCommand command = new SqlCommand(queryString, connection);
+                SqlDataReader dataread = command.ExecuteReader();
+                dataread.Read();
+              overdraft = dataread.GetDecimal(0);
+                dataread.Close();
+                connection.Close();
+                Console.WriteLine("DONE");
+                return overdraft;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Not valid account number, bitch!" + e.Message);
+                return overdraft;
+            }
     
 
         public static int ReturnIdCurrentAccount(int client_id)
@@ -111,11 +156,13 @@ namespace Project_2
             try
             {
                 string queryString = $"SELECT id FROM CurrentAccounts WHERE client_id = '{client_id}'";
+
                 SqlConnection connection = new SqlConnection(GetConnectionString());
                 connection.Open();
                 SqlCommand command = new SqlCommand(queryString, connection);
                 SqlDataReader dataread = command.ExecuteReader();
                 dataread.Read();
+
                 int idCurrentAccount = dataread.GetInt32(0);
                 dataread.Close();
                 connection.Close();
@@ -151,9 +198,8 @@ namespace Project_2
                 return 0;
             }
         }
-
-
-
+                
+        }
 
     }
 }

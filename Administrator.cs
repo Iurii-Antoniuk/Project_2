@@ -5,15 +5,19 @@ using System.Text;
 namespace Project_2
 {
     public class Administrator : Person
-    {       
+        {
         public int CreateClient(string name, double amount)
         {
-            //Client client = new Client(name, password);
+            PasswordGenerator();
+            string password = CryptPassword(Password);
+            Client client = new Client(name, password);
+            
 
-            string password = PasswordGenerator();           
+            CreateCurrentAccount(client, amount);
                                
             string queryString = $"INSERT INTO Person (name, password) VALUES ('{name}', '{password}');";
             ConnectionDB.NonQuerySQL(queryString);
+
 
             queryString = $"SELECT id FROM Person WHERE name = '{name}' AND password='{password}';";
             List<string> listeTest = new List<string> { "id"};

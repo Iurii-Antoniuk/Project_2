@@ -102,6 +102,7 @@ namespace Project_2
             //admin.CreateClient("Claire", 3000);
             //admin.CreateSavingAccount(3, 1000);
 
+
             //Client client = new Client();
             //client.CheckCurrentAccount(4);
             //client.CheckSavingAccounts(3);
@@ -132,6 +133,11 @@ namespace Project_2
             {
                 Console.WriteLine("You have entered a wrong password");
             }
+
+            /*Administrator admin = new Administrator();
+            admin.CreateClient("choupi", 500); */
+            //Client.WithdrawMoney2(101, 100);
+
 
         }
 
