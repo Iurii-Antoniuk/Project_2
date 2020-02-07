@@ -99,15 +99,9 @@ namespace Project_2
 
             Console.WriteLine("Welcome on bank application");
 
-            Console.WriteLine("give name :");
-            string name = Console.ReadLine();
-            Console.WriteLine("give password :");
-            string password = Console.ReadLine();
-            password = Person.CryptPassword(password);
-            string queryString = $"SELECT id FROM Person (name, password) VALUES ('{name}', '{password}');";
-            ConnectionDB.ReturnID(queryString);
-            Console.WriteLine("You are logged");
-        
+            //Authentification authentification = new Authentification();
+            //authentification.Login();
+
 
             //ConnectionDB.GetConnectionString();
 
