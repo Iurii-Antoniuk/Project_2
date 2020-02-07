@@ -138,7 +138,7 @@ namespace Project_2
                 SqlCommand command = new SqlCommand(queryString, connection);
                 SqlDataReader dataread = command.ExecuteReader();
                 dataread.Read();
-              overdraft = dataread.GetDecimal(0);
+                overdraft = dataread.GetDecimal(0);
                 dataread.Close();
                 connection.Close();
                 Console.WriteLine("DONE");
@@ -149,6 +149,7 @@ namespace Project_2
                 Console.WriteLine("Not valid account number, bitch!" + e.Message);
                 return overdraft;
             }
+        }
     
 
         public static int ReturnIdCurrentAccount(int client_id)
@@ -199,7 +200,7 @@ namespace Project_2
             }
         }
                 
-        }
-
     }
+
 }
+

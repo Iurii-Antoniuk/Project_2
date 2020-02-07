@@ -10,10 +10,7 @@ namespace Project_2
         {
             PasswordGenerator();
             string password = CryptPassword(Password);
-            Client client = new Client(name, password);
-            
-
-            CreateCurrentAccount(client, amount);
+            Client client = new Client();
                                
             string queryString = $"INSERT INTO Person (name, password) VALUES ('{name}', '{password}');";
             ConnectionDB.NonQuerySQL(queryString);
