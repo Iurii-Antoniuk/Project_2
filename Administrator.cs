@@ -6,27 +6,16 @@ namespace Project_2
 {
     public class Administrator : Person
         {
-        public int CreateClient(string name, double amount)
+        public void CreateClient(string name, double amount)
         {
             PasswordGenerator();
             string password = CryptPassword(Password);
-            Client client = new Client(name, password);
-            
-
-            CreateCurrentAccount(client, amount);
-                               
             string queryString = $"INSERT INTO Person (name, password) VALUES ('{name}', '{password}');";
             ConnectionDB.NonQuerySQL(queryString);
-
-
             queryString = $"SELECT id FROM Person WHERE name = '{name}' AND password='{password}';";
-            List<string> listeTest = new List<string> { "id"};
-            ConnectionDB.SelectSQL(queryString, listeTest);
-
             int client_id = ConnectionDB.ReturnID(queryString);
             CreateCurrentAccount(client_id, amount);
 
-            return ID = client_id;
         }
                
 
@@ -38,7 +27,6 @@ namespace Project_2
 
         public void CreateCurrentAccount (int client_id, double amount)
         {
-            //CurrentAccount currentAccount = new CurrentAccount(idAccount, amount);
 
             Console.WriteLine("Enter the amount of the overdraft of the new account : ");
             decimal overdraft = Convert.ToDecimal(Console.ReadLine());
@@ -53,7 +41,6 @@ namespace Project_2
         
         public void CreateSavingAccount(int client_id, double amount)
         {
-            //SavingsAccount savingsAccount = new SavingsAccount(idAccount, amount);
 
             Console.WriteLine("Enter the rate (decimal) of the new account : ");
             decimal rate = Convert.ToDecimal(Console.ReadLine());
@@ -67,8 +54,5 @@ namespace Project_2
                                 $" VALUES ('{client_id}', '{amount}','{rate}','{ceiling}','{openingDate}');";
             ConnectionDB.NonQuerySQL(queryString);
         }
-
-
-
     }
 }

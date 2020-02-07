@@ -82,32 +82,10 @@ namespace Project_2
             }           
         }
 
-        public static string ReturnPassword(int client_id)
-        {
-            try
-            {
-                string queryString = $"SELECT password FROM Person WHERE id = '{client_id}'";
-                SqlConnection connection = new SqlConnection(GetConnectionString());
-                connection.Open();
-                SqlCommand command = new SqlCommand(queryString, connection);
-                SqlDataReader dataread = command.ExecuteReader();
-                dataread.Read();
-                string password = dataread.GetString(2);
-                dataread.Close();
-                connection.Close();
-                Console.WriteLine("DONE");
-                return password;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error " + e.Message);
-                return null;
-            }
-        }
 
-        public static decimal ReturnAmount(string queryString)
+        public static decimal ReturnDecimal(string queryString)
         {
-            decimal amount = 0;
+            decimal decim = 0;
             try
             {
                SqlConnection connection = new SqlConnection(GetConnectionString());
@@ -115,91 +93,20 @@ namespace Project_2
                 SqlCommand command = new SqlCommand(queryString, connection);
                 SqlDataReader dataread = command.ExecuteReader();
                 dataread.Read();
-              amount = dataread.GetDecimal(0);
+                decim = dataread.GetDecimal(0);
                 dataread.Close();
                 connection.Close();
                 Console.WriteLine("DONE");
-                return amount;
+                return decim;
             }
             catch (Exception e)
             {
                 Console.WriteLine("Not valid account number, bitch!" + e.Message);
-                return amount;
+                return decim;
             }
         }
-
-        public static decimal ReturnOverdraft(string queryString)
-        {
-            decimal overdraft = 10000;
-            try
-            {
-                SqlConnection connection = new SqlConnection(GetConnectionString());
-                connection.Open();
-                SqlCommand command = new SqlCommand(queryString, connection);
-                SqlDataReader dataread = command.ExecuteReader();
-                dataread.Read();
-              overdraft = dataread.GetDecimal(0);
-                dataread.Close();
-                connection.Close();
-                Console.WriteLine("DONE");
-                return overdraft;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Not valid account number, bitch!" + e.Message);
-                return overdraft;
-            }
-    
-
-        public static int ReturnIdCurrentAccount(int client_id)
-        {
-            try
-            {
-                string queryString = $"SELECT id FROM CurrentAccounts WHERE client_id = '{client_id}'";
-
-                SqlConnection connection = new SqlConnection(GetConnectionString());
-                connection.Open();
-                SqlCommand command = new SqlCommand(queryString, connection);
-                SqlDataReader dataread = command.ExecuteReader();
-                dataread.Read();
-
-                int idCurrentAccount = dataread.GetInt32(0);
-                dataread.Close();
-                connection.Close();
-                Console.WriteLine("DONE");
-                return idCurrentAccount ;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error " + e.Message);
-                return 0 ;
-            }
-        }
-
-        public static int ReturnIdSavingAccount(int client_id)
-        {
-            try
-            {
-                string queryString = $"SELECT id FROM SavingAccounts WHERE client_id = '{client_id}'";
-                SqlConnection connection = new SqlConnection(GetConnectionString());
-                connection.Open();
-                SqlCommand command = new SqlCommand(queryString, connection);
-                SqlDataReader dataread = command.ExecuteReader();
-                dataread.Read();
-                int idCurrentAccount = dataread.GetInt32(0);
-                dataread.Close();
-                connection.Close();
-                Console.WriteLine("DONE");
-                return idCurrentAccount;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error " + e.Message);
-                return 0;
-            }
-        }
-                
-        }
-
+          
     }
+
 }
+

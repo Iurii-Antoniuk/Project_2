@@ -107,36 +107,10 @@ namespace Project_2
             //client.CheckCurrentAccount(4);
             //client.CheckSavingAccounts(3);
 
-            Console.WriteLine("Enter your password  : ");
-            string password = Console.ReadLine();
-            Client client = new Client();
-            if (password == ConnectionDB.ReturnPassword(3))
-            {
-                Console.WriteLine("You did it !");
-                /*if (100 == ConnectionDB.ReturnIdCurrentAccount(3))
-                {
-
-                    Console.WriteLine("Information about your current account : ");
-                    client.CheckCurrentAccount(100);
-                }
-                /*if (100 == ConnectionDB.ReturnIdSavingAccount(3))
-                {
-                    Console.WriteLine("Information about your savings account : ");
-                    client.CheckSavingAccounts(100);
-                }
-                else
-                {
-                    Console.WriteLine("You have entered a wrong account number");
-                }*/
-            }
-            else
-            {
-                Console.WriteLine("You have entered a wrong password");
-            }
 
             /*Administrator admin = new Administrator();
             admin.CreateClient("choupi", 500); */
-            //Client.WithdrawMoney2(101, 100);
+            Client.WithdrawMoney2(101, 700);
 
 
         }
@@ -148,28 +122,28 @@ namespace Project_2
             Console.WriteLine("Enter your password  : ");
             string password = Console.ReadLine();
             Client client = new Client();
-            if (password == ConnectionDB.ReturnPassword(options.IdClient))
-            {
-                if (options.IdCurrentAccount == ConnectionDB.ReturnIdCurrentAccount(options.IdClient))
-                {
+            //if (password == ConnectionDB.ReturnPassword(options.IdClient))
+            //{
+            //    if (options.IdCurrentAccount == ConnectionDB.ReturnIdCurrentAccount(options.IdClient))
+            //    {
                     
-                    Console.WriteLine("Information about your current account : ");
-                    client.CheckCurrentAccount(options.IdCurrentAccount);
-                }
-                if (options.IdSavingAccount == ConnectionDB.ReturnIdSavingAccount(options.IdClient))
-                {
-                    Console.WriteLine("Information about your savings account : ");
-                    client.CheckSavingAccounts(options.IdSavingAccount);
-                }
-                else
-                {
-                    Console.WriteLine("You have entered a wrong account number");
-                }
-            }
-            else
-            {
-                Console.WriteLine("You have entered a wrong password");
-            }
+            //        Console.WriteLine("Information about your current account : ");
+            //        client.CheckCurrentAccount(options.IdCurrentAccount);
+            //    }
+            //    if (options.IdSavingAccount == ConnectionDB.ReturnIdSavingAccount(options.IdClient))
+            //    {
+            //        Console.WriteLine("Information about your savings account : ");
+            //        client.CheckSavingAccounts(options.IdSavingAccount);
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine("You have entered a wrong account number");
+            //    }
+            //}
+            //else
+            //{
+            //    Console.WriteLine("You have entered a wrong password");
+            //}
             
         }
 
