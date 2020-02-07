@@ -80,8 +80,10 @@ namespace Project_2
 
              ConnectionDB.ConfigConnection();*/
 
-            Administrator admin = new Administrator();
-            admin.CreateClient("choupi", 500);
+            /*Administrator admin = new Administrator();
+            admin.CreateClient("choupi", 500); */
+            //Client.WithdrawMoney2(101, 100);
+            Client.WithdrawMoney2(102, -500);
 
         }
 

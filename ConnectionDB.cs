@@ -23,20 +23,20 @@ namespace Project_2
 
         public static void NonQuerySQL(string queryString)
         {
-            try
-            {
-                SqlConnection connection = new SqlConnection(GetConnectionString());
-                connection.Open();
-                SqlCommand command = new SqlCommand(queryString, connection);
-                command.ExecuteNonQuery();
-                connection.Close();
-                Console.WriteLine("Command executed");
-                Console.ReadLine();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Fuck you dumbass, dickhead, cunt! And the client too... " + e.Message);
-            }
+            //try
+            //{
+            SqlConnection connection = new SqlConnection(GetConnectionString());
+            connection.Open();
+            SqlCommand command = new SqlCommand(queryString, connection);
+            command.ExecuteNonQuery();
+            connection.Close();
+            Console.WriteLine("Command executed");
+            Console.ReadLine();
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine("Fuck you dumbass, dickhead, cunt! And the client too... " + e.Message);
+            //}
         }
 
         public static void SelectSQL(string queryString, List<string> columnsName)
@@ -87,6 +87,52 @@ namespace Project_2
                 Console.WriteLine("Not valid name or password" + e.Message);
                 return id;
             }           
+        }
+
+        public static decimal ReturnAmount(string queryString)
+        {
+            decimal amount = 0;
+            try
+            {
+                SqlConnection connection = new SqlConnection(GetConnectionString());
+                connection.Open();
+                SqlCommand command = new SqlCommand(queryString, connection);
+                SqlDataReader dataread = command.ExecuteReader();
+                dataread.Read();
+                amount = dataread.GetDecimal(0);
+                dataread.Close();
+                connection.Close();
+                Console.WriteLine("DONE");
+                return amount;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Not valid account number, bitch!" + e.Message);
+                return amount;
+            }
+        }
+
+        public static decimal ReturnOverdraft(string queryString)
+        {
+            decimal overdraft = 10000;
+            try
+            {
+                SqlConnection connection = new SqlConnection(GetConnectionString());
+                connection.Open();
+                SqlCommand command = new SqlCommand(queryString, connection);
+                SqlDataReader dataread = command.ExecuteReader();
+                dataread.Read();
+                overdraft = dataread.GetDecimal(0);
+                dataread.Close();
+                connection.Close();
+                Console.WriteLine("DONE");
+                return overdraft;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Not valid account number, bitch!" + e.Message);
+                return overdraft;
+            }
         }
 
     }
