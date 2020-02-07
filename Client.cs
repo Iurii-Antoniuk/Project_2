@@ -12,16 +12,12 @@ namespace Project_2
             List<string> currentAccountInfo = new List<string> { "id", "amount", "overdraft","openingDate" };
             ConnectionDB.SelectSQL(queryString, currentAccountInfo);
         }
-
-
         public void CheckSavingAccounts(int client_id)
         {
             string queryString = $"SELECT id, amount, rate, ceiling, openingDate FROM SavingAccounts WHERE client_id = '{client_id}';";
             List<string> savingAccountInfo = new List<string> { "id", "amount", "rate", "ceiling", "openingDate" };
             ConnectionDB.SelectSQL(queryString, savingAccountInfo);
         }
-
-
         public static void WithdrawMoney(int currentAccountID, double amount)
         {
             string queryString1 = $"SELECT amount FROM CurrentAccounts WHERE id={currentAccountID};";
@@ -37,7 +33,7 @@ namespace Project_2
             }
         }
 
-        /* public static void ImmediateTransfer(double amount)
+        public void ImmediateTransfer(double amount)
         {
             DateTime transferDate = DateTime.Now;
             Console.WriteLine("Specify from which account you want to transfer money:");
@@ -46,6 +42,7 @@ namespace Project_2
 
             // Récupère l'ID du client dans la propriété qui doit être définie lors de la connexion du client sur l'interface
             int debitClient_id = Client.ID;
+            Console.WriteLine(debitClient_id);
 
 
             if (debitAccount == "c")
@@ -58,14 +55,15 @@ namespace Project_2
                 {
                     creditAccount = "SavingAccounts";
                     // Afficher la liste de tous les comptes de sauvegarde avec leur montant. Spécifier l'id du compte epargne de qui l'opération vient.
-                    string displaySavingAccounts = $"SELECT (id, amount, rate, ceiling) FROM {creditAccount} WHERE client_id = {debitClient_id}";
-                    List<string> savingAccountsColumnsName = new List<string> { "id", "amount", "rate", "ceiling" };
+                    string displaySavingAccounts = $"SELECT id, amount, ceiling FROM SavingAccounts WHERE client_id = {debitClient_id}";
+                    List<string> savingAccountsColumnsName = new List<string> { "id", "amount", "ceiling" };
                     ConnectionDB.SelectSQL(displaySavingAccounts, savingAccountsColumnsName);
+
                     Console.WriteLine("Enter the account id of the beneficiary account");
                     int creditAccount_id = Convert.ToInt32(Console.ReadLine());
 
                     Transaction.MoneyTransfer(debitAccount, debitClient_id, creditAccount, debitClient_id, amount, transferDate);
-                }
+                }/*
                 else if (creditAccount == "e")
                 {
                     creditAccount = "CurrentAccounts";
@@ -90,7 +88,7 @@ namespace Project_2
                 else
                 {
                     Console.WriteLine("Exiting program due to input error");
-                }
+                }*/
             }
             else if (debitAccount == "s")
             {
@@ -106,7 +104,7 @@ namespace Project_2
                 Console.WriteLine("Exiting program due to input error");
             }
         }
-
+        /*
         public static void ClientDelayedTransfer(DateTime date, double amount)
         {
             Console.WriteLine("Specify from which account you want to transfer money:");

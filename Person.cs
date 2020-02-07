@@ -8,8 +8,8 @@ namespace Project_2
     public class Person
     {
         protected static string Name { get; set; }
-        private static int ID { get; set; }
-        protected static string Password { get; set; }     
+        public static int ID { get; set; }
+        public static string Password { get; set; }
         
         public string PasswordGenerator()
         {
@@ -39,6 +39,5 @@ namespace Project_2
             string cryptPassword = Encoding.ASCII.GetString(encodPassword);
             return cryptPassword;
         }
-
     }
 }

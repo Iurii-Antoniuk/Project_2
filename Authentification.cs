@@ -26,10 +26,12 @@ namespace Project_2
             if (id == 1)
             {
                 Console.WriteLine("Hello admin");
+                Person.ID = id;
             }
             else if (id > 1)
             {
                 Console.WriteLine("Hello user");
+                Person.ID = id;
             }
         }
         public SecureString GetPassword()
@@ -58,6 +60,32 @@ namespace Project_2
             Console.WriteLine();
             password.MakeReadOnly();
             return password;
+        }
+        public void ModifyPassword(int ID)
+        {
+            Console.WriteLine("Enter your password : ");
+            SecureString passwordHide = GetPassword();
+            IntPtr bstr = Marshal.SecureStringToBSTR(passwordHide);
+            string password = Marshal.PtrToStringBSTR(bstr);
+
+            password = Person.CryptPassword(password);
+            string queryString = $"SELECT id FROM Person WHERE id = '{ID}' AND password ='{password}';";
+            int id = ConnectionDB.ReturnID(queryString);
+            if (ID == id)
+            {
+                Console.WriteLine("Enter your new password : ");
+                SecureString newpasswordHide = GetPassword();
+                IntPtr newbstr = Marshal.SecureStringToBSTR(newpasswordHide);
+                string newpassword = Marshal.PtrToStringBSTR(newbstr);
+
+                newpassword = Person.CryptPassword(newpassword);
+                string newqueryString = $"UPDATE Person SET password = '{newpassword}' WHERE id = '{ID}';";
+                ConnectionDB.NonQuerySQL(newqueryString);
+            }
+            else
+            {
+                Console.WriteLine("password is wrong");
+            }
         }
     }
 }
