@@ -8,7 +8,7 @@ namespace Project_2
     public class Person
     {
         protected static string Name { get; set; }
-        protected static int ID { get; set; }
+        private static int ID { get; set; }
         protected static string Password { get; set; }     
         
         public string PasswordGenerator()
@@ -17,7 +17,7 @@ namespace Project_2
             Random caracteAlea = new Random();
             
             string password = "";
-            for (int i = 0; i < 8; i++) // 8 caracteres
+            for (int i = 0; i < 4; i++) // 4 caracteres
             {
                 int majOrMin = caracteAlea.Next(2);
                 string carac = caracteres[caracteAlea.Next(0, caracteres.Length)].ToString();

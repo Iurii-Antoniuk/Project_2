@@ -12,7 +12,6 @@ namespace Project_2
             string connectionString = ConfigurationManager.ConnectionStrings["Projet2_BancAppli"].ConnectionString;
             return connectionString;
         }
-
         public static void NonQuerySQL(string queryString)
         {
             try
@@ -29,9 +28,7 @@ namespace Project_2
             {
                 Console.WriteLine("Error " + e.Message);
             }
-
         }
-
         public static void SelectSQL(string queryString, List<string> columnsName)
         {
             try
@@ -55,10 +52,8 @@ namespace Project_2
             catch (Exception e)
             {
                 Console.WriteLine("Error " + e.Message);
-            }
-            
+            }            
         }
-
         public static int ReturnID(string queryString)
         {
             int id = 0;
@@ -77,12 +72,10 @@ namespace Project_2
             }
             catch (Exception e)
             {
-                Console.WriteLine("Not valid name or password" + e.Message);
+                Console.WriteLine("Not valid name or password");
                 return id;
             }           
         }
-
-
         public static decimal ReturnDecimal(string queryString)
         {
             decimal decim = 0;
@@ -104,8 +97,7 @@ namespace Project_2
                 Console.WriteLine("Not valid account number, bitch!" + e.Message);
                 return decim;
             }
-        }
-          
+        }          
     }
 
 }

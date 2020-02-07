@@ -34,9 +34,10 @@ namespace Project_2
                 DateTime dateOp = DateTime.Now;
                 string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE id = { currentAccountID }; INSERT INTO \"Transaction\" (currentAccount_id, transactionType, amount, \"date\") VALUES({currentAccountID}, 'withdrawal', {amount}, '{dateOp}')";
                 ConnectionDB.NonQuerySQL(queryString);
+            }
         }
 
-        public static void ImmediateTransfer(double amount)
+        /* public static void ImmediateTransfer(double amount)
         {
             DateTime transferDate = DateTime.Now;
             Console.WriteLine("Specify from which account you want to transfer money:");
@@ -172,7 +173,7 @@ namespace Project_2
             {
                 Console.WriteLine("Exiting program due to input error");
             }
-        }
+        }*/
     }
 }
  
