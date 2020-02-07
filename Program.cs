@@ -83,7 +83,6 @@ namespace Project_2
             /*Administrator admin = new Administrator();
             admin.CreateClient("choupi", 500); */
             //Client.WithdrawMoney2(101, 100);
-            Client.WithdrawMoney2(102, -500);
 
         }
 
