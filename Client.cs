@@ -57,6 +57,8 @@ namespace Project_2
                 {
                     creditAccount = "SavingAccounts";
                     // Afficher la liste de tous les comptes de sauvegarde avec leur montant. Spécifier l'id du compte epargne de qui l'opération vient.
+                    // Mais on a deja la methode CheckSavingAccounts qui fait la meme chose!..?
+                    // "Spécifier l'id du compte epargne de qui l'opération vient." -ahhh???
                     string displaySavingAccounts = $"SELECT id, amount, ceiling FROM SavingAccounts WHERE client_id = {debitClient_id}";
                     List<string> savingAccountsColumnsName = new List<string> { "id", "amount", "ceiling" };
                     ConnectionDB.SelectSQL(displaySavingAccounts, savingAccountsColumnsName);
@@ -106,7 +108,7 @@ namespace Project_2
                 Console.WriteLine("Exiting program due to input error");
             }
         }
-        /*
+        
         public static void ClientDelayedTransfer(DateTime date, double amount)
         {
             Console.WriteLine("Specify from which account you want to transfer money:");
@@ -173,7 +175,7 @@ namespace Project_2
             {
                 Console.WriteLine("Exiting program due to input error");
             }
-        }*/
+        }
     }
 }
  
