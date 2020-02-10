@@ -5,11 +5,11 @@ using System.Security.Cryptography;
 
 namespace Project_2
 {
-    public abstract class Person
+    public class Person
     {
         protected static string Name { get; set; }
-        protected static int ID { get; set; }
-        protected static string Password { get; set; }     
+        public static int ID { get; set; }
+        public static string Password { get; set; }
         
         public string PasswordGenerator()
         {
@@ -17,7 +17,7 @@ namespace Project_2
             Random caracteAlea = new Random();
             
             string password = "";
-            for (int i = 0; i < 8; i++) // 8 caracteres
+            for (int i = 0; i < 4; i++) // 4 caracteres
             {
                 int majOrMin = caracteAlea.Next(2);
                 string carac = caracteres[caracteAlea.Next(0, caracteres.Length)].ToString();
@@ -32,14 +32,12 @@ namespace Project_2
             }
             return Password = password;
         }
-
-        public string CryptPassword(string password)
+        public static string CryptPassword(string password)
         {
             byte[] encodPassword = Encoding.ASCII.GetBytes(password);
             encodPassword = new SHA256Managed().ComputeHash(encodPassword);
             string cryptPassword = Encoding.ASCII.GetString(encodPassword);
             return cryptPassword;
         }
-
     }
 }

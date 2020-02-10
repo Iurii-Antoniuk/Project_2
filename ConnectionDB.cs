@@ -12,7 +12,6 @@ namespace Project_2
             string connectionString = ConfigurationManager.ConnectionStrings["Projet2_BancAppli"].ConnectionString;
             return connectionString;
         }
-
         public static void NonQuerySQL(string queryString)
         {
             try
@@ -29,9 +28,7 @@ namespace Project_2
             {
                 Console.WriteLine("Error " + e.Message);
             }
-
         }
-
         public static void SelectSQL(string queryString, List<string> columnsName)
         {
             try
@@ -55,10 +52,8 @@ namespace Project_2
             catch (Exception e)
             {
                 Console.WriteLine("Error " + e.Message);
-            }
-            
+            }            
         }
-
         public static int ReturnID(string queryString)
         {
             int id = 0;
@@ -77,37 +72,13 @@ namespace Project_2
             }
             catch (Exception e)
             {
-                Console.WriteLine("Not valid name or password" + e.Message);
+                Console.WriteLine("Not valid name or password");
                 return id;
             }           
         }
-
-        public static string ReturnPassword(int client_id)
+        public static decimal ReturnDecimal(string queryString)
         {
-            try
-            {
-                string queryString = $"SELECT password FROM Person WHERE id = '{client_id}'";
-                SqlConnection connection = new SqlConnection(GetConnectionString());
-                connection.Open();
-                SqlCommand command = new SqlCommand(queryString, connection);
-                SqlDataReader dataread = command.ExecuteReader();
-                dataread.Read();
-                string password = dataread.GetString(2);
-                dataread.Close();
-                connection.Close();
-                Console.WriteLine("DONE");
-                return password;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error " + e.Message);
-                return null;
-            }
-        }
-
-        public static decimal ReturnAmount(string queryString)
-        {
-            decimal amount = 0;
+            decimal decim = 0;
             try
             {
                SqlConnection connection = new SqlConnection(GetConnectionString());
@@ -115,6 +86,7 @@ namespace Project_2
                 SqlCommand command = new SqlCommand(queryString, connection);
                 SqlDataReader dataread = command.ExecuteReader();
                 dataread.Read();
+<<<<<<< HEAD
               amount = dataread.GetDecimal(0);
                 dataread.Close();
                 connection.Close();
@@ -139,16 +111,20 @@ namespace Project_2
                 SqlDataReader dataread = command.ExecuteReader();
                 dataread.Read();
                 overdraft = dataread.GetDecimal(0);
+=======
+                decim = dataread.GetDecimal(0);
+>>>>>>> 7c9fd1a891e3b97c892c49a7acf478d03a1f75d0
                 dataread.Close();
                 connection.Close();
                 Console.WriteLine("DONE");
-                return overdraft;
+                return decim;
             }
             catch (Exception e)
             {
                 Console.WriteLine("Not valid account number, bitch!" + e.Message);
-                return overdraft;
+                return decim;
             }
+<<<<<<< HEAD
         }
     
 
@@ -200,6 +176,9 @@ namespace Project_2
             }
         }
                 
+=======
+        }          
+>>>>>>> 7c9fd1a891e3b97c892c49a7acf478d03a1f75d0
     }
 
 }
