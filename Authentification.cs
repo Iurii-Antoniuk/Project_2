@@ -9,7 +9,7 @@ namespace Project_2
 {
     public class Authentification
     {
-        public void Login()
+        public int Login()
         {
             Console.WriteLine("Enter your name : ");
             string name = Console.ReadLine();
@@ -27,12 +27,15 @@ namespace Project_2
             {
                 Console.WriteLine("Hello admin");
                 Person.ID = id;
+                return id;
             }
             else if (id > 1)
             {
                 Console.WriteLine("Hello user");
                 Person.ID = id;
+                return id;
             }
+            return id;
         }
         public SecureString GetPassword()
         {

@@ -35,7 +35,7 @@ namespace Project_2
             }
         }
 
-        /*public void ImmediateTransfer(double amount)
+        public void ImmediateTransfer(double amount)
         {
             DateTime transferDate = DateTime.Now;
             Console.WriteLine("Specify from which account you want to transfer money:");

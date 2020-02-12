@@ -6,6 +6,14 @@ namespace Project_2
 {
     public class Administrator : Person
         {
+        public void CreateAdmin(string name)
+        {
+            PasswordGenerator();
+            string password = CryptPassword(Password);
+            string queryString = $"INSERT INTO Person (name, password) VALUES ('{name}', '{password}');";
+            ConnectionDB.NonQuerySQL(queryString);
+        }
+
         public void CreateClient(string name, double amount)
         {
             PasswordGenerator();
@@ -18,7 +26,7 @@ namespace Project_2
         }              
         public void DeleteClient(int client_id)
         {
-            string queryString = $"DELETE FROM Person WHERE id ='{client_id}');";
+            string queryString = $"DELETE FROM Person WHERE id ='{client_id}';";
             ConnectionDB.NonQuerySQL(queryString);
         }
         public void CreateCurrentAccount (int client_id, double amount)

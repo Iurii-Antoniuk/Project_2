@@ -70,9 +70,9 @@ namespace Project_2
                 Console.WriteLine("DONE");
                 return id;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("Not valid name or password" + e);
+                Console.WriteLine("Not valid name or password" );
                 return id;
             }           
         }
