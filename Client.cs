@@ -17,6 +17,7 @@ namespace Project_2
             Console.WriteLine();
             ConnectionDB.SelectSQL(queryString, currentAccountInfo);
         }
+
         public void CheckSavingAccounts(int client_id)
         {
             string queryString = $"SELECT id, amount, rate, ceiling, openingDate FROM SavingAccounts WHERE client_id = '{client_id}';";
@@ -29,19 +30,19 @@ namespace Project_2
             ConnectionDB.SelectSQL(queryString, savingAccountInfo);
         }
 
-        public static void WithdrawMoney(int ID, double amount)
+        public void WithdrawMoney(int ID, double amount)
         {
             string queryAmount = $"SELECT amount FROM CurrentAccounts WHERE client_id={ID};";
             decimal currentAmount = ConnectionDB.ReturnDecimal(queryAmount);
             string queryOverdraft = $"SELECT overdraft FROM CurrentAccounts WHERE client_id={ID};";
             decimal overdraft = ConnectionDB.ReturnDecimal(queryOverdraft);
 
-            if ((Convert.ToDouble(currentAmount) - amount) >= Convert.ToDouble(overdraft))
+            if (Convert.ToDouble(currentAmount - overdraft) >= amount)
             {
                 string queryCurrentAccountID = $"SELECT id FROM CurrentAccounts WHERE client_id={ID};";
                 int currentAccountID = ConnectionDB.ReturnID(queryCurrentAccountID);
                 DateTime dateOp = DateTime.Now;
-                string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE id = { queryCurrentAccountID }; INSERT INTO \"Transaction\" (currentAccount_id, transactionType, amount, \"date\") VALUES({currentAccountID}, 'withdrawal', {amount}, '{dateOp}')";
+                string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE id = { currentAccountID }; INSERT INTO \"Transaction\" (currentAccount_id, transactionType, amount, \"date\") VALUES({currentAccountID}, 'withdrawal', {amount}, '{dateOp}')";
                 ConnectionDB.NonQuerySQL(queryString);
             }
             else
@@ -50,7 +51,7 @@ namespace Project_2
             }
         }
 
-        /*public void ImmediateTransfer(double amount)
+        public void ImmediateTransfer(double amount)
 
         {
             DateTime transferDate = DateTime.Now;
@@ -83,7 +84,7 @@ namespace Project_2
                     int creditAccount_id = Convert.ToInt32(Console.ReadLine());
 
                     Transaction.MoneyTransfer(debitAccount, debitClient_id, creditAccount, debitClient_id, amount, transferDate);
-                }/*
+                }
                 else if (creditAccount == "e")
                 {
                     creditAccount = "CurrentAccounts";
