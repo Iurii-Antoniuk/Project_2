@@ -46,11 +46,11 @@ namespace Project_2
             [Option('p', "permanent", HelpText = "You want to do a permanent trasaction")]
             public bool Permanent { get; set; }
 
-            [Option('d', "debit account", Required = true, HelpText="Enter the id of your debited account")]
-            public string IdDebitAccount { get; set; }
+            [Option('a', "amount", Required = true, HelpText = "amount to transfer")]
+            public double Amount { get; set; }
 
-            [Option('c', "credit account", Required = true, HelpText = "Enter the id of your credited account")]
-            public string IdCreditAccount { get; set; }
+            [Option('t', "date time", HelpText="Date where the transfer will happen")]
+            public DateTime Date { get; set; }
 
         }
 
@@ -124,6 +124,7 @@ namespace Project_2
 
             ConnectionDB.GetConnectionString();
 
+
             //Authentification authentification = new Authentification();
             //authentification.Login();
             //authentification.ModifyPassword(3);            
@@ -137,6 +138,13 @@ namespace Project_2
             //client.CheckCurrentAccount(4);
             //client.CheckSavingAccounts(3);
 
+            //ConnectionDB.GetConnectionString();
+
+            //Administrator admin = new Administrator();
+            //admin.CreateClient("Gontrand", 6000);
+            //Console.WriteLine(Person.Password);
+            //admin.CreateSavingAccount(3, 5000);
+
             //Administrator admin = new Administrator();
             //admin.CreateClient("admin", 500);
 
@@ -146,26 +154,36 @@ namespace Project_2
 
         }
 
-
         static void RunInfoOptions(InfoOptions options)
         {
             Authentification authentification = new Authentification();
-            authentification.Login();
-            Client client = new Client();
+            int id = authentification.Login();
+            if (id == options.IdClient)
+            {
+                Client client = new Client();
+                client.CheckCurrentAccounts();
+                client.CheckSavingAccounts();
+            }
+            else
+            {
+                Console.WriteLine("Wrong id");
+            }
+            
         }
 
         static void RunWithdrawOptions(WithdrawOptions options)
         {
             Authentification authentification = new Authentification();
-            authentification.Login();
-            Client client = new Client();
-            if (options.AccountId == ConnectionDB.ReturnIdCurrentAccount(options.AccountId))
+            int id = authentification.Login();
+
+            if ( id == options.AccountId && id!=1)
             {
-                Client.WithdrawMoney(options.AccountId, options.Amount);
+                Client client = new Client();
+                client.WithdrawMoney(options.Amount);
             }
             else
             {
-                Console.WriteLine("Wrong ID account");
+                Console.WriteLine("Wrong id");
             }
         }
 
@@ -174,16 +192,20 @@ namespace Project_2
             Authentification authentification = new Authentification();
             authentification.Login();
 
+            //mettre transactions dans la classe transaction et créer une instance de transaction
+            
             if (options.Delayed)
             {
-
+                Client.ClientDelayedTransfer(options.Date,options.Amount);
             }
             if (options.Instant)
             {
-
+                Client client = new Client();
+                client.ImmediateTransfer(options.Amount);
             }
             if (options.Permanent)
             {
+                Client client = new Client();
 
             }
         }

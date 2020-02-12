@@ -26,8 +26,9 @@ namespace Project_2
             if (id == 1)
             {
                 Console.WriteLine("Hello admin");
-                Person.ID = id;
-                return id;
+
+                Console.WriteLine("Give ID client : ");
+                Person.ID = Convert.ToInt32(Console.ReadLine());
             }
             else if (id > 1)
             {
