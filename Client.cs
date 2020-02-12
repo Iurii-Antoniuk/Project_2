@@ -6,29 +6,36 @@ namespace Project_2
 {
     public class Client : Person
     { 
-        public void CheckCurrentAccount(int client_id)
+        public void CheckCurrentAccount()
         {
+            int client_id = ID;
             string queryString = $"SELECT id, amount, overdraft, openingDate FROM CurrentAccounts WHERE client_id = '{client_id}';";
             List<string> currentAccountInfo = new List<string> { "id", "amount", "overdraft","openingDate" };
             ConnectionDB.SelectSQL(queryString, currentAccountInfo);
         }
-        public void CheckSavingAccounts(int client_id)
+        public void CheckSavingAccounts()
         {
+            int client_id = ID;
             string queryString = $"SELECT id, amount, rate, ceiling, openingDate FROM SavingAccounts WHERE client_id = '{client_id}';";
             List<string> savingAccountInfo = new List<string> { "id", "amount", "rate", "ceiling", "openingDate" };
             ConnectionDB.SelectSQL(queryString, savingAccountInfo);
         }
-        public static void WithdrawMoney(int currentAccountID, double amount)
+        public void WithdrawMoney(double amount)
         {
-            string queryString1 = $"SELECT amount FROM CurrentAccounts WHERE id={currentAccountID};";
+            int client_id = ID;
+            string queryString1 = $"SELECT amount FROM CurrentAccounts WHERE client_id={ client_id};";
             decimal currentAmount = ConnectionDB.ReturnDecimal(queryString1);
-            string queryString2 = $"SELECT overdraft FROM CurrentAccounts WHERE id={currentAccountID};";
+
+            string queryString2 = $"SELECT overdraft FROM CurrentAccounts WHERE client_id={ client_id};";
             decimal overdraft = ConnectionDB.ReturnDecimal(queryString2);
+
+            string queryString3 = $"SELECT id FROM CurrentAccounts WHERE client_id={ client_id};";
+            int currentAccountID = ConnectionDB.ReturnID(queryString3);
 
             if (Convert.ToDouble(currentAmount - overdraft) >= amount)
             {
                 DateTime dateOp = DateTime.Now;
-                string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE id = { currentAccountID }; INSERT INTO \"Transaction\" (currentAccount_id, transactionType, amount, \"date\") VALUES({currentAccountID}, 'withdrawal', {amount}, '{dateOp}')";
+                string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE  client_id = {  client_id }; INSERT INTO \"Transaction\" (currentAccount_id, transactionType, amount, \"date\") VALUES({currentAccountID}, 'withdrawal', {amount}, '{dateOp}')";
                 ConnectionDB.NonQuerySQL(queryString);
             }
         }
