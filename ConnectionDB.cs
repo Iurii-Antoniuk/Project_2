@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Project_2
 {
@@ -89,7 +90,7 @@ namespace Project_2
                 decim = dataread.GetDecimal(0);
                 dataread.Close();
                 connection.Close();
-                Console.WriteLine("DONE");
+                //Console.WriteLine("DONE");
                 return decim;
             }
             catch (Exception e)
@@ -97,8 +98,27 @@ namespace Project_2
                 Console.WriteLine("Not valid account number, bitch!" + e.Message);
                 return decim;
             }
-        }          
+        }
+      
+        public static List<decimal> GetAccountColumnValues(string tableName, string columnName)
+        {
+            List<decimal> values = new List<decimal>();
+            int numberOFAccounts = SavingsAccount.CountRows(tableName);
+            SqlConnection connection = new SqlConnection(GetConnectionString());
+            connection.Open();
+            for (int i = 0; i < numberOFAccounts; i++)
+            {
+                string queryString = $"SELECT {columnName} FROM {tableName} WHERE id = 100 + {i};";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                SqlDataReader dataread = command.ExecuteReader();
+                dataread.Read();
+                decimal decim = dataread.GetDecimal(0);
+                values.Add(decim);
+                dataread.Close();
+            }
+            connection.Close();
+            return values;
+        }
     }
-
 }
 
