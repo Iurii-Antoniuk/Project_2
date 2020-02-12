@@ -97,7 +97,7 @@ namespace Project_2
              .WithParsed<InfoOptions>(RunInfoOptions)
              .WithParsed<ClientOptions>(RunClientOptions);*/
 
-            Console.WriteLine("Welcome on bank application");
+            //Console.WriteLine("Welcome on bank application");
 
 
             Authentification authentification = new Authentification();
@@ -117,14 +117,22 @@ namespace Project_2
             client.CheckSavingAccounts();
             client.WithdrawMoney(-200);
 
-
             //Administrator admin = new Administrator();
             //admin.CreateClient("admin", 500);
+
 
 
             //Client client = new Client();
             //client.ImmediateTransfer(100);
 
+            Client client = new Client();
+
+            client.CheckCurrentAccount(3);
+            client.CheckSavingAccounts(3);
+
+            client.WithdrawMoney(3, 500);
+
+            client.CheckCurrentAccount(3);
         }
         /*
 

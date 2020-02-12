@@ -11,6 +11,11 @@ namespace Project_2
             int client_id = ID;
             string queryString = $"SELECT id, amount, overdraft, openingDate FROM CurrentAccounts WHERE client_id = '{client_id}';";
             List<string> currentAccountInfo = new List<string> { "id", "amount", "overdraft","openingDate" };
+            foreach(string item in currentAccountInfo)
+            {
+                Console.Write(item + "\t");
+            }
+            Console.WriteLine();
             ConnectionDB.SelectSQL(queryString, currentAccountInfo);
         }
         public void CheckSavingAccounts()
@@ -18,8 +23,14 @@ namespace Project_2
             int client_id = ID;
             string queryString = $"SELECT id, amount, rate, ceiling, openingDate FROM SavingAccounts WHERE client_id = '{client_id}';";
             List<string> savingAccountInfo = new List<string> { "id", "amount", "rate", "ceiling", "openingDate" };
+            foreach (string item in savingAccountInfo)
+            {
+                Console.Write(item + "\t");
+            }
+            Console.WriteLine();
             ConnectionDB.SelectSQL(queryString, savingAccountInfo);
         }
+        
         public void WithdrawMoney(double amount)
         {
             int client_id = ID;
@@ -34,13 +45,20 @@ namespace Project_2
 
             if (Convert.ToDouble(currentAmount - overdraft) >= amount)
             {
+                string queryCurrentAccountID = $"SELECT id FROM CurrentAccounts WHERE client_id={ID};";
+                int currentAccountID = ConnectionDB.ReturnID(queryCurrentAccountID);
                 DateTime dateOp = DateTime.Now;
                 string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE  client_id = {  client_id }; INSERT INTO \"Transaction\" (currentAccount_id, transactionType, amount, \"date\") VALUES({currentAccountID}, 'withdrawal', {amount}, '{dateOp}')";
                 ConnectionDB.NonQuerySQL(queryString);
             }
+            else
+            {
+                Console.WriteLine("Not enough money on current account.");
+            }
         }
 
-        /*public void ImmediateTransfer(double amount)
+        public void ImmediateTransfer(double amount)
+
         {
             DateTime transferDate = DateTime.Now;
             Console.WriteLine("Specify from which account you want to transfer money:");
@@ -62,6 +80,8 @@ namespace Project_2
                 {
                     creditAccount = "SavingAccounts";
                     // Afficher la liste de tous les comptes de sauvegarde avec leur montant. Spécifier l'id du compte epargne de qui l'opération vient.
+                    // Mais on a deja la methode CheckSavingAccounts qui fait la meme chose!..?
+                    // "Spécifier l'id du compte epargne de qui l'opération vient." -ahhh???
                     string displaySavingAccounts = $"SELECT id, amount, ceiling FROM SavingAccounts WHERE client_id = {debitClient_id}";
                     List<string> savingAccountsColumnsName = new List<string> { "id", "amount", "ceiling" };
                     ConnectionDB.SelectSQL(displaySavingAccounts, savingAccountsColumnsName);
@@ -70,7 +90,7 @@ namespace Project_2
                     int creditAccount_id = Convert.ToInt32(Console.ReadLine());
 
                     Transaction.MoneyTransfer(debitAccount, debitClient_id, creditAccount, debitClient_id, amount, transferDate);
-                }/*
+                }
                 else if (creditAccount == "e")
                 {
                     creditAccount = "CurrentAccounts";
@@ -112,6 +132,7 @@ namespace Project_2
             }
         }
         
+
         public static void ClientDelayedTransfer(DateTime date, double amount)
         {
             Console.WriteLine("Specify from which account you want to transfer money:");
@@ -178,7 +199,7 @@ namespace Project_2
             {
                 Console.WriteLine("Exiting program due to input error");
             }
-        }*/
+        }
     }
 }
  
