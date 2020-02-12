@@ -12,15 +12,15 @@ namespace Project_2
 {
     class Program
     {
-       /* class Options
+       class Options
 
-        {
+       {
             [Option('l', "login", Required = true, HelpText = "enter your login")]
             public string EnterLogin { get; set; }
 
             [Option('v', "verbose", Required = true, HelpText = "enter your verb")]
             public string EnterVerbose { get; set; }
-        }
+       }
 
 
         [Verb("withdraw", HelpText = "money withdraw")]
@@ -29,8 +29,8 @@ namespace Project_2
             [Option('a', "amount", HelpText = "amount to withdraw")]
             public double Amount { get; set; }
 
-            [Option('u', "Account Id", HelpText = "number of your account")]
-            public Account AccountId { get; set; }
+            [Option('i', "Account Id", HelpText = "number of your account")]
+            public int AccountId { get; set; }
 
         }
 
@@ -45,19 +45,36 @@ namespace Project_2
 
             [Option('p', "permanent", HelpText = "You want to do a permanent trasaction")]
             public bool Permanent { get; set; }
+
+            [Option('d', "debit account", Required = true, HelpText="Enter the id of your debited account")]
+            public string IdDebitAccount { get; set; }
+
+            [Option('c', "credit account", Required = true, HelpText = "Enter the id of your credited account")]
+            public string IdCreditAccount { get; set; }
+
         }
 
-        [Verb("Client", HelpText = "Client managment")]
-        class ClientOptions : Options
+        [Verb("createC", HelpText = "Client creation")]
+        class CreateClientOptions : Options
         {
-            [Option('c', "create", HelpText = "Create client")]
-            public bool CreateClient { get; set; }
-
-            [Option('d', "delete", HelpText = "Delete client")]
-            public bool DeleteClient { get; set; }
-
             [Option('n', "name", HelpText = "Client Name")]
             public string ClientName { get; set; }
+
+            [Option('a', "amount", HelpText = "amount")]
+            public double Amount { get; set; }
+        }
+
+        [Verb("deleteC", HelpText = "Client deletion")]
+        class DeleteClientOptions : Options
+        {
+            [Option('n', "name", HelpText = "Client Name")]
+            public string ClientName { get; set; }
+
+            [Option('a', "amount", HelpText = "amount to withdraw")]
+            public double Amount { get; set; }
+
+            [Option('i', "id", Required =true, HelpText = "id Client to delete")]
+            public int IdClient { get; set; }
         }
 
         [Verb("Account", HelpText = "Account managment")]
@@ -69,46 +86,48 @@ namespace Project_2
             [Option('d', "delete", HelpText = "Delete Account")]
             public bool DeleteAccount { get; set; }
 
-            [Option('n', "name", HelpText = "Client Name")]
-            public string ClientName { get; set; }
+            [Option('i', "id", HelpText = "id Client")]
+            public string IdClient { get; set; }
         }
 
         [Verb("info", HelpText = "Get information")]
         class InfoOptions : Options
 
         {
-            [Option('i', "client id", HelpText = "Enter your client id")]
+            [Option('i', "client id", Required =true, HelpText = "Enter your client id")]
             public int IdClient { get; set; }
 
             [Option('c', "id current account", HelpText = "Enter your current account id")]
             public int IdCurrentAccount { get; set; }
             [Option('s', "id saving account", HelpText = "Enter your saving account id")]
             public int IdSavingAccount { get; set; }
-        }*/
+        }
 
         static void Main(string[] args)
         {
 
-           /* Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, AccountOptions, InfoOptions, ClientOptions>(args)
-             .WithParsed<Options>(RunOptions)
-             .WithParsed<WithdrawOptions>(RunWithdrawOptions)
-             .WithParsed<TransferOptions>(RunTransferOptions)
-             .WithParsed<AccountOptions>(RunAccountOptions)
-             .WithParsed<InfoOptions>(RunInfoOptions)
-             .WithParsed<ClientOptions>(RunClientOptions);*/
+            Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, AccountOptions, InfoOptions, CreateClientOptions
+             , DeleteClientOptions>(args)
+              //.WithParsed<Options>(RunOptions)
+              .WithParsed<WithdrawOptions>(RunWithdrawOptions)
+              .WithParsed<TransferOptions>(RunTransferOptions)
+              .WithParsed<AccountOptions>(RunAccountOptions)
+              .WithParsed<InfoOptions>(RunInfoOptions)
+              .WithParsed<CreateClientOptions>(RunCreateClientOptions)
+              .WithParsed<DeleteClientOptions>(RunDeleteClientOptions);
 
             Console.WriteLine("Welcome on bank application");
 
 
-            Authentification authentification = new Authentification();
-            authentification.Login();
+            //Authentification authentification = new Authentification();
+            //authentification.Login();
             //authentification.ModifyPassword(3);
 
 
             //ConnectionDB.GetConnectionString();
 
             //Administrator admin = new Administrator();
-            //admin.CreateClient("Claire", 3000);
+            //admin.CreateClient("Amelia", 6000);
             //Console.WriteLine(Person.Password);
             //admin.CreateSavingAccount(3, 5000);
 
@@ -121,20 +140,16 @@ namespace Project_2
             //admin.CreateClient("admin", 500);
 
             //Client.WithdrawMoney(102, 20);
-            Client client = new Client();
-            client.ImmediateTransfer(100);
+            //Client client = new Client();
+            //client.ImmediateTransfer(100);
 
         }
-        /*
 
-        static void RunOptions(Options options)
-        {
 
-        }
         static void RunInfoOptions(InfoOptions options)
         {
-            Console.WriteLine("Enter your password  : ");
-            string password = Console.ReadLine();
+            Authentification authentification = new Authentification();
+            authentification.Login();
             Client client = new Client();
         }
 
@@ -142,7 +157,17 @@ namespace Project_2
 
         static void RunWithdrawOptions(WithdrawOptions options)
         {
-            //Client.WithdrawMoney2(options.AccountId, options.Amount);
+            Authentification authentification = new Authentification();
+            authentification.Login();
+            Client client = new Client();
+            if (options.AccountId == ConnectionDB.ReturnIdCurrentAccount(options.AccountId))
+            {
+                Client.WithdrawMoney(options.AccountId, options.Amount);
+            }
+            else
+            {
+                Console.WriteLine("Wrong ID account");
+            }
         }
 
         static void RunTransferOptions(TransferOptions options)
@@ -165,28 +190,33 @@ namespace Project_2
             if (options.CreateAccount)
             {
                 Console.WriteLine("Create Account : ");
-                //Administrator.CreateClient(options.ClientName);
+                //Administrator.CreateAccount(options.ClientName);
             }
             if (options.DeleteAccount)
             {
                 Console.WriteLine("Delete Account : ");
-                //Administrator.DeleteClient();
+                //Administrator.DeleteAccounts();
 
             }
         }
 
 
-        static void RunClientOptions(ClientOptions options)
+        static void RunCreateClientOptions(CreateClientOptions options)
         {
-            if (options.CreateClient)
-            {
+            Authentification authentification = new Authentification();
+            authentification.Login();
+            Administrator administrator = new Administrator();
+            administrator.CreateClient(options.ClientName, options.Amount);
 
-            }
-            if (options.DeleteClient)
-            {
+        }
 
-            }
-        }*/
+        static void RunDeleteClientOptions(DeleteClientOptions options)
+        {
+            Authentification authentification = new Authentification();
+            authentification.Login();
+            Administrator administrator = new Administrator();
+            administrator.DeleteClient(options.IdClient);
+        }
     }
 }
     

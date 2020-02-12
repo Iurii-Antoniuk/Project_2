@@ -63,7 +63,7 @@ namespace Project_2
                     int creditAccount_id = Convert.ToInt32(Console.ReadLine());
 
                     Transaction.MoneyTransfer(debitAccount, debitClient_id, creditAccount, debitClient_id, amount, transferDate);
-                }/*
+                }
                 else if (creditAccount == "e")
                 {
                     creditAccount = "CurrentAccounts";
@@ -88,7 +88,7 @@ namespace Project_2
                 else
                 {
                     Console.WriteLine("Exiting program due to input error");
-                }*/
+                }
             }
             else if (debitAccount == "s")
             {
@@ -104,7 +104,7 @@ namespace Project_2
                 Console.WriteLine("Exiting program due to input error");
             }
         }
-        /*
+        
         public static void ClientDelayedTransfer(DateTime date, double amount)
         {
             Console.WriteLine("Specify from which account you want to transfer money:");
@@ -171,7 +171,7 @@ namespace Project_2
             {
                 Console.WriteLine("Exiting program due to input error");
             }
-        }*/
+        }
     }
 }
  

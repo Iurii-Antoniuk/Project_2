@@ -72,7 +72,7 @@ namespace Project_2
             }
             catch (Exception e)
             {
-                Console.WriteLine("Not valid name or password");
+                Console.WriteLine("Not valid name or password" + e);
                 return id;
             }           
         }
@@ -86,8 +86,7 @@ namespace Project_2
                 SqlCommand command = new SqlCommand(queryString, connection);
                 SqlDataReader dataread = command.ExecuteReader();
                 dataread.Read();
-<<<<<<< HEAD
-              amount = dataread.GetDecimal(0);
+                decimal amount = dataread.GetDecimal(0);
                 dataread.Close();
                 connection.Close();
                 Console.WriteLine("DONE");
@@ -95,8 +94,8 @@ namespace Project_2
             }
             catch (Exception e)
             {
-                Console.WriteLine("Not valid account number, bitch!" + e.Message);
-                return amount;
+                Console.WriteLine("Error" + e.Message);
+                return 0;
             }
         }
 
@@ -111,9 +110,9 @@ namespace Project_2
                 SqlDataReader dataread = command.ExecuteReader();
                 dataread.Read();
                 overdraft = dataread.GetDecimal(0);
-=======
-                decim = dataread.GetDecimal(0);
->>>>>>> 7c9fd1a891e3b97c892c49a7acf478d03a1f75d0
+
+                decimal decim = dataread.GetDecimal(0);
+
                 dataread.Close();
                 connection.Close();
                 Console.WriteLine("DONE");
@@ -121,10 +120,9 @@ namespace Project_2
             }
             catch (Exception e)
             {
-                Console.WriteLine("Not valid account number, bitch!" + e.Message);
-                return decim;
+                Console.WriteLine("Error" + e.Message);
+                return 0;
             }
-<<<<<<< HEAD
         }
     
 
@@ -143,7 +141,6 @@ namespace Project_2
                 int idCurrentAccount = dataread.GetInt32(0);
                 dataread.Close();
                 connection.Close();
-                Console.WriteLine("DONE");
                 return idCurrentAccount ;
             }
             catch (Exception e)
@@ -176,9 +173,9 @@ namespace Project_2
             }
         }
                 
-=======
-        }          
->>>>>>> 7c9fd1a891e3b97c892c49a7acf478d03a1f75d0
+
+                  
+
     }
 
 }
