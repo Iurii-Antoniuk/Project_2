@@ -97,41 +97,16 @@ namespace Project_2
              .WithParsed<InfoOptions>(RunInfoOptions)
              .WithParsed<ClientOptions>(RunClientOptions);*/
 
-            //Console.WriteLine("Welcome on bank application");
-
-
-            //Authentification authentification = new Authentification();
-            //authentification.Login();
-            //authentification.ModifyPassword(3);
-
-            //ConnectionDB.GetConnectionString();
-
-            Administrator admin = new Administrator();
-            //admin.CreateClient("Claire", 3000);
-            //Console.WriteLine(Person.Password);
-            //admin.CreateSavingAccount(3, 5000);
-
-            //Client client = new Client();
-            //client.CheckCurrentAccount(4);
-            //client.CheckSavingAccounts(3);
-
             //Administrator admin = new Administrator();
-            //admin.CreateClient("admin", 500);
-
-
-            //Client.WithdrawMoney(102, 20);
-            //Client client = new Client();
-            //client.ImmediateTransfer(100);
-
+            
             Client client = new Client();
+            /*InstantTransfer instantTransfer = new InstantTransfer();
+            instantTransfer.ImmediateTransfer(120);*/
+            /*DelayedTransfer delayedTransfer = new DelayedTransfer();
+            delayedTransfer.ExecuteDelayedTransfer(120);*/
 
-
-            //client.WithdrawMoney(3, 500);
-
-            //client.ImmediateTransfer(1);
-            //client.DelayedTransfer(1);
-            //Transaction.CheckDate();
-            DelayedTransfer.ExecuteDelayedTransfer(1);
+            PermanentTransfer permanentTransfer = new PermanentTransfer();
+            permanentTransfer.ExecutePermanentTransfer(120);
         
         }
         /*

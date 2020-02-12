@@ -6,10 +6,70 @@ namespace Project_2
 {
     public class DelayedTransfer : Transaction
     {
-        public static void ExecuteDelayedTransfer(double amount)
+
+        public void ExecuteDelayedTransfer(double amount)
         {
             Console.WriteLine("Enter the first transfer execution date (format YYYY-MM-DD): ");
-            DateTime transferDate = Transaction.CheckDate();
+            DateTime transferDate = Transactor.GetCheckedDate();
+            if (transferDate < DateTime.Today)
+            {
+                Console.WriteLine("Entered date is already past. Please enter a valid date.");
+            }
+            else
+            {
+                ExecuteTransfer(amount, transferDate);
+            }
+        }
+
+
+        public override void DoTransferFromCurrentAccountToSavingAccountAccordingToDate(int debitClient_id, int SavingAccount_id, double amount, DateTime transferDate)
+        {
+
+            while (DateTime.Today <= transferDate)
+            {
+                if (DateTime.Today == transferDate)
+                {
+                    Transactor.TransferFromCurrentAccountToSavingAccount(debitClient_id, SavingAccount_id, amount);
+                    break;
+                }
+            }
+        }
+
+        public override void DoTransferFromCurrentToOtherCurrentAccountAccordingToDate(int debitClient_id, int clientIdOfExternalAccount, double amount, DateTime transferDate)
+        {
+            try
+            {
+                while (DateTime.Today <= transferDate)
+                {
+                    if (DateTime.Today == transferDate)
+                    {
+                        Transactor.TransferFromCurrentToCurrentAccount(debitClient_id, clientIdOfExternalAccount, amount);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("An error occured. " + e);
+            }
+        }
+
+        public override void DoTransferFromSavingToCurrentAccountAccordingToDate(int debitClient_id, int SavingAccount_id, double amount, DateTime transferDate)
+        {
+            while (DateTime.Today <= transferDate)
+            {
+                if (DateTime.Today == transferDate)
+                {
+                    Transactor.TransferFromSavingToCurrentAccount(debitClient_id, SavingAccount_id, amount);
+                    break;
+                }
+            }
+        }
+
+
+        /*public static void ExecuteDelayedTransfer(double amount)
+        {
+            Console.WriteLine("Enter the first transfer execution date (format YYYY-MM-DD): ");
+            DateTime transferDate = Transaction.GetCheckedDate();
             if (transferDate < DateTime.Today)
             {
                 Console.WriteLine("Entered date is already past. Please enter a valid date.");
@@ -96,6 +156,6 @@ namespace Project_2
                     Console.WriteLine("Exiting program due to input error");
                 }
             }  
-        }
+        }*/
     }
 }
