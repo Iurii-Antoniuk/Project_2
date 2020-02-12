@@ -103,10 +103,10 @@ namespace Project_2
             //string queryString = $"SELECT * FROM \"Transaction\" ";
             //string queryString = $"SELECT * FROM \"Transaction\" WHERE id = 2 ";
 
-            SavingsAccount.AddInterest(30000);
+            SavingsAccount.AddInterest(10000);
             Authentification authentification = new Authentification();
             authentification.Login();
-            authentification.ModifyPassword(4);
+            authentification.ModifyPassword();
             
 
 
