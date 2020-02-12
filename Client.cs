@@ -18,22 +18,24 @@ namespace Project_2
             List<string> savingAccountInfo = new List<string> { "id", "amount", "rate", "ceiling", "openingDate" };
             ConnectionDB.SelectSQL(queryString, savingAccountInfo);
         }
-        public static void WithdrawMoney(int currentAccountID, double amount)
+        public static void WithdrawMoney(int ID, double amount)
         {
-            string queryString1 = $"SELECT amount FROM CurrentAccounts WHERE id={currentAccountID};";
-            decimal currentAmount = ConnectionDB.ReturnDecimal(queryString1);
-            string queryString2 = $"SELECT overdraft FROM CurrentAccounts WHERE id={currentAccountID};";
-            decimal overdraft = ConnectionDB.ReturnDecimal(queryString2);
+            string queryAmount = $"SELECT amount FROM CurrentAccounts WHERE client_id={ID};";
+            decimal currentAmount = ConnectionDB.ReturnDecimal(queryAmount);
+            string queryOverdraft = $"SELECT overdraft FROM CurrentAccounts WHERE client_id={ID};";
+            decimal overdraft = ConnectionDB.ReturnDecimal(queryOverdraft);
 
             if (Convert.ToDouble(currentAmount - overdraft) >= amount)
             {
+                string queryCurrentAccountID = $"SELECT id FROM CurrentAccounts WHERE client_id={ID};";
+                int currentAccountID = ConnectionDB.ReturnID(queryCurrentAccountID);
                 DateTime dateOp = DateTime.Now;
-                string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE id = { currentAccountID }; INSERT INTO \"Transaction\" (currentAccount_id, transactionType, amount, \"date\") VALUES({currentAccountID}, 'withdrawal', {amount}, '{dateOp}')";
-                ConnectionDB.NonQuerySQL(queryString);
+                string queryUpdate = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE client_id={ID}; INSERT INTO \"Transaction\" (currentAccount_id, transactionType, amount, \"date\") VALUES({currentAccountID}, 'withdrawal', {amount}, '{dateOp}')";
+                ConnectionDB.NonQuerySQL(queryUpdate);
             }
         }
 
-        public void ImmediateTransfer(double amount)
+        /*public void ImmediateTransfer(double amount)
         {
             DateTime transferDate = DateTime.Now;
             Console.WriteLine("Specify from which account you want to transfer money:");
@@ -55,6 +57,8 @@ namespace Project_2
                 {
                     creditAccount = "SavingAccounts";
                     // Afficher la liste de tous les comptes de sauvegarde avec leur montant. Spécifier l'id du compte epargne de qui l'opération vient.
+                    // Mais on a deja la methode CheckSavingAccounts qui fait la meme chose!..?
+                    // "Spécifier l'id du compte epargne de qui l'opération vient." -ahhh???
                     string displaySavingAccounts = $"SELECT id, amount, ceiling FROM SavingAccounts WHERE client_id = {debitClient_id}";
                     List<string> savingAccountsColumnsName = new List<string> { "id", "amount", "ceiling" };
                     ConnectionDB.SelectSQL(displaySavingAccounts, savingAccountsColumnsName);
