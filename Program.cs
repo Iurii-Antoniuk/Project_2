@@ -135,11 +135,6 @@ namespace Project_2
             //}
             //Console.ReadLine();
 
-
-
-            //Client client = new Client();
-            //client.ImmediateTransfer(100);
-
             /*
 
             static void RunOptions(Options options)
