@@ -88,7 +88,7 @@ namespace Project_2
 
         static void Main(string[] args)
         {
-
+/*
             Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, AccountOptions, InfoOptions, ClientOptions>(args)
              .WithParsed<Options>(RunOptions)
              .WithParsed<WithdrawOptions>(RunWithdrawOptions)
@@ -97,11 +97,11 @@ namespace Project_2
              .WithParsed<InfoOptions>(RunInfoOptions)
              .WithParsed<ClientOptions>(RunClientOptions);
 
-            Console.WriteLine("Test de la seconde connexion en-dessous: ");
+            Console.WriteLine("Test de la seconde connexion en-dessous: ");*/
 
             ConnectionDB.GetConnectionString();
 
-            //Administrator admin = new Administrator();
+            Administrator admin = new Administrator();
             //admin.CreateClient("Claire", 3000);
             //admin.CreateSavingAccount(3, 1000);
 
@@ -112,8 +112,21 @@ namespace Project_2
 
             /*Administrator admin = new Administrator();
             admin.CreateClient("choupi", 500); */
-            Client.WithdrawMoney(102, 20);
+            //Client.WithdrawMoney(102, 20);
+/*
+            Client client = new Client();
 
+            client.CheckCurrentAccount(3);
+            client.CheckSavingAccounts(3);
+
+            client.WithdrawMoney(101, 50);
+
+            //client.ImmediateTransfer(500);
+
+            Console.WriteLine("Results:");
+
+            client.CheckCurrentAccount(3);
+            client.CheckSavingAccounts(3);*/
         }
 
         static void RunOptions(Options options)

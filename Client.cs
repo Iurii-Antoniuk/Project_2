@@ -10,6 +10,11 @@ namespace Project_2
         {
             string queryString = $"SELECT id, amount, overdraft, openingDate FROM CurrentAccounts WHERE client_id = '{client_id}';";
             List<string> currentAccountInfo = new List<string> { "id", "amount", "overdraft","openingDate" };
+            foreach(string item in currentAccountInfo)
+            {
+                Console.Write(item + "\t");
+            }
+            Console.WriteLine();
             ConnectionDB.SelectSQL(queryString, currentAccountInfo);
         }
 
@@ -18,25 +23,35 @@ namespace Project_2
         {
             string queryString = $"SELECT id, amount, rate, ceiling, openingDate FROM SavingAccounts WHERE client_id = '{client_id}';";
             List<string> savingAccountInfo = new List<string> { "id", "amount", "rate", "ceiling", "openingDate" };
+            foreach (string item in savingAccountInfo)
+            {
+                Console.Write(item + "\t");
+            }
+            Console.WriteLine();
             ConnectionDB.SelectSQL(queryString, savingAccountInfo);
         }
 
 
-        public static void WithdrawMoney(int currentAccountID, double amount)
+        public void WithdrawMoney(int currentAccountID, double amount)
         {
             string queryString1 = $"SELECT amount FROM CurrentAccounts WHERE id={currentAccountID};";
             decimal currentAmount = ConnectionDB.ReturnDecimal(queryString1);
             string queryString2 = $"SELECT overdraft FROM CurrentAccounts WHERE id={currentAccountID};";
-            decimal overdraft = ConnectionDB.ReturnDecimal(queryString2);
+            decimal overdraft = - ConnectionDB.ReturnDecimal(queryString2);
 
-            if (Convert.ToDouble(currentAmount - overdraft) >= amount)
+            if ((Convert.ToDouble(currentAmount) - amount) >= Convert.ToDouble(overdraft))
             {
                 DateTime dateOp = DateTime.Now;
                 string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE id = { currentAccountID }; INSERT INTO \"Transaction\" (currentAccount_id, transactionType, amount, \"date\") VALUES({currentAccountID}, 'withdrawal', {amount}, '{dateOp}')";
                 ConnectionDB.NonQuerySQL(queryString);
+            }
+            else
+            {
+                Console.WriteLine("Not enough money on current account.");
+            }
         }
 
-        public static void ImmediateTransfer(double amount)
+        public void ImmediateTransfer(double amount)
         {
             DateTime transferDate = DateTime.Now;
             Console.WriteLine("Specify from which account you want to transfer money:");
@@ -44,7 +59,7 @@ namespace Project_2
             string debitAccount = Console.ReadLine();
 
             // Récupère l'ID du client dans la propriété qui doit être définie lors de la connexion du client sur l'interface
-            int debitClient_id = Client.ID;
+            int debitClient_id = 6;
 
 
             if (debitAccount == "c")
@@ -105,8 +120,9 @@ namespace Project_2
                 Console.WriteLine("Exiting program due to input error");
             }
         }
+        
 
-        public static void ClientDelayedTransfer(DateTime date, double amount)
+        public void ClientDelayedTransfer(DateTime date, double amount)
         {
             Console.WriteLine("Specify from which account you want to transfer money:");
             Console.WriteLine("Current account (c) or saving account (s)");
