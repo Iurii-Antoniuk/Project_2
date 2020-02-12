@@ -89,7 +89,7 @@ namespace Project_2
                 decim = dataread.GetDecimal(0);
                 dataread.Close();
                 connection.Close();
-                Console.WriteLine("DONE");
+                //Console.WriteLine("DONE");
                 return decim;
             }
             catch (Exception e)
@@ -102,7 +102,7 @@ namespace Project_2
         public static List<decimal> GetAccountColumnValues(string tableName, string columnName)
         {
             List<decimal> values = new List<decimal>();
-            int numberOFAccounts = CountRows(tableName);
+            int numberOFAccounts = SavingsAccount.CountRows(tableName);
             SqlConnection connection = new SqlConnection(GetConnectionString());
             connection.Open();
             for (int i = 0; i < numberOFAccounts; i++)
@@ -119,12 +119,7 @@ namespace Project_2
             return values;
         }
 
-        public static int CountRows(string tableName)
-        {
-            string queryString = $"SELECT COUNT(*) FROM {tableName}; ";
-            int numberRows = ReturnID(queryString);
-            return numberRows;
-        }
+
     }
 
 }

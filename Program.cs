@@ -100,9 +100,11 @@ namespace Project_2
             //Console.WriteLine("Welcome on bank application");
 
 
-            //Authentification authentification = new Authentification();
-            //authentification.Login();
-            //authentification.ModifyPassword(4);
+            SavingsAccount.AddInterest(30000);
+            Authentification authentification = new Authentification();
+            authentification.Login();
+            authentification.ModifyPassword(4);
+            
 
 
             //ConnectionDB.GetConnectionString();
@@ -119,14 +121,17 @@ namespace Project_2
 
             //Administrator admin = new Administrator();
             //admin.CreateClient("admin", 500);
-            int rows = ConnectionDB.CountRows("SavingAccounts");
-            Console.WriteLine(rows);
-            List<decimal> values = ConnectionDB.GetAccountColumnValues("SavingAccounts", "rate");
-            foreach (decimal value in values)
-            {
-                Console.WriteLine(value);
-            }
-            Console.ReadLine();
+
+
+            //int rows = ConnectionDB.CountRows("SavingAccounts");
+            //Console.WriteLine(rows);
+            //List<decimal> values = ConnectionDB.GetAccountColumnValues("SavingAccounts", "rate");
+            //foreach (decimal value in values)
+            //{
+            //    Console.WriteLine(value);
+            //}
+            //Console.ReadLine();
+
 
 
             //Client client = new Client();
