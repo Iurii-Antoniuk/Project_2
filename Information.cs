@@ -21,9 +21,12 @@ namespace Project_2
 
         public static void GetInfoByTransactionDate(DateTime date)
         {
+            //problème : error quand il y a des cases NULL
+            //Modifier le format DATETIME en DATE dans le script SQL
+            
             Console.WriteLine("Transaction Information : ");
-            string queryString = $"SELECT id, currentAccount_id, savingAccount_id, transactionType, beneficiaryAccount_id, amount, \"date\" FROM \"Transaction\" WHERE date = '{date}';";
-            List<string> transactionInfo = new List<string> { "id", "currentAccount_id", "savingAcccount_id", "transactionType", "beneficiaryAccount_id", "amount", "date" };
+            string queryString = $"SELECT id, currentAccount_id, transactionType, amount, \"date\" FROM \"Transaction\" WHERE date = '{date}';";
+            List<string> transactionInfo = new List<string> { "id", "currentAccount_id", "transactionType","amount", "date" };
             foreach (string item in transactionInfo)
             {
                 Console.Write(item + "\t");

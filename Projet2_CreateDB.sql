@@ -1,5 +1,5 @@
---CREATE DATABASE Projet2_BancAppli;
-USE Projet2_BancAppli;
+--CREATE DATABASE Projet2_dev;
+USE Projet2_dev;
 
 BEGIN TRANSACTION
 CREATE TABLE Person (
@@ -42,7 +42,7 @@ savingAccount_id INT,
 transactionType VARCHAR(80) NOT NULL,
 beneficiaryAccount_id INT,
 amount DECIMAL(10,2) NOT NULL,
-"date" DATETIME NOT NULL
+"date" DATE NOT NULL
 FOREIGN KEY (currentAccount_id) REFERENCES CurrentAccounts(id),
 FOREIGN KEY (savingAccount_id) REFERENCES SavingAccounts(id),
 FOREIGN KEY (beneficiaryAccount_id) REFERENCES CurrentAccounts(id)

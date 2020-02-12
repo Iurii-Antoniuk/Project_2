@@ -119,8 +119,8 @@ namespace Project_2
 
             ConnectionDB.GetConnectionString();
 
-            //DateTime date = new DateTime(2020, 2, 12);
-            //Information.GetInfoByTransactionDate(date);
+            DateTime date = new DateTime(2020, 2, 12);
+            Information.GetInfoByTransactionDate(date);
 
 
             //Authentification authentification = new Authentification();
