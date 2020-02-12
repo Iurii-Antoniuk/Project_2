@@ -45,8 +45,6 @@ namespace Project_2
 
             if (Convert.ToDouble(currentAmount - overdraft) >= amount)
             {
-                string queryCurrentAccountID = $"SELECT id FROM CurrentAccounts WHERE client_id={ID};";
-                int currentAccountID = ConnectionDB.ReturnID(queryCurrentAccountID);
                 DateTime dateOp = DateTime.Now;
                 string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE  client_id = {  client_id }; INSERT INTO \"Transaction\" (currentAccount_id, transactionType, amount, \"date\") VALUES({currentAccountID}, 'withdrawal', {amount}, '{dateOp}')";
                 ConnectionDB.NonQuerySQL(queryString);
