@@ -97,12 +97,17 @@ namespace Project_2
              .WithParsed<InfoOptions>(RunInfoOptions)
              .WithParsed<ClientOptions>(RunClientOptions);*/
 
-            //Console.WriteLine("Welcome on bank application");
+            Console.WriteLine("Welcome on bank application");
 
+            //string queryString = $"SELECT * FROM CurrentAccounts";
+            //string queryString = $"SELECT * FROM \"Transaction\" ";
+            //string queryString = $"SELECT * FROM \"Transaction\" WHERE id = 2 ";
 
-            Authentification authentification = new Authentification();
-            authentification.Login();
-            //authentification.ModifyPassword(4);
+            //CSVFileExport.ExportCSVFile(queryString);
+
+            //Authentification authentification = new Authentification();
+            //authentification.Login();
+            //authentification.ModifyPassword();
 
 
             //ConnectionDB.GetConnectionString();
@@ -112,10 +117,10 @@ namespace Project_2
             //Console.WriteLine(Person.Password);
             //admin.CreateSavingAccount(3, 5000);
 
-            Client client = new Client();
-            client.CheckCurrentAccount();
-            client.CheckSavingAccounts();
-            client.WithdrawMoney(-200);
+            //Client client = new Client();
+            //client.CheckCurrentAccount();
+            //client.CheckSavingAccounts();
+            //client.WithdrawMoney(-200);
 
             //Administrator admin = new Administrator();
             //admin.CreateClient("admin", 500);
@@ -125,68 +130,68 @@ namespace Project_2
             //Client client = new Client();
             //client.ImmediateTransfer(100);
 
-        /*
+            /*
 
-        static void RunOptions(Options options)
-        {
+            static void RunOptions(Options options)
+            {
 
+            }
+            static void RunInfoOptions(InfoOptions options)
+            {
+                Console.WriteLine("Enter your password  : ");
+                string password = Console.ReadLine();
+                Client client = new Client();
+            }
+
+
+
+            static void RunWithdrawOptions(WithdrawOptions options)
+            {
+                //Client.WithdrawMoney2(options.AccountId, options.Amount);
+            }
+
+            static void RunTransferOptions(TransferOptions options)
+            {
+                if (options.Delayed)
+                {
+
+                }
+                if (options.Instant)
+                {
+
+                }
+                if (options.Permanent)
+                {
+
+                }
+            }
+            static void RunAccountOptions(AccountOptions options)
+            {
+                if (options.CreateAccount)
+                {
+                    Console.WriteLine("Create Account : ");
+                    //Administrator.CreateClient(options.ClientName);
+                }
+                if (options.DeleteAccount)
+                {
+                    Console.WriteLine("Delete Account : ");
+                    //Administrator.DeleteClient();
+
+                }
+            }
+
+
+            static void RunClientOptions(ClientOptions options)
+            {
+                if (options.CreateClient)
+                {
+
+                }
+                if (options.DeleteClient)
+                {
+
+                }*/
         }
-        static void RunInfoOptions(InfoOptions options)
-        {
-            Console.WriteLine("Enter your password  : ");
-            string password = Console.ReadLine();
-            Client client = new Client();
-        }
-
-
-
-        static void RunWithdrawOptions(WithdrawOptions options)
-        {
-            //Client.WithdrawMoney2(options.AccountId, options.Amount);
-        }
-
-        static void RunTransferOptions(TransferOptions options)
-        {
-            if (options.Delayed)
-            {
-
-            }
-            if (options.Instant)
-            {
-
-            }
-            if (options.Permanent)
-            {
-
-            }
-        }
-        static void RunAccountOptions(AccountOptions options)
-        {
-            if (options.CreateAccount)
-            {
-                Console.WriteLine("Create Account : ");
-                //Administrator.CreateClient(options.ClientName);
-            }
-            if (options.DeleteAccount)
-            {
-                Console.WriteLine("Delete Account : ");
-                //Administrator.DeleteClient();
-
-            }
-        }
-
-
-        static void RunClientOptions(ClientOptions options)
-        {
-            if (options.CreateClient)
-            {
-
-            }
-            if (options.DeleteClient)
-            {
-
-            }
-        }*/
     }
 }
     
