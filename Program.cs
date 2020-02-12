@@ -75,9 +75,6 @@ namespace Project_2
         class CreateSavingsAccountOptions : Options
         {
 
-            [Option('c', "current account", HelpText = "Create current account")]
-            public bool CreateCurrentAccount { get; set; }
-
             [Option('i', "id", HelpText = "id Client")]
             public int IdClient { get; set; }
 
@@ -85,18 +82,16 @@ namespace Project_2
             public double Amount { get; set; }
         }
 
-        [Verb("createCA", HelpText = "Create current account")]
-        class CreateCurrentAccountOptions : Options
+        [Verb("deleteSA", HelpText = "Delete savings account")]
+        class DeleteSavingsAccountOptions : Options
         {
-            [Option('i', "id", HelpText = "id Client")]
-            public int IdClient { get; set; }
+            [Option('i', "id", HelpText = "id Savings Account")]
+            public int IdSavingsAccount{ get; set; }
 
-            [Option('a', "amount", Required = true, HelpText = "amount availble on the account")]
-            public double Amount { get; set; }
         }
 
-        [Verb("info", HelpText = "Get information")]
-        class InfoOptions : Options
+        [Verb("infoAccounts", HelpText = "Get information about your accounts")]
+        class InfoAccountsOptions : Options
 
         {
             [Option('i', "client id", Required =true, HelpText = "Enter your client id")]
@@ -111,18 +106,21 @@ namespace Project_2
         static void Main(string[] args)
         {
 
-            Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, CreateCurrentAccountOptions, CreateSavingsAccountOptions, InfoOptions, CreateClientOptions
+            /*Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, CreateSavingsAccountOptions, DeleteSavingsAccountOptions, InfoAccountsOptions, CreateClientOptions
              , DeleteClientOptions>(args)
               //.WithParsed<Options>(RunOptions)
               .WithParsed<WithdrawOptions>(RunWithdrawOptions)
               .WithParsed<TransferOptions>(RunTransferOptions)
-              .WithParsed<CreateCurrentAccountOptions>(RunCurrentAccountOptions)
-              .WithParsed<CreateSavingsAccountOptions>(RunSavingsAccountOptions)
-              .WithParsed<InfoOptions>(RunInfoOptions)
+              .WithParsed<CreateSavingsAccountOptions>(RunCreateSavingsAccountOptions)
+              .WithParsed<DeleteSavingsAccountOptions>(RunDeleteSavingsAccountOptions)
+              .WithParsed<InfoAccountsOptions>(RunAccountsInfoOptions)
               .WithParsed<CreateClientOptions>(RunCreateClientOptions)
-              .WithParsed<DeleteClientOptions>(RunDeleteClientOptions); 
+              .WithParsed<DeleteClientOptions>(RunDeleteClientOptions); */
 
             ConnectionDB.GetConnectionString();
+
+            //DateTime date = new DateTime(2020, 2, 12);
+            //Information.GetInfoByTransactionDate(date);
 
 
             //Authentification authentification = new Authentification();
@@ -154,7 +152,7 @@ namespace Project_2
 
         }
 
-        static void RunInfoOptions(InfoOptions options)
+        static void RunAccountsInfoOptions(InfoAccountsOptions options)
         {
             Authentification authentification = new Authentification();
             int id = authentification.Login();
@@ -205,7 +203,7 @@ namespace Project_2
             }
             if (options.Permanent)
             {
-                Client client = new Client();
+                //Client client = new Client();
 
             }
         }
@@ -240,26 +238,27 @@ namespace Project_2
             }
         }
 
-        static void RunCurrentAccountOptions (CreateCurrentAccountOptions options)
+        static void RunCreateSavingsAccountOptions(CreateSavingsAccountOptions options)
         {
             Authentification authentification = new Authentification();
             if (authentification.Login() == 1)
             {
-                Administrator administrator = new Administrator();
-                administrator.CreateCurrentAccount(options.IdClient, options.Amount);
+                SavingsAccount savingsAccount = new SavingsAccount();
+                savingsAccount.CreateSavingAccount(options.IdClient, options.Amount);
             }
             else
             {
                 Console.WriteLine("You can not create a new current account");
             }
         }
-        static void RunSavingsAccountOptions(CreateSavingsAccountOptions options)
+
+        static void RunDeleteSavingsAccountOptions(DeleteSavingsAccountOptions options)
         {
             Authentification authentification = new Authentification();
             if (authentification.Login() == 1)
             {
-                Administrator administrator = new Administrator();
-                administrator.CreateSavingAccount(options.IdClient, options.Amount);
+                SavingsAccount savingsAccount = new SavingsAccount();
+                savingsAccount.DeleteSavingAccount(options.IdSavingsAccount);
             }
             else
             {

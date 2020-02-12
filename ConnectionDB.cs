@@ -95,7 +95,7 @@ namespace Project_2
             catch (Exception e)
             {
                 Console.WriteLine("Error" + e.Message);
-                return 0;
+                return decim;
             }
         }
 

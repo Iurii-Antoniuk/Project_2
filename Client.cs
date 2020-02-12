@@ -48,7 +48,9 @@ namespace Project_2
             if (Convert.ToDouble(currentAmount - overdraft) >= amount)
             {
                 DateTime dateOp = DateTime.Now;
-                string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE  client_id = {  client_id }; INSERT INTO \"Transaction\" (currentAccount_id, transactionType, amount, \"date\") VALUES({currentAccountID}, 'withdraw', {amount}, '{dateOp}')";
+                string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE  client_id = {  client_id }; " +
+                                     $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, amount, \"date\") " +
+                                     $"VALUES({currentAccountID}, 'withdraw', {amount}, '{dateOp}')";
                 ConnectionDB.NonQuerySQL(queryString);
             }
             else
@@ -67,7 +69,6 @@ namespace Project_2
             // Récupère l'ID du client dans la propriété qui doit être définie lors de la connexion du client sur l'interface
             int debitClient_id = Client.ID;
             Console.WriteLine(debitClient_id);
-
 
             if (debitAccount == "c")
             {
