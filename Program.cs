@@ -125,12 +125,14 @@ namespace Project_2
 
             Client client = new Client();
 
-            client.CheckCurrentAccount(3);
-            client.CheckSavingAccounts(3);
 
-            client.WithdrawMoney(3, 500);
+            //client.WithdrawMoney(3, 500);
 
-            client.CheckCurrentAccount(3);
+            //client.ImmediateTransfer(1);
+            //client.DelayedTransfer(1);
+            //Transaction.CheckDate();
+            DelayedTransfer.ExecuteDelayedTransfer(1);
+        
         }
         /*
 
