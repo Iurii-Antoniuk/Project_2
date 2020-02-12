@@ -100,26 +100,28 @@ namespace Project_2
             //Console.WriteLine("Welcome on bank application");
 
 
-            //Authentification authentification = new Authentification();
-            //authentification.Login();
-            //authentification.ModifyPassword(3);
+            Authentification authentification = new Authentification();
+            authentification.Login();
+            //authentification.ModifyPassword(4);
+
 
             //ConnectionDB.GetConnectionString();
 
-            Administrator admin = new Administrator();
-            //admin.CreateClient("Claire", 3000);
+            //Administrator admin = new Administrator();
+            //admin.CreateClient("Gontrand", 6000);
             //Console.WriteLine(Person.Password);
             //admin.CreateSavingAccount(3, 5000);
 
-            //Client client = new Client();
-            //client.CheckCurrentAccount(4);
-            //client.CheckSavingAccounts(3);
+            Client client = new Client();
+            client.CheckCurrentAccount();
+            client.CheckSavingAccounts();
+            client.WithdrawMoney(-200);
 
             //Administrator admin = new Administrator();
             //admin.CreateClient("admin", 500);
 
 
-            //Client.WithdrawMoney(102, 20);
+
             //Client client = new Client();
             //client.ImmediateTransfer(100);
 
