@@ -46,5 +46,6 @@ namespace Project_2
                                 $" VALUES ('{client_id}', '{amount}','{rate}','{ceiling}','{openingDate}');";
             ConnectionDB.NonQuerySQL(queryString);
         }
+        
     }
 }

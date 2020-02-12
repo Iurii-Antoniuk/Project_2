@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Project_2
 {
@@ -98,7 +99,7 @@ namespace Project_2
                 return decim;
             }
         }
-
+      
         public static List<decimal> GetAccountColumnValues(string tableName, string columnName)
         {
             List<decimal> values = new List<decimal>();
@@ -118,9 +119,6 @@ namespace Project_2
             connection.Close();
             return values;
         }
-
-
     }
-
 }
 

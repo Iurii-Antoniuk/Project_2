@@ -97,8 +97,11 @@ namespace Project_2
               .WithParsed<InfoOptions>(RunInfoOptions)
               .WithParsed<ClientOptions>(RunClientOptions);*/
 
-            //Console.WriteLine("Welcome on bank application");
+            Console.WriteLine("Welcome on bank application");
 
+            //string queryString = $"SELECT * FROM CurrentAccounts";
+            //string queryString = $"SELECT * FROM \"Transaction\" ";
+            //string queryString = $"SELECT * FROM \"Transaction\" WHERE id = 2 ";
 
             SavingsAccount.AddInterest(30000);
             Authentification authentification = new Authentification();
@@ -162,11 +165,13 @@ namespace Project_2
                 if (options.Delayed)
                 {
 
+
                 }
                 if (options.Instant)
                 {
 
                 }
+
                 if (options.Permanent)
                 {
 
@@ -197,8 +202,10 @@ namespace Project_2
                 if (options.DeleteClient)
                 {
 
+
                 }
             }*/
+
         }
     }
 }
