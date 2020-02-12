@@ -97,7 +97,34 @@ namespace Project_2
                 Console.WriteLine("Not valid account number, bitch!" + e.Message);
                 return decim;
             }
-        }          
+        }
+
+        public static List<decimal> GetAccountColumnValues(string tableName, string columnName)
+        {
+            List<decimal> values = new List<decimal>();
+            int numberOFAccounts = CountRows(tableName);
+            SqlConnection connection = new SqlConnection(GetConnectionString());
+            connection.Open();
+            for (int i = 0; i < numberOFAccounts; i++)
+            {
+                string queryString = $"SELECT {columnName} FROM {tableName} WHERE id = 100 + {i};";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                SqlDataReader dataread = command.ExecuteReader();
+                dataread.Read();
+                decimal decim = dataread.GetDecimal(0);
+                values.Add(decim);
+                dataread.Close();
+            }
+            connection.Close();
+            return values;
+        }
+
+        public static int CountRows(string tableName)
+        {
+            string queryString = $"SELECT COUNT(*) FROM {tableName}; ";
+            int numberRows = ReturnID(queryString);
+            return numberRows;
+        }
     }
 
 }

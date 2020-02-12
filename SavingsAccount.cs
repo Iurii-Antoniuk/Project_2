@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Text;
 
 namespace Project_2
@@ -14,6 +16,16 @@ namespace Project_2
         {
 
         }
+
+        public static void AddInterest()
+        {
+            List<decimal> amounts = ConnectionDB.GetAccountColumnValues("SavingAccounts", "amount");
+            List<decimal> rates = ConnectionDB.GetAccountColumnValues("SavingAccounts", "rate");
+
+
+        }
+
+   
 
     }
 }
