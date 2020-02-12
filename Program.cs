@@ -121,8 +121,8 @@ namespace Project_2
             //admin.CreateClient("admin", 500);
 
             //Client.WithdrawMoney(102, 20);
-            Client client = new Client();
-            client.ImmediateTransfer(100);
+            //Client client = new Client();
+            //client.ImmediateTransfer(100);
 
         }
         /*
