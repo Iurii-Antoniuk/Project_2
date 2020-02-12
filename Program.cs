@@ -104,10 +104,9 @@ namespace Project_2
             //authentification.Login();
             //authentification.ModifyPassword(3);
 
-
             //ConnectionDB.GetConnectionString();
 
-            //Administrator admin = new Administrator();
+            Administrator admin = new Administrator();
             //admin.CreateClient("Claire", 3000);
             //Console.WriteLine(Person.Password);
             //admin.CreateSavingAccount(3, 5000);
@@ -115,7 +114,6 @@ namespace Project_2
             //Client client = new Client();
             //client.CheckCurrentAccount(4);
             //client.CheckSavingAccounts(3);
-
 
             //Administrator admin = new Administrator();
             //admin.CreateClient("admin", 500);
@@ -125,6 +123,8 @@ namespace Project_2
             //Client client = new Client();
             //client.ImmediateTransfer(100);
 
+            client.CheckCurrentAccount(3);
+            client.CheckSavingAccounts(3);*/
         }
         /*
 
