@@ -6,13 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Configuration;
-
+using System.Security.Cryptography;
 
 namespace Project_2
 {
     class Program
     {
-        class Options
+       /* class Options
 
         {
             [Option('l', "login", Required = true, HelpText = "enter your login")]
@@ -84,50 +84,49 @@ namespace Project_2
             public int IdCurrentAccount { get; set; }
             [Option('s', "id saving account", HelpText = "Enter your saving account id")]
             public int IdSavingAccount { get; set; }
-        }
+        }*/
 
         static void Main(string[] args)
         {
-/*
-            Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, AccountOptions, InfoOptions, ClientOptions>(args)
+
+           /* Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, AccountOptions, InfoOptions, ClientOptions>(args)
              .WithParsed<Options>(RunOptions)
              .WithParsed<WithdrawOptions>(RunWithdrawOptions)
              .WithParsed<TransferOptions>(RunTransferOptions)
              .WithParsed<AccountOptions>(RunAccountOptions)
              .WithParsed<InfoOptions>(RunInfoOptions)
-             .WithParsed<ClientOptions>(RunClientOptions);
+             .WithParsed<ClientOptions>(RunClientOptions);*/
 
-            Console.WriteLine("Test de la seconde connexion en-dessous: ");*/
+            //Console.WriteLine("Welcome on bank application");
 
-            ConnectionDB.GetConnectionString();
+
+            //Authentification authentification = new Authentification();
+            //authentification.Login();
+            //authentification.ModifyPassword(3);
+
+            //ConnectionDB.GetConnectionString();
 
             Administrator admin = new Administrator();
             //admin.CreateClient("Claire", 3000);
-            //admin.CreateSavingAccount(3, 1000);
+            //Console.WriteLine(Person.Password);
+            //admin.CreateSavingAccount(3, 5000);
 
             //Client client = new Client();
             //client.CheckCurrentAccount(4);
             //client.CheckSavingAccounts(3);
 
+            //Administrator admin = new Administrator();
+            //admin.CreateClient("admin", 500);
 
-            /*Administrator admin = new Administrator();
-            admin.CreateClient("choupi", 500); */
+
             //Client.WithdrawMoney(102, 20);
-/*
-            Client client = new Client();
-
-            client.CheckCurrentAccount(3);
-            client.CheckSavingAccounts(3);
-
-            client.WithdrawMoney(101, 50);
-
-            //client.ImmediateTransfer(500);
-
-            Console.WriteLine("Results:");
+            //Client client = new Client();
+            //client.ImmediateTransfer(100);
 
             client.CheckCurrentAccount(3);
             client.CheckSavingAccounts(3);*/
         }
+        /*
 
         static void RunOptions(Options options)
         {
@@ -188,7 +187,7 @@ namespace Project_2
             {
 
             }
-        }
+        }*/
     }
 }
     

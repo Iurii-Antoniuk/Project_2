@@ -3,61 +3,41 @@ using System.Collections.Generic;
 using System.Text;
 using System.Management;
 using System.Security;
+using System.Runtime.InteropServices;
 
 namespace Project_2
 {
     public class Authentification
     {
-        public void Login(string name, string password)
+        public void Login()
         {
+            Console.WriteLine("Enter your name : ");
+            string name = Console.ReadLine();
 
-            string queryString = $"SELECT id FROM Person (name, password) VALUES ('{name}', '{password}');";
+            Console.WriteLine("Enter your password : ");
+            SecureString passwordHide = GetPassword();
+
+            IntPtr bstr = Marshal.SecureStringToBSTR(passwordHide);
+            string password = Marshal.PtrToStringBSTR(bstr);
+
+            password = Person.CryptPassword(password);
+            string queryString = $"SELECT id FROM Person WHERE name = '{name}' AND password ='{password}';";
             int id = ConnectionDB.ReturnID(queryString);
-
             if (id == 1)
             {
-
+                Console.WriteLine("Hello admin");
+                Person.ID = id;
             }
-
-           /* if (Login && mot de passe == Admin)
-
+            else if (id > 1)
             {
-                new admin
+                Console.WriteLine("Hello user");
+                Person.ID = id;
             }
-            else if (Login && mot de passe != admin)
-            {
-                new client
-            }
-            else (Login et mot de passe != BDD)
-            {
-                fuck you
-            }
-
-            try
-            {
-                    SELECT name, password FROM Person WHERE name = name && password = password;
-
-                if name = admin
-                    name = client
-            }
-            catch (Exception e)
-            {
-                "No login"
-
-            }
-            */
-            
         }
-        public string EnterPassword()
+        public SecureString GetPassword()
         {
-            Console.WriteLine("Enter your password  : ");
-            string password = Console.ReadLine();
-
-            /* SecureString password = new SecureString();
-            Console.WriteLine("Enter password: ");
-
+            SecureString password = new SecureString();
             ConsoleKeyInfo nextKey = Console.ReadKey(true);
-
             while (nextKey.Key != ConsoleKey.Enter)
             {
                 if (nextKey.Key == ConsoleKey.Backspace)
@@ -65,7 +45,6 @@ namespace Project_2
                     if (password.Length > 0)
                     {
                         password.RemoveAt(password.Length - 1);
-                        // erase the last * as well
                         Console.Write(nextKey.KeyChar);
                         Console.Write(" ");
                         Console.Write(nextKey.KeyChar);
@@ -78,11 +57,35 @@ namespace Project_2
                 }
                 nextKey = Console.ReadKey(true);
             }
-            password.MakeReadOnly(); */
-
+            Console.WriteLine();
+            password.MakeReadOnly();
             return password;
+        }
+        public void ModifyPassword(int ID)
+        {
+            Console.WriteLine("Enter your password : ");
+            SecureString passwordHide = GetPassword();
+            IntPtr bstr = Marshal.SecureStringToBSTR(passwordHide);
+            string password = Marshal.PtrToStringBSTR(bstr);
 
+            password = Person.CryptPassword(password);
+            string queryString = $"SELECT id FROM Person WHERE id = '{ID}' AND password ='{password}';";
+            int id = ConnectionDB.ReturnID(queryString);
+            if (ID == id)
+            {
+                Console.WriteLine("Enter your new password : ");
+                SecureString newpasswordHide = GetPassword();
+                IntPtr newbstr = Marshal.SecureStringToBSTR(newpasswordHide);
+                string newpassword = Marshal.PtrToStringBSTR(newbstr);
+
+                newpassword = Person.CryptPassword(newpassword);
+                string newqueryString = $"UPDATE Person SET password = '{newpassword}' WHERE id = '{ID}';";
+                ConnectionDB.NonQuerySQL(newqueryString);
             }
-
+            else
+            {
+                Console.WriteLine("password is wrong");
+            }
         }
     }
+}

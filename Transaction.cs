@@ -14,6 +14,7 @@ namespace Project_2
         public static void MoneyTransfer(string debitAccount, int debitClient_id, string creditAccount, int creditClient_id, double amount, DateTime date)
         {
             string queryString = $"UPDATE {debitAccount} SET amount = ((SELECT amount FROM {debitAccount} WHERE client_id = {debitClient_id}) - {amount}) WHERE client_id = {debitClient_id} " +
+                                // Pourquoi ne pas juste mettre "SET amount = amount - {amount}"...??
                                  $"UPDATE {creditAccount} SET amount = ((SELECT amount FROM {creditAccount} WHERE client_id = {creditClient_id}) + {amount}) WHERE client_id = {creditClient_id} " +
                                  $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, beneficiaryAccount_id, amount, 'date') " +
                                  $"VALUES(" +
