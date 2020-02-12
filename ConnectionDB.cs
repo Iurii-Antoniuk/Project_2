@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Project_2
 {
@@ -97,8 +98,7 @@ namespace Project_2
                 Console.WriteLine("Not valid account number, bitch!" + e.Message);
                 return decim;
             }
-        }          
+        }
     }
-
 }
 
