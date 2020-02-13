@@ -6,7 +6,7 @@ namespace Project_2
 {
     class Information
     {
-        public void GetInfoByUser(int client_id)
+        public void GetInfoByUserId(int client_id)
         {
             Console.WriteLine("User Information : ");
             string queryString = $"SELECT id, name FROM Person WHERE client_id = '{client_id}';";
@@ -33,6 +33,11 @@ namespace Project_2
             }
             Console.WriteLine();
             ConnectionDB.SelectSQL(queryString, transactionInfo);
+        }
+
+        public static void GetInfoByAccountId()
+        {
+
         }
     }
 }
