@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Project_2
 {
@@ -89,7 +90,6 @@ namespace Project_2
                 decimal amount = dataread.GetDecimal(0);
                 dataread.Close();
                 connection.Close();
-                Console.WriteLine("DONE");
                 return amount;
             }
             catch (Exception e)
@@ -99,7 +99,7 @@ namespace Project_2
             }
         }
 
-        public static decimal ReturnOverdraft(string queryString)
+        /*public static decimal ReturnOverdraft(string queryString)
         {
             decimal overdraft = 10000;
             try
@@ -123,60 +123,27 @@ namespace Project_2
                 Console.WriteLine("Error" + e.Message);
                 return 0;
             }
-        }
-    
-
-        public static int ReturnIdCurrentAccount(int client_id)
+        }*/
+                            
+        public static List<decimal> GetAccountColumnValues(string tableName, string columnName)
         {
-            try
+            List<decimal> values = new List<decimal>();
+            int numberOFAccounts = SavingsAccount.CountRows(tableName);
+            SqlConnection connection = new SqlConnection(GetConnectionString());
+            connection.Open();
+            for (int i = 0; i < numberOFAccounts; i++)
             {
-                string queryString = $"SELECT id FROM CurrentAccounts WHERE client_id = '{client_id}'";
-
-                SqlConnection connection = new SqlConnection(GetConnectionString());
-                connection.Open();
+                string queryString = $"SELECT {columnName} FROM {tableName} WHERE id = 100 + {i};";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 SqlDataReader dataread = command.ExecuteReader();
                 dataread.Read();
-
-                int idCurrentAccount = dataread.GetInt32(0);
+                decimal decim = dataread.GetDecimal(0);
+                values.Add(decim);
                 dataread.Close();
-                connection.Close();
-                return idCurrentAccount ;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error " + e.Message);
-                return 0 ;
-            }
+            connection.Close();
+            return values;
         }
-
-        public static int ReturnIdSavingAccount(int client_id)
-        {
-            try
-            {
-                string queryString = $"SELECT id FROM SavingAccounts WHERE client_id = '{client_id}'";
-                SqlConnection connection = new SqlConnection(GetConnectionString());
-                connection.Open();
-                SqlCommand command = new SqlCommand(queryString, connection);
-                SqlDataReader dataread = command.ExecuteReader();
-                dataread.Read();
-                int idCurrentAccount = dataread.GetInt32(0);
-                dataread.Close();
-                connection.Close();
-                Console.WriteLine("DONE");
-                return idCurrentAccount;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error " + e.Message);
-                return 0;
-            }
-        }
-                
-
-                  
-
     }
-
 }
 

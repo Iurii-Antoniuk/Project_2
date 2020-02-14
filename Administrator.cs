@@ -31,5 +31,6 @@ namespace Project_2
             string queryString = $"DELETE FROM Person WHERE id ='{client_id}';";
             ConnectionDB.NonQuerySQL(queryString);
         }
+        
     }
 }

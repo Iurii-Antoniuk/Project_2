@@ -1,44 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Globalization;
 
 namespace Project_2
 {
-    public class Transaction
+    public abstract class Transaction
     {
         protected Account ActualAccount { get; set; }
         protected DateTime DateTransaction { get; set; }
         protected double Amount { get; set; }
         protected Account DestinationAccount { get; set; }
 
-        public static void MoneyTransfer(string debitAccount, int debitClient_id, string creditAccount, int creditClient_id, double amount, DateTime date)
-        {
-            string queryString = $"UPDATE {debitAccount} SET amount = ((SELECT amount FROM {debitAccount} WHERE client_id = {debitClient_id}) - {amount}) WHERE client_id = {debitClient_id} " +
-                                // Pourquoi ne pas juste mettre "SET amount = amount - {amount}"...??
-                                 $"UPDATE {creditAccount} SET amount = ((SELECT amount FROM {creditAccount} WHERE client_id = {creditClient_id}) + {amount}) WHERE client_id = {creditClient_id} " +
-                                 $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, beneficiaryAccount_id, amount, 'date') " +
-                                 $"VALUES(" +
-                                 $"(SELECT id FROM {debitAccount} WHERE client_id = {debitClient_id}), " +
-                                 $"'Money Transfer', " +
-                                 $"(SELECT id FROM {creditAccount} WHERE client_id = {creditClient_id}), " +
-                                 $"{amount}, " +
-                                 $"\"{date}\");";
+        public abstract void DoTransferFromCurrentAccountToSavingAccountAccordingToDate(int debitClient_id, int SavingAccount_id, double amount, DateTime transferDate);
+        public abstract void DoTransferFromCurrentToOtherCurrentAccountAccordingToDate(int debitClient_id, int clientIdOfExternalAccount, double amount, DateTime transferDate);
+        public abstract void DoTransferFromSavingToCurrentAccountAccordingToDate(int debitClient_id, int SavingAccount_id, double amount, DateTime transferDate);
 
-            ConnectionDB.NonQuerySQL(queryString);
+        
+        public void ExecuteTransfer(double amount, DateTime transferDate)
+        {
+            Console.WriteLine("Specify from which account you want to transfer money:");
+            Console.WriteLine("Current account (c) or saving account (s)");
+            char debitAccount = Convert.ToChar(Console.ReadLine());
+
+            // Récupère l'ID du client dans la propriété qui doit être définie lors de la connexion du client sur l'interface
+            int debitClient_id = 2;
+
+            if (debitAccount == 'c')
+            {
+                TransferFromCurrentToUserChoice(debitClient_id, amount, transferDate);
+            }
+            else if (debitAccount == 's')
+            {
+                int SavingAccount_id = Transactor.GetSavingAccountIdFromClientChoice(debitClient_id);
+                DoTransferFromSavingToCurrentAccountAccordingToDate(debitClient_id, SavingAccount_id, amount, transferDate);
+            }
+            else
+            {
+                Console.WriteLine("Exiting program due to input error");
+            }
         }
 
 
-        public static DateTime GetDate()
+        public void TransferFromCurrentToUserChoice(int debitClient_id, double amount, DateTime transferDate)
         {
-            string input = Console.ReadLine();
-            DateTime firstExecution;
-            while (!DateTime.TryParse(input, out firstExecution))
+            Console.WriteLine("Do you wish to transfer money to one of your saving account (s) or to an external account (e) ?");
+            char creditAccount = Convert.ToChar(Console.ReadLine());
+
+            if (creditAccount == 's')
             {
-                Console.WriteLine("The format of the time is not right");
-                Console.WriteLine("Give good format (accepted format YYYY-MM-DD) of date :");
-                input = Console.ReadLine();
+                int SavingAccount_id = Transactor.GetSavingAccountIdFromClientChoice(debitClient_id);
+                DoTransferFromCurrentAccountToSavingAccountAccordingToDate(debitClient_id, SavingAccount_id, amount, transferDate);
             }
-            return firstExecution;
+            else if (creditAccount == 'e')
+            {
+                Console.WriteLine("Specify the id number of the beneficiary account");
+                int externalAccount_id = Convert.ToInt32(Console.ReadLine());
+
+                // Check if externalAccount is in DB if yes, get creditClient_id
+                string queryStringIdFromOtherClient = $"SELECT client_id FROM CurrentAccounts WHERE id = {externalAccount_id}";
+                int clientIdOfExternalAccount = ConnectionDB.ReturnID(queryStringIdFromOtherClient);
+
+                if (clientIdOfExternalAccount > 0)
+                {
+                    DoTransferFromCurrentToOtherCurrentAccountAccordingToDate(debitClient_id, clientIdOfExternalAccount, amount, transferDate);
+                }
+                else
+                {
+                    Console.WriteLine("Please specify a valid recipient account number.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Exiting program due to input error");
+            }
         }
     }
 }

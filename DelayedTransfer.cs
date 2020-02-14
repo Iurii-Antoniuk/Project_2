@@ -6,26 +6,156 @@ namespace Project_2
 {
     public class DelayedTransfer : Transaction
     {
-        public static void ExecuteDelayedTransfer(string debitAccount, int debitClient_id, string creditAccount, int creditClient_id, double amount)
-        {
-            Console.WriteLine("Give the transfer execution date (accepted format YYYY-MM-DD) : ");
-            DateTime executionDate = GetDate();
 
-            while (DateTime.Now <= executionDate)
+        public void ExecuteDelayedTransfer(double amount)
+        {
+            Console.WriteLine("Enter the first transfer execution date (format YYYY-MM-DD): ");
+            DateTime transferDate = Transactor.GetCheckedDate();
+            if (transferDate < DateTime.Today)
             {
-                if (DateTime.Now == executionDate)
+                Console.WriteLine("Entered date is already past. Please enter a valid date.");
+            }
+            else
+            {
+                ExecuteTransfer(amount, transferDate);
+            }
+        }
+
+
+        public override void DoTransferFromCurrentAccountToSavingAccountAccordingToDate(int debitClient_id, int SavingAccount_id, double amount, DateTime transferDate)
+        {
+
+            while (DateTime.Today <= transferDate)
+            {
+                if (DateTime.Today == transferDate)
                 {
-                    MoneyTransfer(debitAccount, debitClient_id, creditAccount, creditClient_id, amount, executionDate);
-                    /*string queryString = $"INSERT INTO [Transaction] (currentAccount_id, transactionType, beneficiaryAccount_id, amount, [date])" + 
-                                            $"VALUES("+
-                                            $"(SELECT id FROM {debitAccount} WHERE client_id = {debitClient_id}),"+
-                                            $"'Money Transfer'," +
-                                            $"(SELECT id FROM {creditAccount} WHERE client_id = {creditClient_id}),"+
-                                            $"{amount},"+
-                                            $"{executionDate});";
-                    ConnectionDB.NonQuerySQL(queryString);*/
+                    Transactor.TransferFromCurrentAccountToSavingAccount(debitClient_id, SavingAccount_id, amount);
+                    break;
                 }
             }
         }
+
+        public override void DoTransferFromCurrentToOtherCurrentAccountAccordingToDate(int debitClient_id, int clientIdOfExternalAccount, double amount, DateTime transferDate)
+        {
+            try
+            {
+                while (DateTime.Today <= transferDate)
+                {
+                    if (DateTime.Today == transferDate)
+                    {
+                        Transactor.TransferFromCurrentToCurrentAccount(debitClient_id, clientIdOfExternalAccount, amount);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("An error occured. " + e);
+            }
+        }
+
+        public override void DoTransferFromSavingToCurrentAccountAccordingToDate(int debitClient_id, int SavingAccount_id, double amount, DateTime transferDate)
+        {
+            while (DateTime.Today <= transferDate)
+            {
+                if (DateTime.Today == transferDate)
+                {
+                    Transactor.TransferFromSavingToCurrentAccount(debitClient_id, SavingAccount_id, amount);
+                    break;
+                }
+            }
+        }
+
+
+        /*public static void ExecuteDelayedTransfer(double amount)
+        {
+            Console.WriteLine("Enter the first transfer execution date (format YYYY-MM-DD): ");
+            DateTime transferDate = Transaction.GetCheckedDate();
+            if (transferDate < DateTime.Today)
+            {
+                Console.WriteLine("Entered date is already past. Please enter a valid date.");
+            }
+            else
+            {
+                Console.WriteLine("Specify from which account you want to transfer money:");
+                Console.WriteLine("Current account (c) or saving account (s)");
+                string debitAccount = Console.ReadLine();
+
+                // Récupère l'ID du client dans la propriété qui doit être définie lors de la connexion du client sur l'interface
+                int debitClient_id = 3;
+
+
+                if (debitAccount == "c")
+                {
+                    debitAccount = "CurrentAccounts";
+                    Console.WriteLine("Do you wish to transfer money to one of your saving account (s) or to an external account (e) ?");
+                    string creditAccount = Console.ReadLine();
+
+                    if (creditAccount == "s")
+                    {
+                        int SavingAccount_id = Transaction.GetSavingAccountIdFromClientChoice(debitClient_id);
+                        while (DateTime.Today <= transferDate)
+                        {
+                            if (DateTime.Today == transferDate)
+                            {
+                                Transaction.TransferFromCurrentAccountToSavingAccount(debitClient_id, SavingAccount_id, amount, transferDate);
+                                break;
+                            }
+                        }
+                    }
+                    else if (creditAccount == "e")
+                    {
+                        creditAccount = "CurrentAccounts";
+                        Console.WriteLine("Specify the id number of the beneficiary account");
+                        int externalAccount_id = Convert.ToInt32(Console.ReadLine());
+
+                        // Check if externalAccount is in DB if yes, get creditClient_id
+                        string queryStringIdFromOtherClient = $"SELECT client_id FROM CurrentAccounts WHERE id = {externalAccount_id}";
+                        int clientIdOfExternalAccount = ConnectionDB.ReturnID(queryStringIdFromOtherClient);
+
+                        if (clientIdOfExternalAccount > 0)
+                        {
+                            try
+                            {
+                                while (DateTime.Today <= transferDate)
+                                {
+                                    if (DateTime.Today == transferDate)
+                                    {
+                                        Transaction.TransferFromCurrentToCurrentAccount(debitClient_id, clientIdOfExternalAccount, amount, transferDate);
+                                    }
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("An error occured. " + e);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please specify a valid recipient account number.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Exiting program due to input error");
+                    }
+                }
+                else if (debitAccount == "s")
+                {
+                    int SavingAccount_id = Transaction.GetSavingAccountIdFromClientChoice(debitClient_id);
+                    while (DateTime.Today <= transferDate)
+                    {
+                        if (DateTime.Today == transferDate)
+                        {
+                            Transaction.TransferFromSavingToCurrentAccount(debitClient_id, SavingAccount_id, amount, transferDate);
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Exiting program due to input error");
+                }
+            }  
+        }*/
     }
 }

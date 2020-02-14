@@ -65,8 +65,9 @@ namespace Project_2
             password.MakeReadOnly();
             return password;
         }
-        public void ModifyPassword(int ID)
+        public void ModifyPassword()
         {
+            int ID = Person.ID;
             Console.WriteLine("Enter your password : ");
             SecureString passwordHide = GetPassword();
             IntPtr bstr = Marshal.SecureStringToBSTR(passwordHide);
