@@ -10,7 +10,7 @@ namespace Project_2
         public static int GetSavingAccountIdFromClientChoice(int debitClient_id)
         {
             Client client = new Client();
-            //client.CheckSavingAccounts(debitClient_id);
+            client.CheckSavingAccounts(debitClient_id);
             Console.WriteLine("Specify the saving account id for the money transfer. ");
             int SavingAccount_id = Convert.ToInt32(Console.ReadLine());
 

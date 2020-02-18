@@ -103,7 +103,7 @@ namespace Project_2
         }
         static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, CreateSavingsAccountOptions, DeleteSavingsAccountOptions, InfoAccountsOptions, CreateClientOptions
+            /*Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, CreateSavingsAccountOptions, DeleteSavingsAccountOptions, InfoAccountsOptions, CreateClientOptions
              , DeleteClientOptions>(args)
               //.WithParsed<Options>(RunOptions)
               .WithParsed<WithdrawOptions>(RunWithdrawOptions)
@@ -119,16 +119,16 @@ namespace Project_2
             DateTime date = new DateTime(2020, 2, 12);
             Information.GetInfoByTransactionDate(date);
 
-            Console.WriteLine("Welcome on bank application");
+            Console.WriteLine("Welcome on bank application");*/
 
             //string queryString = $"SELECT * FROM CurrentAccounts";
             //string queryString = $"SELECT * FROM \"Transaction\" ";
             //string queryString = $"SELECT * FROM \"Transaction\" WHERE id = 2 ";
 
-            SavingsAccount.AddInterest(10000);
+            /*SavingsAccount.AddInterest(10000);
             Authentification authentification = new Authentification();
             authentification.Login();
-            authentification.ModifyPassword();
+            authentification.ModifyPassword();*/
 
             //Authentification authentification = new Authentification();
             //authentification.Login();
@@ -175,6 +175,15 @@ namespace Project_2
             //}
             //Console.ReadLine();
 
+            /*InstantTransfer ins = new InstantTransfer();
+            ins.ImmediateTransfer(1);*/
+
+            /*DelayedTransfer trs = new DelayedTransfer();
+            trs.ExecuteDelayedTransfer(300);*/
+
+            /*PermanentTransfer trp = new PermanentTransfer();
+            trp.ExecutePermanentTransfer(300);*/
+
 
         }
 
@@ -186,7 +195,7 @@ namespace Project_2
             {
                 Client client = new Client();
                 client.CheckCurrentAccounts();
-                client.CheckSavingAccounts();
+                //client.CheckSavingAccounts();
             }
             else
             {
