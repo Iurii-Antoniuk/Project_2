@@ -9,15 +9,20 @@ namespace Project_2
 
         public void ExecuteDelayedTransfer(double amount)
         {
+            int debitClient_id = Person.ID;
             Console.WriteLine("Enter the first transfer execution date (format YYYY-MM-DD): ");
             DateTime transferDate = Transactor.GetCheckedDate();
+
             if (transferDate < DateTime.Today)
             {
                 Console.WriteLine("Entered date is already past. Please enter a valid date.");
             }
             else
             {
-                ExecuteTransfer(amount, transferDate);
+                char debitAccount = ChooseDebitAccount();
+                char recipientAccount = ChooseRecipientAccount(debitClient_id);
+                int recipientAccount_id = GetAccountIdFromAccountType(debitClient_id, recipientAccount);
+                ExecuteTransfer(amount, transferDate, debitAccount, recipientAccount, recipientAccount_id);
             }
         }
 
