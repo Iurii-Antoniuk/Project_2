@@ -20,6 +20,8 @@ namespace Project_2
         [Verb("transfer", HelpText = "money transaction")]
         class TransferOptions
         {
+            //splitter la class pour les transactions/transfer ? voir ac tous les arguments à prendre en compte
+            
             [Option('d', "delayed", HelpText = "You want to do a delayed trasaction")]
             public bool Delayed { get; set; }
 
