@@ -60,7 +60,47 @@ namespace Project_2
             }
         }
 
-        
+        public void AddFromBeneficiary(double amount, int id_donator)
+        {
+            int client_id = ID;
+            string queryString1 = $"SELECT amount FROM SavingAccounts WHERE client_id={ client_id};";
+            decimal currentAmount = ConnectionDB.ReturnDecimal(queryString1);
+
+            string queryString2 = $"SELECT ceiling FROM SavingAccounts WHERE client_id={ client_id};";
+            decimal ceiling = ConnectionDB.ReturnDecimal(queryString2);
+
+            string queryString3 = $"SELECT id FROM SavingAccounts WHERE client_id={ client_id};";
+            int savingAccountID = ConnectionDB.ReturnID(queryString3);
+
+            string queryString4 = $"SELECT id FROM Donator WHERE client_id={ client_id} and id={id_donator} ;";
+            int id = ConnectionDB.ReturnID(queryString4);
+
+            if (id_donator == id)
+            {
+                Console.WriteLine("donor ok");
+                if ((currentAmount + (decimal)amount) <= ceiling)
+                {
+                    DateTime dateOp = DateTime.Now;
+                    string queryString = $"UPDATE SavingAccounts SET amount = (amount + {amount}) WHERE  client_id = { client_id }; " +
+                                         $"INSERT INTO \"Transaction\" (savingAccount_id, transactionType, amount, \"date\") " +
+                                         $"VALUES({savingAccountID}, 'Donor_{id}', {amount}, '{dateOp}')";
+                    ConnectionDB.NonQuerySQL(queryString);
+                }
+                else
+                {
+                    Console.WriteLine("Invalid transaction - exceeding ceilling");
+                }
+            }
+            else
+            {
+                Console.WriteLine("there is no information about this donor");
+            }
+
+
+            
+        }
+
+
     }
 }
  
