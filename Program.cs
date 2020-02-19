@@ -13,7 +13,7 @@ namespace Project_2
     class Program
     {
 
-        [Verb("withdraw", HelpText = "money withdraw")]
+       /* [Verb("withdraw", HelpText = "money withdraw")]
         class WithdrawOptions
         {
             [Option('a', "amount", Required = true, HelpText = "amount to withdraw")]
@@ -133,35 +133,50 @@ namespace Project_2
         class ExportOptions
         {
             
-        }
+        }*/
         static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<WithdrawOptions, TransferOptions, CreateSavingsAccountOptions, DeleteSavingsAccountOptions,
-                InfoSavingAccountsOptions, InfoCurrentAccountsOptions, CreateClientOptions, DeleteClientOptions, ModifyPasssOptions, InfoUserOptions,
-                InfoTransactionOptions, ExportOptions>(args)
+            /* Parser.Default.ParseArguments<WithdrawOptions, TransferOptions, CreateSavingsAccountOptions, DeleteSavingsAccountOptions,
+                 InfoSavingAccountsOptions, InfoCurrentAccountsOptions, CreateClientOptions, DeleteClientOptions, ModifyPasssOptions, InfoUserOptions,
+                 InfoTransactionOptions, ExportOptions>(args)
 
-               .WithParsed<WithdrawOptions>(RunWithdrawOptions)
-               .WithParsed<TransferOptions>(RunTransferOptions)
-               .WithParsed<CreateClientOptions>(RunCreateClientOptions)
-               .WithParsed<DeleteClientOptions>(RunDeleteClientOptions)
-               .WithParsed<ModifyPasssOptions>(RunModifyPassOptions)
-               .WithParsed<CreateSavingsAccountOptions>(RunCreateSavingsAccountOptions)
-               .WithParsed<DeleteSavingsAccountOptions>(RunDeleteSavingsAccountOptions)
-               .WithParsed<InfoSavingAccountsOptions>(RunSavingAccountsInfoOptions)
-               .WithParsed<InfoCurrentAccountsOptions>(RunCurrentAccountsInfoOptions)
-               .WithParsed<InfoUserOptions>(RunInfoUserOptions)
-               .WithParsed<InfoTransactionOptions>(RunInfoTransactionOptions)
-               .WithParsed<ExportOptions>(RunExportOptions);
+                .WithParsed<WithdrawOptions>(RunWithdrawOptions)
+                .WithParsed<TransferOptions>(RunTransferOptions)
+                .WithParsed<CreateClientOptions>(RunCreateClientOptions)
+                .WithParsed<DeleteClientOptions>(RunDeleteClientOptions)
+                .WithParsed<ModifyPasssOptions>(RunModifyPassOptions)
+                .WithParsed<CreateSavingsAccountOptions>(RunCreateSavingsAccountOptions)
+                .WithParsed<DeleteSavingsAccountOptions>(RunDeleteSavingsAccountOptions)
+                .WithParsed<InfoSavingAccountsOptions>(RunSavingAccountsInfoOptions)
+                .WithParsed<InfoCurrentAccountsOptions>(RunCurrentAccountsInfoOptions)
+                .WithParsed<InfoUserOptions>(RunInfoUserOptions)
+                .WithParsed<InfoTransactionOptions>(RunInfoTransactionOptions)
+                .WithParsed<ExportOptions>(RunExportOptions);
 
-            ConnectionDB.GetConnectionString();
+             ConnectionDB.GetConnectionString();*/
+
             //Administrator admin = new Administrator();
             //admin.CreateAdmin("admin");
+            //admin.CreateClient("jus", 200);
+            //Console.WriteLine(Person.Password);
+          
+
 
             //string queryString = $"SELECT * FROM CurrentAccounts";
             //string queryString = $"SELECT * FROM \"Transaction\" ";
             //string queryString = $"SELECT * FROM \"Transaction\" WHERE id = 2 ";
 
             //SavingsAccount.AddInterest(10000);
+
+            /*Authentification authentification = new Authentification();
+            authentification.Login();
+            Client client = new Client();
+            client.AddFromBeneficiary(7001, 1003);*/
+
+            //authentification.ModifyPassword();
+
+            //Client client = new Client();
+            //client.AddFromBeneficiary(200);
 
             //Client.WithdrawMoney(102, 20);
             //Client client = new Client();
@@ -175,7 +190,6 @@ namespace Project_2
             //    Console.WriteLine(value);
             //}
             //Console.ReadLine();
-            Person.ID = 2;
 
             /*InstantTransfer ins = new InstantTransfer();
             ins.ImmediateTransfer(1);*/
@@ -184,11 +198,11 @@ namespace Project_2
             trs.ExecuteDelayedTransfer(1);*/
 
 
-           /*PermanentTransfer trp = new PermanentTransfer();
-            trp.ExecutePermanentTransfer(300);*/
+            /*PermanentTransfer trp = new PermanentTransfer();
+             trp.ExecutePermanentTransfer(300);*/
         }
 
-        static void RunWithdrawOptions(WithdrawOptions options)
+        /*static void RunWithdrawOptions(WithdrawOptions options)
         {
             Authentification authentification = new Authentification();
             int id = authentification.Login();
@@ -380,7 +394,7 @@ namespace Project_2
             {
                 Console.WriteLine("You can not acces to the export of the transaction");
             }
-        }
+        }*/
     }
 }
 
