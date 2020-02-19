@@ -12,18 +12,9 @@ namespace Project_2
 {
     class Program
     {
-        class Options
-
-        {
-            [Option('l', "login", HelpText = "enter your login")]
-            public string EnterLogin { get; set; }
-
-            [Option('v', "verbose", HelpText = "enter your verb")]
-            public string EnterVerbose { get; set; }
-        }
 
         [Verb("withdraw", HelpText = "money withdraw")]
-        class WithdrawOptions : Options
+        class WithdrawOptions
         {
             [Option('a', "amount", Required = true, HelpText = "amount to withdraw")]
             public double Amount { get; set; }
@@ -34,7 +25,7 @@ namespace Project_2
         }
 
         [Verb("transfer", HelpText = "money transaction")]
-        class TransferOptions : Options
+        class TransferOptions
         {
             [Option('d', "delayed", HelpText = "You want to do a delayed trasaction")]
             public bool Delayed { get; set; }
@@ -57,7 +48,7 @@ namespace Project_2
         }
 
         [Verb("createC", HelpText = "Client creation")]
-        class CreateClientOptions : Options
+        class CreateClientOptions
         {
             [Option('n', "name", Required = true, HelpText = "Client Name")]
             public string ClientName { get; set; }
@@ -67,14 +58,21 @@ namespace Project_2
         }
 
         [Verb("deleteC", HelpText = "Client deletion")]
-        class DeleteClientOptions : Options
+        class DeleteClientOptions
+        {
+            [Option('i', "id", Required = true, HelpText = "id Client to delete")]
+            public int IdClient { get; set; }
+        }
+
+        [Verb("modifyPass", HelpText ="Modify your password")]
+        class ModifyPasssOptions
         {
             [Option('i', "id", Required = true, HelpText = "id Client to delete")]
             public int IdClient { get; set; }
         }
 
         [Verb("createSA", HelpText = "Create savings account")]
-        class CreateSavingsAccountOptions : Options
+        class CreateSavingsAccountOptions
         {
 
             [Option('i', "id", Required = true, HelpText = "id Client")]
@@ -85,7 +83,7 @@ namespace Project_2
         }
 
         [Verb("deleteSA", HelpText = "Delete savings account")]
-        class DeleteSavingsAccountOptions : Options
+        class DeleteSavingsAccountOptions
         {
             [Option('i', "id", Required = true, HelpText = "id Savings Account")]
             public int IdSavingsAccount { get; set; }
@@ -93,7 +91,7 @@ namespace Project_2
         }
 
         [Verb("infoSavingAccounts", HelpText = "Get information about your account")]
-        class InfoSavingAccountsOptions : Options
+        class InfoSavingAccountsOptions
 
         {
             [Option('i', "client id", Required = true, HelpText = "Enter your client id")]
@@ -103,7 +101,7 @@ namespace Project_2
             public int IdSavingAccount { get; set; }
         }
         [Verb("infoCurrentAccounts", HelpText = "Get information about your current account")]
-        class InfoCurrentAccountsOptions : Options
+        class InfoCurrentAccountsOptions
 
         {
             [Option('i', "client id", Required = true, HelpText = "Enter your client id")]
@@ -115,14 +113,14 @@ namespace Project_2
         }
 
         [Verb("infoUser", HelpText ="Get informations about your users")]
-        class InfoUserOptions : Options
+        class InfoUserOptions
         {
             [Option('i', "client id", Required = true, HelpText = "Enter your client id")]
             public int IdClient { get; set; }
         }
 
         [Verb("infoTransaction", HelpText ="Get informations about a transaction")]
-        class InfoTransactionOptions : Options
+        class InfoTransactionOptions
         {
             [Option('d', "date", Required = true, HelpText ="Enter the date of the transaction")]
             public DateTime Date { get; set; }
@@ -130,77 +128,44 @@ namespace Project_2
             [Option('i', "client id", Required = true, HelpText = "Enter your client id")]
             public int IdClient { get; set; }
         }
+
+        [Verb("export", HelpText ="Export the informations about transactions")]
+        class ExportOptions
+        {
+            
+        }
         static void Main(string[] args)
         {
+           Parser.Default.ParseArguments<WithdrawOptions, TransferOptions, CreateSavingsAccountOptions, DeleteSavingsAccountOptions, 
+               InfoSavingAccountsOptions, InfoCurrentAccountsOptions, CreateClientOptions, DeleteClientOptions, ModifyPasssOptions, InfoUserOptions, 
+               InfoTransactionOptions, ExportOptions>(args)
 
-           Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, CreateSavingsAccountOptions, DeleteSavingsAccountOptions, 
-               InfoSavingAccountsOptions, InfoCurrentAccountsOptions, CreateClientOptions, DeleteClientOptions, InfoUserOptions, InfoTransactionOptions>(args)
-
-              //.WithParsed<Options>(RunOptions)
               .WithParsed<WithdrawOptions>(RunWithdrawOptions)
               .WithParsed<TransferOptions>(RunTransferOptions)
+              .WithParsed<CreateClientOptions>(RunCreateClientOptions)
+              .WithParsed<DeleteClientOptions>(RunDeleteClientOptions)
+              .WithParsed<ModifyPasssOptions>(RunModifyPassOptions)
               .WithParsed<CreateSavingsAccountOptions>(RunCreateSavingsAccountOptions)
               .WithParsed<DeleteSavingsAccountOptions>(RunDeleteSavingsAccountOptions)
               .WithParsed<InfoSavingAccountsOptions>(RunSavingAccountsInfoOptions)
               .WithParsed<InfoCurrentAccountsOptions>(RunCurrentAccountsInfoOptions)
               .WithParsed<InfoUserOptions>(RunInfoUserOptions)
               .WithParsed<InfoTransactionOptions>(RunInfoTransactionOptions)
-              .WithParsed<CreateClientOptions>(RunCreateClientOptions)
-              .WithParsed<DeleteClientOptions>(RunDeleteClientOptions);
+              .WithParsed<ExportOptions>(RunExportOptions);
 
             ConnectionDB.GetConnectionString();
-
-            //DateTime date = new DateTime(2020, 2, 12);
-            //Information.GetInfoByTransactionDate(date);
-
-           // Console.WriteLine("Welcome on bank application");
+            //Administrator admin = new Administrator();
+            //admin.CreateAdmin("admin");
 
             //string queryString = $"SELECT * FROM CurrentAccounts";
             //string queryString = $"SELECT * FROM \"Transaction\" ";
             //string queryString = $"SELECT * FROM \"Transaction\" WHERE id = 2 ";
 
-
-            /*SavingsAccount.AddInterest(10000);
-
-            Authentification authentification = new Authentification();
-            authentification.Login();
-            authentification.ModifyPassword();*/
-
-            //Authentification authentification = new Authentification();
-            //authentification.Login();
-            //authentification.ModifyPassword(3);            
-
-            //Administrator admin = new Administrator();
-            //admin.CreateAdmin("admin");
-            //Console.WriteLine(Person.Password);
-            //admin.CreateSavingAccount(3, 5000);
-
-            //Client client = new Client();
-            //client.CheckCurrentAccount(4);
-            //client.CheckSavingAccounts(3);
-
-            //ConnectionDB.GetConnectionString();
-
-            //Administrator admin = new Administrator();
-            //admin.CreateClient("Gontrand", 6000);
-            //Console.WriteLine(Person.Password);
-            //admin.CreateSavingAccount(3, 5000);
-
-            //Administrator admin = new Administrator();
-            //admin.CreateClient("admin", 500);
+            //SavingsAccount.AddInterest(10000);
 
             //Client.WithdrawMoney(102, 20);
             //Client client = new Client();
             //client.ImmediateTransfer(100);
-
-            //Client client = new Client();
-            //client.CheckCurrentAccount();
-            //client.CheckSavingAccounts();
-            //client.WithdrawMoney(-200);
-
-            //Administrator admin = new Administrator();
-            //admin.CreateClient("admin", 500);
-
 
             //int rows = ConnectionDB.CountRows("SavingAccounts");
             //Console.WriteLine(rows);
@@ -219,8 +184,6 @@ namespace Project_2
 
             /*PermanentTransfer trp = new PermanentTransfer();
             trp.ExecutePermanentTransfer(300);*/
-
-
         }
 
         static void RunWithdrawOptions(WithdrawOptions options)
@@ -270,7 +233,9 @@ namespace Project_2
         static void RunCreateClientOptions(CreateClientOptions options)
         {
             Authentification authentification = new Authentification();
-            if (authentification.Login() == 1)
+            int id = authentification.Login();
+
+            if (id == 1)
             {
                 Administrator administrator = new Administrator();
                 administrator.CreateClient(options.ClientName, options.Amount);
@@ -286,7 +251,9 @@ namespace Project_2
         static void RunDeleteClientOptions(DeleteClientOptions options)
         {
             Authentification authentification = new Authentification();
-            if (authentification.Login() == 1)
+            int id = authentification.Login();
+
+            if (id == 1)
             {
                 Administrator administrator = new Administrator();
                 administrator.DeleteClient(options.IdClient);
@@ -297,10 +264,26 @@ namespace Project_2
             }
         }
 
+        static void RunModifyPassOptions (ModifyPasssOptions options)
+        {
+            Authentification authentification = new Authentification();
+            int id = authentification.Login();
+            if (id == options.IdClient)
+            {
+                authentification.ModifyPassword();
+            }
+            else
+            {
+                Console.WriteLine("Wrong id");
+            }
+        }
+
         static void RunCreateSavingsAccountOptions(CreateSavingsAccountOptions options)
         {
             Authentification authentification = new Authentification();
-            if (authentification.Login() == 1)
+            int id = authentification.Login();
+
+            if (id == 1)
             {
                 SavingsAccount savingsAccount = new SavingsAccount();
                 savingsAccount.CreateSavingAccount(options.IdClient, options.Amount);
@@ -314,14 +297,16 @@ namespace Project_2
         static void RunDeleteSavingsAccountOptions(DeleteSavingsAccountOptions options)
         {
             Authentification authentification = new Authentification();
-            if (authentification.Login() == 1)
+            int id = authentification.Login();
+
+            if (id == 1)
             {
                 SavingsAccount savingsAccount = new SavingsAccount();
                 savingsAccount.DeleteSavingAccount(options.IdSavingsAccount);
             }
             else
             {
-                Console.WriteLine("You can not create a new current account");
+                Console.WriteLine("You can not create a new saving account");
             }
         }
 
@@ -363,7 +348,7 @@ namespace Project_2
             }
             else
             {
-                Console.WriteLine("You can not access to the informations of users");
+                Console.WriteLine("You can not access to users informations");
             }
         }
 
@@ -378,6 +363,20 @@ namespace Project_2
             else
             {
                 Console.WriteLine("Wrong input");
+            }
+        }
+
+        static void RunExportOptions(ExportOptions options)
+        {
+            Authentification authentification = new Authentification();
+            int id = authentification.Login();
+            if (id == 1)
+            {
+                CSVFileExport.ExportCSVFile();
+            }
+            else
+            {
+                Console.WriteLine("You can not acces to the export of the transaction");
             }
         }
     }
