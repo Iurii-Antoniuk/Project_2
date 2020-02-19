@@ -45,6 +45,9 @@ namespace Project_2
 
             [Option('a', "amount", Required = true, HelpText = "amount")]
             public double Amount { get; set; }
+
+            [Option('o',"overdraft", Required = true, HelpText ="overdraft of the current account")]
+            public decimal Overdraft { get; set; }
         }
 
         [Verb("deleteC", HelpText = "Client deletion")]
@@ -69,7 +72,10 @@ namespace Project_2
             public int IdClient { get; set; }
 
             [Option('a', "amount", Required = true, HelpText = "amount availble on the account")]
-            public double Amount { get; set; }
+            public decimal Amount { get; set; }
+
+            [Option('c', "ceiling", Required =true, HelpText ="account ceiling")]
+            public decimal Ceiling { get; set; }
         }
 
         [Verb("deleteSA", HelpText = "Delete savings account")]
@@ -222,7 +228,7 @@ namespace Project_2
             if (id == 1)
             {
                 Administrator administrator = new Administrator();
-                administrator.CreateClient(options.ClientName, options.Amount);
+                administrator.CreateClient(options.ClientName, options.Amount, options.Overdraft);
                 Console.WriteLine("Clients password : ");
                 Console.WriteLine(Person.Password);
             }
@@ -270,7 +276,7 @@ namespace Project_2
             if (id == 1)
             {
                 SavingsAccount savingsAccount = new SavingsAccount();
-                savingsAccount.CreateSavingAccount(options.IdClient, options.Amount);
+                savingsAccount.CreateSavingAccount(options.IdClient, options.Amount, options.Ceiling);
             }
             else
             {

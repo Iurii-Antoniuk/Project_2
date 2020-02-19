@@ -17,15 +17,12 @@ namespace Project_2
             DateTime openingDate = DateTime.Today;
         }*/
 
-        public void CreateCurrentAccount(int client_id, double amount)
+        public void CreateCurrentAccount(int client_id, double amount, decimal overdraft)
         {
-            Console.WriteLine("Enter the amount of the overdraft of the new account : ");
-            Overdraft = Convert.ToDecimal(Console.ReadLine());
-
             DateTime openingDate = DateTime.Now;
 
             string queryString = $"INSERT INTO CurrentAccounts (client_id, amount, overdraft, openingDate) " +
-                                $" VALUES ('{client_id}', '{amount}','{Overdraft}','{openingDate}');";
+                                $" VALUES ('{client_id}', '{amount}','{overdraft}','{openingDate}');";
             ConnectionDB.NonQuerySQL(queryString);
         }
 
