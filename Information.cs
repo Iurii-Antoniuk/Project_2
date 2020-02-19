@@ -16,7 +16,6 @@ namespace Project_2
 
         public static void GetInfoByTransactionDate(DateTime date)
         {
-            //problème : error quand il y a des cases NULL
             //Modifier le format DATETIME en DATE dans le script SQL
             
             Console.WriteLine("Transaction Information : ");

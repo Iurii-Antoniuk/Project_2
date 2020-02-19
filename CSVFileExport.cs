@@ -8,8 +8,9 @@ namespace Project_2
 {
     class CSVFileExport
     {
-        public static void ExportCSVFile(string queryString)
+        public static void ExportCSVFile()
         {
+            string queryString = GetTransactions();
             SqlConnection connection = new SqlConnection(ConnectionDB.GetConnectionString());
             connection.Open();
 
@@ -59,6 +60,12 @@ namespace Project_2
                 Console.WriteLine("File path does not exist.");
             }
             connection.Close();
+        }
+
+        public static string GetTransactions()
+        {
+            string queryString = $"SELECT id, currentAccount_id, savingAccount_id, transactionType, beneficiaryAccount_id, amount, \"date\" FROM \"Transaction\";";
+            return queryString;
         }
     }
 }
