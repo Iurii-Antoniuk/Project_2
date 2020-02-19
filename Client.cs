@@ -7,7 +7,7 @@ namespace Project_2
     public class Client : Person
 
     { 
-        public void CheckCurrentAccounts()
+        /*public void CheckCurrentAccounts()
         {
             Console.WriteLine("Current Accounts : ");
             int client_id = ID;
@@ -19,8 +19,8 @@ namespace Project_2
             }
             Console.WriteLine();
             ConnectionDB.SelectSQL(queryString, currentAccountInfo);
-        }
-        public void CheckSavingAccounts()
+        }*/
+        public void CheckSavingAccounts(int debitClient_id)
         {
             Console.WriteLine("Savings Accounts : ");
             int client_id = Person.ID;
