@@ -51,6 +51,9 @@ namespace Project_2
             [Option('t', "date time", HelpText = "Date where the transfer will happen")]
             public DateTime Date { get; set; }
 
+            [Option('i', "client id", Required = true, HelpText = "Enter your client id")]
+            public int IdClient { get; set; }
+
         }
 
         [Verb("createC", HelpText = "Client creation")]
@@ -239,22 +242,29 @@ namespace Project_2
         static void RunTransferOptions(TransferOptions options)
         {
             Authentification authentification = new Authentification();
-            authentification.Login();
+            int id = authentification.Login();
 
-            if (options.Delayed)
+            if (id == options.IdClient || id == 1)
             {
-                DelayedTransfer delayedTransfer = new DelayedTransfer();
-                delayedTransfer.ExecuteDelayedTransfer(options.Amount);
+                if (options.Delayed)
+                {
+                    DelayedTransfer delayedTransfer = new DelayedTransfer();
+                    delayedTransfer.ExecuteDelayedTransfer(options.Amount);
+                }
+                if (options.Instant)
+                {
+                    InstantTransfer instantTransfer = new InstantTransfer();
+                    instantTransfer.ImmediateTransfer(options.Amount);
+                }
+                if (options.Permanent)
+                {
+                    PermanentTransfer permanentTransfer = new PermanentTransfer();
+                    permanentTransfer.ExecutePermanentTransfer(options.Amount);
+                }
             }
-            if (options.Instant)
+            else
             {
-                InstantTransfer instantTransfer = new InstantTransfer();
-                instantTransfer.ImmediateTransfer(options.Amount);
-            }
-            if (options.Permanent)
-            {
-                PermanentTransfer permanentTransfer = new PermanentTransfer();
-                permanentTransfer.ExecutePermanentTransfer(options.Amount);
+                Console.WriteLine("Wrong id");
             }
         }
         static void RunCreateClientOptions(CreateClientOptions options)
