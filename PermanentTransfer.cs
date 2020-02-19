@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Project_2
 {
@@ -62,7 +61,7 @@ namespace Project_2
                 if (DateTime.Today == transferDate)
                 {
                     Transactor.TransferFromCurrentAccountToSavingAccount(debitClient_id, SavingAccount_id, amount);
-                    Task.Delay(TimeSpan.FromHours(24));
+                    System.Threading.Thread.Sleep(TimeSpan.FromHours(24));
                 }
             }
         }
@@ -76,7 +75,7 @@ namespace Project_2
                     if (DateTime.Today == transferDate)
                     {
                         Transactor.TransferFromCurrentToCurrentAccount(debitClient_id, clientIdOfExternalAccount, amount);
-                        Task.Delay(TimeSpan.FromHours(24));
+                        System.Threading.Thread.Sleep(TimeSpan.FromHours(24));
                     }
                 }
             }
@@ -93,7 +92,7 @@ namespace Project_2
                 if (DateTime.Today == transferDate)
                 {
                     Transactor.TransferFromSavingToCurrentAccount(debitClient_id, SavingAccount_id, amount);
-                    Task.Delay(TimeSpan.FromHours(24));
+                    System.Threading.Thread.Sleep(TimeSpan.FromHours(24));
                 }
             }
         }

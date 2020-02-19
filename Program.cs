@@ -136,22 +136,22 @@ namespace Project_2
         }
         static void Main(string[] args)
         {
-           Parser.Default.ParseArguments<WithdrawOptions, TransferOptions, CreateSavingsAccountOptions, DeleteSavingsAccountOptions, 
-               InfoSavingAccountsOptions, InfoCurrentAccountsOptions, CreateClientOptions, DeleteClientOptions, ModifyPasssOptions, InfoUserOptions, 
-               InfoTransactionOptions, ExportOptions>(args)
+            Parser.Default.ParseArguments<WithdrawOptions, TransferOptions, CreateSavingsAccountOptions, DeleteSavingsAccountOptions,
+                InfoSavingAccountsOptions, InfoCurrentAccountsOptions, CreateClientOptions, DeleteClientOptions, ModifyPasssOptions, InfoUserOptions,
+                InfoTransactionOptions, ExportOptions>(args)
 
-              .WithParsed<WithdrawOptions>(RunWithdrawOptions)
-              .WithParsed<TransferOptions>(RunTransferOptions)
-              .WithParsed<CreateClientOptions>(RunCreateClientOptions)
-              .WithParsed<DeleteClientOptions>(RunDeleteClientOptions)
-              .WithParsed<ModifyPasssOptions>(RunModifyPassOptions)
-              .WithParsed<CreateSavingsAccountOptions>(RunCreateSavingsAccountOptions)
-              .WithParsed<DeleteSavingsAccountOptions>(RunDeleteSavingsAccountOptions)
-              .WithParsed<InfoSavingAccountsOptions>(RunSavingAccountsInfoOptions)
-              .WithParsed<InfoCurrentAccountsOptions>(RunCurrentAccountsInfoOptions)
-              .WithParsed<InfoUserOptions>(RunInfoUserOptions)
-              .WithParsed<InfoTransactionOptions>(RunInfoTransactionOptions)
-              .WithParsed<ExportOptions>(RunExportOptions);
+               .WithParsed<WithdrawOptions>(RunWithdrawOptions)
+               .WithParsed<TransferOptions>(RunTransferOptions)
+               .WithParsed<CreateClientOptions>(RunCreateClientOptions)
+               .WithParsed<DeleteClientOptions>(RunDeleteClientOptions)
+               .WithParsed<ModifyPasssOptions>(RunModifyPassOptions)
+               .WithParsed<CreateSavingsAccountOptions>(RunCreateSavingsAccountOptions)
+               .WithParsed<DeleteSavingsAccountOptions>(RunDeleteSavingsAccountOptions)
+               .WithParsed<InfoSavingAccountsOptions>(RunSavingAccountsInfoOptions)
+               .WithParsed<InfoCurrentAccountsOptions>(RunCurrentAccountsInfoOptions)
+               .WithParsed<InfoUserOptions>(RunInfoUserOptions)
+               .WithParsed<InfoTransactionOptions>(RunInfoTransactionOptions)
+               .WithParsed<ExportOptions>(RunExportOptions);
 
             ConnectionDB.GetConnectionString();
             //Administrator admin = new Administrator();
@@ -183,7 +183,8 @@ namespace Project_2
             /*DelayedTransfer trs = new DelayedTransfer();
             trs.ExecuteDelayedTransfer(1);*/
 
-            /*PermanentTransfer trp = new PermanentTransfer();
+
+           /*PermanentTransfer trp = new PermanentTransfer();
             trp.ExecutePermanentTransfer(300);*/
         }
 
