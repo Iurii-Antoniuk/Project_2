@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Configuration;
 using System.Data.SqlClient;
-using System.Collections.Generic;
 using System.IO;
 
 namespace Project_2
@@ -20,8 +18,6 @@ namespace Project_2
             string exportPath = "E:\\Project_2\\ExportFile\\";
             string exportCsv = $"exportFileDB{a}.csv";
 
-            StreamWriter csvFile = null;
-
             if (Directory.Exists(exportPath))
             {
                 try
@@ -31,7 +27,7 @@ namespace Project_2
 
                     SqlDataReader reader = command.ExecuteReader();
 
-                    csvFile = new StreamWriter(@exportPath + exportCsv);
+                    StreamWriter csvFile = new StreamWriter(@exportPath + exportCsv);
 
                     object[] output = new object[reader.FieldCount];
 
@@ -51,8 +47,8 @@ namespace Project_2
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Data export unsuccessful.");
-                    System.Environment.Exit(0);
+                    Console.WriteLine("Data export unsuccessful."+ e);
+                    Environment.Exit(0);
                 }
             }
             else

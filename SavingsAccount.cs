@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.SqlClient;
-using System.Text;
 using System.Timers;
 
 namespace Project_2
@@ -51,12 +49,12 @@ namespace Project_2
             // Create a timer
             Timer aTimer = new System.Timers.Timer(interval);
             // Hook up the Elapsed event for the timer. 
-            aTimer.Elapsed += interestAddition;
+            aTimer.Elapsed += InterestAddition;
             aTimer.AutoReset = true;
             aTimer.Enabled = true;
         }
 
-        private static void interestAddition(object source, ElapsedEventArgs e) 
+        private static void InterestAddition(object source, ElapsedEventArgs e) 
         {
             int numberOFAccounts = CountRows("SavingAccounts");
             if (numberOFAccounts > 0)

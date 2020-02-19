@@ -15,10 +15,17 @@ namespace Project_2
         }
 
         public void CreateClient(string name, double amount)
-        {
+        {   
             PasswordGenerator();
             string password = CryptPassword(Password);
-            string queryString = $"INSERT INTO Person (name, password) VALUES ('{name}', '{password}');";
+
+            Console.WriteLine("Enter the town of the new client");
+            string town = Console.ReadLine();
+
+            Console.WriteLine("Enter the address of the new client");
+            string address = Console.ReadLine();
+
+            string queryString = $"INSERT INTO Person (name, password, address, town) VALUES ('{name}', '{password}', '{address}', '{town}' );";
             ConnectionDB.NonQuerySQL(queryString);
             queryString = $"SELECT id FROM Person WHERE name = '{name}' AND password='{password}';";
             int client_id = ConnectionDB.ReturnID(queryString);

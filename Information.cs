@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Project_2
 {
@@ -9,8 +8,12 @@ namespace Project_2
         public static void GetInfoByUserId(int client_id)
         {
             Console.WriteLine("User Information : ");
-            string queryString = $"SELECT id, name FROM Person WHERE id = '{client_id}';";
-            List<string> clientInfo = new List<string> { "id", "name"};
+            string queryString = $"SELECT id, name, address, town FROM Person WHERE id = '{client_id}';";
+            List<string> clientInfo = new List<string> { "id", "name", "address","town"};
+            foreach (string item in clientInfo)
+            {
+                Console.Write(item + "\t");
+            }
             ConnectionDB.SelectSQL(queryString, clientInfo);
         }
 

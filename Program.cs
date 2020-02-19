@@ -1,12 +1,5 @@
 ﻿using System;
 using CommandLine;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SqlClient;
-using System.Configuration;
-using System.Security.Cryptography;
 
 namespace Project_2
 {
@@ -41,9 +34,6 @@ namespace Project_2
 
             [Option('t', "date time", HelpText = "Date where the transfer will happen")]
             public DateTime Date { get; set; }
-
-            [Option('i', "client id", Required = true, HelpText = "Enter your client id")]
-            public int IdClient { get; set; }
 
         }
 
@@ -206,29 +196,22 @@ namespace Project_2
         static void RunTransferOptions(TransferOptions options)
         {
             Authentification authentification = new Authentification();
-            int id = authentification.Login();
+            authentification.Login();
 
-            if (id == options.IdClient || id == 1)
+            if (options.Delayed)
             {
-                if (options.Delayed)
-                {
-                    DelayedTransfer delayedTransfer = new DelayedTransfer();
-                    delayedTransfer.ExecuteDelayedTransfer(options.Amount);
-                }
-                if (options.Instant)
-                {
-                    InstantTransfer instantTransfer = new InstantTransfer();
-                    instantTransfer.ImmediateTransfer(options.Amount);
-                }
-                if (options.Permanent)
-                {
-                    PermanentTransfer permanentTransfer = new PermanentTransfer();
-                    permanentTransfer.ExecutePermanentTransfer(options.Amount);
-                }
+                DelayedTransfer delayedTransfer = new DelayedTransfer();
+                delayedTransfer.ExecuteDelayedTransfer(options.Amount);
             }
-            else
+            if (options.Instant)
             {
-                Console.WriteLine("Wrong id");
+                InstantTransfer instantTransfer = new InstantTransfer();
+                instantTransfer.ImmediateTransfer(options.Amount);
+            }
+            if (options.Permanent)
+            {
+                PermanentTransfer permanentTransfer = new PermanentTransfer();
+                permanentTransfer.ExecutePermanentTransfer(options.Amount);
             }
         }
         static void RunCreateClientOptions(CreateClientOptions options)
