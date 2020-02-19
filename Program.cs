@@ -129,8 +129,10 @@ namespace Project_2
         }
         static void Main(string[] args)
         {
+
            Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, CreateSavingsAccountOptions, DeleteSavingsAccountOptions, 
                InfoSavingAccountsOptions, InfoCurrentAccountsOptions, CreateClientOptions, DeleteClientOptions, InfoUserOptions, InfoTransactionOptions>(args)
+
               //.WithParsed<Options>(RunOptions)
               .WithParsed<WithdrawOptions>(RunWithdrawOptions)
               .WithParsed<TransferOptions>(RunTransferOptions)
@@ -154,7 +156,9 @@ namespace Project_2
             //string queryString = $"SELECT * FROM \"Transaction\" ";
             //string queryString = $"SELECT * FROM \"Transaction\" WHERE id = 2 ";
 
-           /* SavingsAccount.AddInterest(10000);
+
+            /*SavingsAccount.AddInterest(10000);
+
             Authentification authentification = new Authentification();
             authentification.Login();
             authentification.ModifyPassword();*/
@@ -203,6 +207,15 @@ namespace Project_2
             //    Console.WriteLine(value);
             //}
             //Console.ReadLine();
+
+            /*InstantTransfer ins = new InstantTransfer();
+            ins.ImmediateTransfer(1);*/
+
+            /*DelayedTransfer trs = new DelayedTransfer();
+            trs.ExecuteDelayedTransfer(300);*/
+
+            /*PermanentTransfer trp = new PermanentTransfer();
+            trp.ExecutePermanentTransfer(300);*/
 
 
         }

@@ -9,27 +9,44 @@ namespace Project_2
         
         public void ExecutePermanentTransfer(double amount)
         {
+            int debitClient_id = Person.ID;
+
             Console.WriteLine("First date of transfer. ");
             DateTime FirstExecution = Transactor.GetCheckedDate();
             Console.WriteLine("Last date of transfer. ");
             DateTime LastExecution = Transactor.GetCheckedDate();
+
+            while (LastExecution <= FirstExecution || FirstExecution < DateTime.Today)
+            {
+                Console.WriteLine("Unvalid dates");
+                Console.WriteLine("First date of transfer: ");
+                FirstExecution = Transactor.GetCheckedDate();
+                Console.WriteLine("Last date of transfer: ");
+                LastExecution = Transactor.GetCheckedDate();
+            }
+            
             Console.WriteLine("Give the periodicity (number of days between the transfers) ");
-            int interval = Convert.ToInt32(Console.ReadLine());
+            int interval = Math.Abs(Convert.ToInt32(Console.ReadLine()));
             TimeSpan Interval = new TimeSpan(interval, 0, 0, 0);
 
-            while (FirstExecution < LastExecution && FirstExecution >= DateTime.Now)
+            char debitAccount = ChooseDebitAccount();
+            char recipientAccount = ChooseRecipientAccount(debitClient_id);
+            int recipientAccount_id = GetAccountIdFromAccountType(debitClient_id, recipientAccount);
+
+            while (FirstExecution < LastExecution && FirstExecution >= DateTime.Today)
             {
-                if (FirstExecution == DateTime.Now)
+                // Voir pour sortir execute transfer de la boucle et mettre cette boucle plus tard afin de pouvoir sélectionner
+                // en amont les comptes de départ et d'arrivée.
+                if (FirstExecution == DateTime.Today)
                 {
-                    ExecuteTransfer(amount, FirstExecution);
-                    FirstExecution += Interval;
+                    ExecuteTransfer(amount, FirstExecution, debitAccount, recipientAccount, recipientAccount_id);
+                    FirstExecution = FirstExecution.Add(Interval);
                 }
             }
         }
 
         public override void DoTransferFromCurrentAccountToSavingAccountAccordingToDate(int debitClient_id, int SavingAccount_id, double amount, DateTime transferDate)
         {
-
             while (DateTime.Today <= transferDate)
             {
                 if (DateTime.Today == transferDate)

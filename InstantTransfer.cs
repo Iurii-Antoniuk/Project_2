@@ -8,8 +8,14 @@ namespace Project_2
     {
         public void ImmediateTransfer(double amount)
         {
+            int debitClient_id = Person.ID;
             DateTime transferDate = DateTime.Today;
-            ExecuteTransfer(amount, transferDate);
+            char debitAccount = ChooseDebitAccount();
+            char recipientAccount = ChooseRecipientAccount(debitClient_id);
+            int recipientAccount_id = GetAccountIdFromAccountType(debitClient_id, recipientAccount);
+
+            ExecuteTransfer(amount, transferDate, debitAccount, recipientAccount, recipientAccount_id);
+
         }
 
         public override void DoTransferFromCurrentAccountToSavingAccountAccordingToDate(int debitClient_id, int SavingAccount_id, double amount, DateTime transferDate)
