@@ -9,7 +9,6 @@ namespace Project_2
     { 
         public void CheckCurrentAccounts()
         {
-            // voir pour enlever car mise dans informations
             Console.WriteLine("Current Accounts : ");
             int client_id = ID;
             string queryString = $"SELECT id, amount, overdraft, openingDate FROM CurrentAccounts WHERE client_id = '{client_id}';";
@@ -21,12 +20,10 @@ namespace Project_2
             Console.WriteLine();
             ConnectionDB.SelectSQL(queryString, currentAccountInfo);
         }
-        public void CheckSavingAccounts(int debitClient_id)
+        public void CheckSavingAccounts()
         {
-            // voir pour enlever car mise dans informations
             Console.WriteLine("Savings Accounts : ");
-            //  ***************** Remplacer debitClient_id par Person.ID **************************************
-            int client_id = debitClient_id;
+            int client_id = Person.ID;
             string queryString = $"SELECT id, amount, rate, ceiling, openingDate FROM SavingAccounts WHERE client_id = '{client_id}';";
             List<string> savingAccountInfo = new List<string> { "id", "amount", "rate", "ceiling", "openingDate" };
             foreach (string item in savingAccountInfo)
