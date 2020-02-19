@@ -130,27 +130,27 @@ namespace Project_2
         static void Main(string[] args)
         {
 
-           Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, CreateSavingsAccountOptions, DeleteSavingsAccountOptions, 
-               InfoSavingAccountsOptions, InfoCurrentAccountsOptions, CreateClientOptions, DeleteClientOptions, InfoUserOptions, InfoTransactionOptions>(args)
+            /*Parser.Default.ParseArguments<Options, WithdrawOptions, TransferOptions, CreateSavingsAccountOptions, DeleteSavingsAccountOptions, 
+                InfoSavingAccountsOptions, InfoCurrentAccountsOptions, CreateClientOptions, DeleteClientOptions, InfoUserOptions, InfoTransactionOptions>(args)
 
-              //.WithParsed<Options>(RunOptions)
-              .WithParsed<WithdrawOptions>(RunWithdrawOptions)
-              .WithParsed<TransferOptions>(RunTransferOptions)
-              .WithParsed<CreateSavingsAccountOptions>(RunCreateSavingsAccountOptions)
-              .WithParsed<DeleteSavingsAccountOptions>(RunDeleteSavingsAccountOptions)
-              .WithParsed<InfoSavingAccountsOptions>(RunSavingAccountsInfoOptions)
-              .WithParsed<InfoCurrentAccountsOptions>(RunCurrentAccountsInfoOptions)
-              .WithParsed<InfoUserOptions>(RunInfoUserOptions)
-              .WithParsed<InfoTransactionOptions>(RunInfoTransactionOptions)
-              .WithParsed<CreateClientOptions>(RunCreateClientOptions)
-              .WithParsed<DeleteClientOptions>(RunDeleteClientOptions);
+               //.WithParsed<Options>(RunOptions)
+               .WithParsed<WithdrawOptions>(RunWithdrawOptions)
+               .WithParsed<TransferOptions>(RunTransferOptions)
+               .WithParsed<CreateSavingsAccountOptions>(RunCreateSavingsAccountOptions)
+               .WithParsed<DeleteSavingsAccountOptions>(RunDeleteSavingsAccountOptions)
+               .WithParsed<InfoSavingAccountsOptions>(RunSavingAccountsInfoOptions)
+               .WithParsed<InfoCurrentAccountsOptions>(RunCurrentAccountsInfoOptions)
+               .WithParsed<InfoUserOptions>(RunInfoUserOptions)
+               .WithParsed<InfoTransactionOptions>(RunInfoTransactionOptions)
+               .WithParsed<CreateClientOptions>(RunCreateClientOptions)
+               .WithParsed<DeleteClientOptions>(RunDeleteClientOptions);
 
-            ConnectionDB.GetConnectionString();
+             ConnectionDB.GetConnectionString();*/
 
             //DateTime date = new DateTime(2020, 2, 12);
             //Information.GetInfoByTransactionDate(date);
 
-           // Console.WriteLine("Welcome on bank application");
+            // Console.WriteLine("Welcome on bank application");
 
             //string queryString = $"SELECT * FROM CurrentAccounts";
             //string queryString = $"SELECT * FROM \"Transaction\" ";
@@ -207,15 +207,16 @@ namespace Project_2
             //    Console.WriteLine(value);
             //}
             //Console.ReadLine();
+            Person.ID = 2;
 
             /*InstantTransfer ins = new InstantTransfer();
             ins.ImmediateTransfer(1);*/
 
             /*DelayedTransfer trs = new DelayedTransfer();
-            trs.ExecuteDelayedTransfer(300);*/
+            trs.ExecuteDelayedTransfer(1);*/
 
-            /*PermanentTransfer trp = new PermanentTransfer();
-            trp.ExecutePermanentTransfer(300);*/
+            PermanentTransfer trp = new PermanentTransfer();
+            trp.ExecutePermanentTransfer(1);
 
 
         }

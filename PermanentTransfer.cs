@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Project_2
 {
@@ -30,16 +31,25 @@ namespace Project_2
             TimeSpan Interval = new TimeSpan(interval, 0, 0, 0);
 
             char debitAccount = ChooseDebitAccount();
-            char recipientAccount = ChooseRecipientAccount(debitClient_id);
-            int recipientAccount_id = GetAccountIdFromAccountType(debitClient_id, recipientAccount);
-
+            int debitSavingAccount_id = 0;
+            char recipientAccount = 'a';
+            int recipientAccount_id = 0;
+            if (debitAccount == 's')
+            {
+                debitSavingAccount_id = Transactor.GetSavingAccountIdFromClientChoice(Person.ID);
+            }
+            else
+            {
+                recipientAccount = ChooseRecipientAccount(debitClient_id);
+                recipientAccount_id = GetAccountIdFromAccountType(debitClient_id, recipientAccount);
+            }
             while (FirstExecution < LastExecution && FirstExecution >= DateTime.Today)
             {
                 // Voir pour sortir execute transfer de la boucle et mettre cette boucle plus tard afin de pouvoir sélectionner
                 // en amont les comptes de départ et d'arrivée.
                 if (FirstExecution == DateTime.Today)
                 {
-                    ExecuteTransfer(amount, FirstExecution, debitAccount, recipientAccount, recipientAccount_id);
+                    ExecuteTransfer(amount, FirstExecution, debitAccount, debitSavingAccount_id, recipientAccount, recipientAccount_id);
                     FirstExecution = FirstExecution.Add(Interval);
                 }
             }
@@ -52,7 +62,7 @@ namespace Project_2
                 if (DateTime.Today == transferDate)
                 {
                     Transactor.TransferFromCurrentAccountToSavingAccount(debitClient_id, SavingAccount_id, amount);
-                    break;
+                    Task.Delay(TimeSpan.FromHours(24));
                 }
             }
         }
@@ -66,6 +76,7 @@ namespace Project_2
                     if (DateTime.Today == transferDate)
                     {
                         Transactor.TransferFromCurrentToCurrentAccount(debitClient_id, clientIdOfExternalAccount, amount);
+                        Task.Delay(TimeSpan.FromHours(24));
                     }
                 }
             }
@@ -75,18 +86,17 @@ namespace Project_2
             }
         }
 
-        public override void DoTransferFromSavingToCurrentAccountAccordingToDate(int debitClient_id, int SavingAccount_id, double amount, DateTime transferDate)
+        public override void DoTransferFromSavingToCurrentAccountAccordingToDate(int debitClient_id, int SavingAccount_id, int recipientAccount_id, double amount, DateTime transferDate)
         {
             while (DateTime.Today <= transferDate)
             {
                 if (DateTime.Today == transferDate)
                 {
                     Transactor.TransferFromSavingToCurrentAccount(debitClient_id, SavingAccount_id, amount);
-                    break;
+                    Task.Delay(TimeSpan.FromHours(24));
                 }
             }
         }
-
     }
 
     

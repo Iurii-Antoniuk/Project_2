@@ -38,7 +38,15 @@ namespace Project_2
         {
             DateTime date = DateTime.Today;
 
-            string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE client_id = {debitClient_id} " +
+            string checkCurrentAccountContent = $"SELECT amount FROM CurrentAccounts WHERE client_id = {debitClient_id}";
+            decimal CurrentAccountContent = ConnectionDB.ReturnDecimal(checkCurrentAccountContent);
+            string getCurrentAccountOverdraft = $"SELECT overdraft FROM CurrentAccounts WHERE client_id = {debitClient_id}";
+            decimal CurrentAccountOverdraft = ConnectionDB.ReturnDecimal(getCurrentAccountOverdraft);
+
+
+            if (Convert.ToDouble(CurrentAccountContent - CurrentAccountOverdraft) >= amount)
+            {
+                string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE client_id = {debitClient_id} " +
                                  $"UPDATE CurrentAccounts SET amount = (amount + {amount}) WHERE client_id = {creditClient_id} " +
                                  $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, beneficiaryAccount_id, amount, \"date\") " +
                                  $"VALUES(" +
@@ -48,38 +56,67 @@ namespace Project_2
                                  $"{amount}, " +
                                  $"\'{date}\');";
             ConnectionDB.NonQuerySQL(queryString);
+            }
+            else
+            {
+                Console.WriteLine($"There is not enough money on current account to perform transfer");
+            }
         }
 
-        public static void TransferFromSavingToCurrentAccount(int debitClient_id, int SavingAccount_id, double amount)
+        public static void TransferFromSavingToCurrentAccount(int debitClient_id, int savingAccount_id, double amount)
         {
             DateTime date = DateTime.Today;
 
-            string queryString = $"UPDATE SavingAccounts SET amount = (amount - {amount}) WHERE id = {SavingAccount_id} " +
+            string checkSavingAccountContent = $"SELECT amount FROM SavingAccounts WHERE client_id = {debitClient_id}";
+            decimal savingAccountContent = ConnectionDB.ReturnDecimal(checkSavingAccountContent);
+
+            if (Convert.ToDouble(savingAccountContent) >= amount)
+            {
+                string queryString = $"UPDATE SavingAccounts SET amount = (amount - {amount}) WHERE id = {savingAccount_id} " +
                                  $"UPDATE CurrentAccounts SET amount = (amount + {amount}) WHERE client_id = {debitClient_id}; " +
                                  $"INSERT INTO \"Transaction\" (SavingAccount_id, transactionType, beneficiaryAccount_id, amount, \"date\") " +
                                  $"VALUES(" +
-                                 $"(SELECT id FROM SavingAccounts WHERE id = {SavingAccount_id}), " +
+                                 $"(SELECT id FROM SavingAccounts WHERE id = {savingAccount_id}), " +
                                  $"\'Money Transfer\', " +
                                  $"(SELECT id FROM CurrentAccounts WHERE client_id = {debitClient_id}), " +
                                  $"{amount}, " +
                                  $"\'{date}\');";
             ConnectionDB.NonQuerySQL(queryString);
+            }
+            else
+            {
+                Console.WriteLine($"There is not enough money on saving account {savingAccount_id} to perform transfer");
+            }
         }
 
-        public static void TransferFromCurrentAccountToSavingAccount(int debitClient_id, int SavingAccount_id, double amount)
+        public static void TransferFromCurrentAccountToSavingAccount(int debitClient_id, int savingAccount_id, double amount)
         {
             DateTime date = DateTime.Today;
 
-            string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE client_id = {debitClient_id} " +
-                                 $"UPDATE SavingAccounts SET amount = (amount + {amount}) WHERE id = {SavingAccount_id} " +
+            string checkCurrentAccountContent = $"SELECT amount FROM CurrentAccounts WHERE client_id = {debitClient_id}";
+            decimal CurrentAccountContent = ConnectionDB.ReturnDecimal(checkCurrentAccountContent);
+            string getCurrentAccountOverdraft = $"SELECT overdraft FROM CurrentAccounts WHERE client_id = {debitClient_id}";
+            decimal CurrentAccountOverdraft = ConnectionDB.ReturnDecimal(getCurrentAccountOverdraft);
+
+
+            if (Convert.ToDouble(CurrentAccountContent - CurrentAccountOverdraft) >= amount)
+            {
+                string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE client_id = {debitClient_id} " +
+                                 $"UPDATE SavingAccounts SET amount = (amount + {amount}) WHERE id = {savingAccount_id} " +
                                  $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, SavingAccount_id, amount, \"date\") " +
                                  $"VALUES(" +
                                  $"(SELECT id FROM CurrentAccounts WHERE client_id = {debitClient_id}), " +
                                  $"\'Money Transfer\', " +
-                                 $"(SELECT id FROM SavingAccounts WHERE id = {SavingAccount_id}), " +
+                                 $"(SELECT id FROM SavingAccounts WHERE id = {savingAccount_id}), " +
                                  $"{amount}, " +
                                  $"\'{date}\');";
-            ConnectionDB.NonQuerySQL(queryString);
+                ConnectionDB.NonQuerySQL(queryString);
+            }
+            else
+            {
+                Console.WriteLine($"There is not enough money on current account to perform transfer");
+            }
+            
         }
     }
 }

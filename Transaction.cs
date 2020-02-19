@@ -14,7 +14,8 @@ namespace Project_2
 
         public abstract void DoTransferFromCurrentAccountToSavingAccountAccordingToDate(int debitClient_id, int SavingAccount_id, double amount, DateTime transferDate);
         public abstract void DoTransferFromCurrentToOtherCurrentAccountAccordingToDate(int debitClient_id, int clientIdOfExternalAccount, double amount, DateTime transferDate);
-        public abstract void DoTransferFromSavingToCurrentAccountAccordingToDate(int debitClient_id, int SavingAccount_id, double amount, DateTime transferDate);
+        public abstract void DoTransferFromSavingToCurrentAccountAccordingToDate(int debitClient_id, int debitSavingAccount_id, int recipientAccount_id, double amount, DateTime transferDate);
+        
 
 
         public char ChooseDebitAccount()
@@ -51,7 +52,7 @@ namespace Project_2
             {
                 Console.WriteLine("Specify the id number of the beneficiary account");
                 int externalAccount_id = Convert.ToInt32(Console.ReadLine());
-
+                
                 int clientIdOfExternalAccount = GetClientIDFromAccountId(externalAccount_id);
                 if (clientIdOfExternalAccount > 0)
                 {
@@ -69,7 +70,7 @@ namespace Project_2
         }
 
         
-        public void ExecuteTransfer(double amount, DateTime transferDate, char debitAccount, char recipientAccount, int recipientAccount_id)
+        public void ExecuteTransfer(double amount, DateTime transferDate, char debitAccount, int debitSavingAccount_id, char recipientAccount, int recipientAccount_id)
         {
             
             // Récupère l'ID du client dans la propriété qui doit être définie lors de la connexion du client sur l'interface
@@ -81,7 +82,7 @@ namespace Project_2
             }
             else if (debitAccount == 's')
             {
-                DoTransferFromSavingToCurrentAccountAccordingToDate(debitClient_id, recipientAccount_id, amount, transferDate);
+                DoTransferFromSavingToCurrentAccountAccordingToDate(debitClient_id, debitSavingAccount_id, recipientAccount_id, amount, transferDate);
             }
             else
             {
@@ -101,11 +102,10 @@ namespace Project_2
             {
                 /*Console.WriteLine("Specify the id number of the beneficiary account");
                 int externalAccount_id = Convert.ToInt32(Console.ReadLine());*/
-
-                int clientIdOfExternalAccount = GetClientIDFromAccountId(recipientAccount_id);
-                if (clientIdOfExternalAccount > 0)
+                
+                if (recipientAccount_id > 0)
                 {
-                    DoTransferFromCurrentToOtherCurrentAccountAccordingToDate(debitClient_id, clientIdOfExternalAccount, amount, transferDate);
+                    DoTransferFromCurrentToOtherCurrentAccountAccordingToDate(debitClient_id, recipientAccount_id, amount, transferDate);
                 }
                 else
                 {

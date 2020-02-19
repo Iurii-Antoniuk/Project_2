@@ -20,9 +20,20 @@ namespace Project_2
             else
             {
                 char debitAccount = ChooseDebitAccount();
-                char recipientAccount = ChooseRecipientAccount(debitClient_id);
-                int recipientAccount_id = GetAccountIdFromAccountType(debitClient_id, recipientAccount);
-                ExecuteTransfer(amount, transferDate, debitAccount, recipientAccount, recipientAccount_id);
+                int debitSavingAccount_id = 0;
+                char recipientAccount = 'a';
+                int recipientAccount_id = 0;
+                if (debitAccount == 's')
+                {
+                    debitSavingAccount_id = Transactor.GetSavingAccountIdFromClientChoice(Person.ID);
+                }
+                else
+                {
+                    recipientAccount = ChooseRecipientAccount(debitClient_id);
+                    recipientAccount_id = GetAccountIdFromAccountType(debitClient_id, recipientAccount);
+                }
+
+                ExecuteTransfer(amount, transferDate, debitAccount, debitSavingAccount_id, recipientAccount, recipientAccount_id);
             }
         }
 
@@ -49,6 +60,7 @@ namespace Project_2
                     if (DateTime.Today == transferDate)
                     {
                         Transactor.TransferFromCurrentToCurrentAccount(debitClient_id, clientIdOfExternalAccount, amount);
+                        break;
                     }
                 }
             }
@@ -58,7 +70,7 @@ namespace Project_2
             }
         }
 
-        public override void DoTransferFromSavingToCurrentAccountAccordingToDate(int debitClient_id, int SavingAccount_id, double amount, DateTime transferDate)
+        public override void DoTransferFromSavingToCurrentAccountAccordingToDate(int debitClient_id, int SavingAccount_id, int recipientAccount_id, double amount, DateTime transferDate)
         {
             while (DateTime.Today <= transferDate)
             {

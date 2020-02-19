@@ -26,7 +26,7 @@ namespace Project_2
             // voir pour enlever car mise dans informations
             Console.WriteLine("Savings Accounts : ");
             //  ***************** Remplacer debitClient_id par Person.ID **************************************
-            int client_id = debitClient_id;
+            int client_id = Person.ID;
             string queryString = $"SELECT id, amount, rate, ceiling, openingDate FROM SavingAccounts WHERE client_id = '{client_id}';";
             List<string> savingAccountInfo = new List<string> { "id", "amount", "rate", "ceiling", "openingDate" };
             foreach (string item in savingAccountInfo)
