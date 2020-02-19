@@ -28,9 +28,6 @@ namespace Project_2
             [Option('a', "amount", Required = true, HelpText = "amount to withdraw")]
             public double Amount { get; set; }
 
-            [Option('a', "Account Id", Required = true, HelpText = "number of your account")]
-            public int AccountId { get; set; }
-
             [Option('c', "client id", Required = true, HelpText = "Enter your client id")]
             public int IdClient { get; set; }
 
@@ -215,7 +212,7 @@ namespace Project_2
             Authentification authentification = new Authentification();
             int id = authentification.Login();
 
-            if (id == options.IdClient && id != 1)
+            if (id == options.IdClient)
             {
                 Client client = new Client();
                 client.WithdrawMoney(options.Amount);

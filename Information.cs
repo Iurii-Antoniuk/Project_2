@@ -31,6 +31,10 @@ namespace Project_2
             int client_id = Client.ID;
             string queryString = $"SELECT id, amount, rate, ceiling, openingDate FROM SavingAccounts WHERE client_id = '{client_id}' AND id='{savingsAccountId}';";
             List<string> savingAccountInfo = new List<string> { "id", "amount", "rate", "ceiling", "openingDate" };
+            foreach (string item in savingAccountInfo)
+            {
+                Console.Write(item + "\t");
+            }
             ConnectionDB.SelectSQL(queryString, savingAccountInfo);
         }
 
@@ -40,6 +44,10 @@ namespace Project_2
             int client_id = Client.ID;
             string queryString = $"SELECT id, amount, overdraft, openingDate FROM CurrentAccounts WHERE client_id = '{client_id}' AND id='{currentAccountId}';";
             List<string> currentAccountInfo = new List<string> { "id", "amount", "overdraft", "openingDate" };
+            foreach (string item in currentAccountInfo)
+            {
+                Console.Write(item + "\t");
+            }
             ConnectionDB.SelectSQL(queryString, currentAccountInfo);
         }
     }
