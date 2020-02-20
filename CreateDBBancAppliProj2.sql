@@ -15,7 +15,7 @@ id INT PRIMARY KEY IDENTITY (100, 1),
 client_id INT NOT NULL,
 CONSTRAINT FK_CurrentAccounts FOREIGN KEY (client_id) REFERENCES Person(id),
 amount DECIMAL(10,2) NOT NULL,
-overdraft INT NOT NULL,
+overdraft DECIMAL NOT NULL,
 openingDate DATETIME NOT NULL,
 closeDate DATETIME
 );
@@ -26,7 +26,7 @@ client_id INT NOT NULL,
 CONSTRAINT FK_SavingAccounts FOREIGN KEY (client_id) REFERENCES Person(id),
 amount DECIMAL(10,2) NOT NULL,
 rate DECIMAL(10, 2),
-"ceiling" INT NOT NULL,
+"ceiling" DECIMAL NOT NULL,
 openingDate DATETIME NOT NULL,
 closeDate DATETIME
 );
@@ -38,7 +38,8 @@ CONSTRAINT FK_CurrentAccount FOREIGN KEY (currentAccount_id) REFERENCES CurrentA
 savingAccount_id INT NULL,
 CONSTRAINT FK_SavingAccount FOREIGN KEY (savingAccount_id) REFERENCES SavingAccounts(id),
 transactionType VARCHAR(80) NOT NULL,
-beneficiaryAccount VARCHAR(80),
+beneficiaryCurrentAccount_id INT,
+beneficiarySavingAccount_id INT,
 amount DECIMAL(10,2) NOT NULL,
 executionDate DATE NOT NULL,
 lastExecutionDate DATE,
