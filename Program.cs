@@ -6,7 +6,7 @@ namespace Project_2
     class Program
     {
 
-       /* [Verb("withdraw", HelpText = "money withdraw")]
+       [Verb("withdraw", HelpText = "money withdraw")]
         class WithdrawOptions
         {
             [Option('a', "amount", Required = true, HelpText = "amount to withdraw")]
@@ -17,26 +17,72 @@ namespace Project_2
 
         }
 
-        [Verb("transfer", HelpText = "money transaction")]
-        class TransferOptions
+        [Verb("permanent", HelpText ="Make a permanent transaction")]
+        class PermanentTransferOptions :TransferOptions
         {
-            //splitter la class pour les transactions/transfer ? voir ac tous les arguments à prendre en compte
-            
-            [Option('d', "delayed", HelpText = "You want to do a delayed trasaction")]
-            public bool Delayed { get; set; }
+            [Option('c', "currentAccount", HelpText ="Id of the current account")]
+            public int IdCurrentAccount { get; set; }
 
-            [Option('i', "instant", HelpText = "You want to do a instant trasaction")]
-            public bool Instant { get; set; }
-
-            [Option('p', "permanent", HelpText = "You want to do a permanent trasaction")]
-            public bool Permanent { get; set; }
+            [Option('s', "savingAccount", HelpText = "Id of the saving account")]
+            public int IdSavingAccount { get; set; }
 
             [Option('a', "amount", Required = true, HelpText = "amount to transfer")]
             public double Amount { get; set; }
 
-            [Option('t', "date time", HelpText = "Date where the transfer will happen")]
-            public DateTime Date { get; set; }
+            [Option('f', "first date", HelpText = "Date first execution of the transfer")]
+            public String FirstExe { get; set; }
 
+            [Option('l', "last date", HelpText = "Date last execution of the transfer")]
+            public String LastExe { get; set; }
+
+            [Option('i', "interval", HelpText ="interval between your execution")]
+            public Int32 Interval { get; set; }
+
+        }
+
+        [Verb("transfer", HelpText = "money transaction")]
+        class TransferOptions
+        {
+
+            [Option('t', "CToC", HelpText = "Transaction from a current account to a current account")]
+            public bool CurrentToCurrent { get; set; }
+
+            [Option('e', "CToS", HelpText = "Transaction from a current account to a saving account")]
+            public bool CurrentToSaving { get; set; }
+
+            [Option('r', "SToC", HelpText = "Transaction from a saving account to a current account")]
+            public bool SavingToCurrent { get; set; }
+
+        }
+
+        [Verb("delayed", HelpText = "Make a delayed transaction")]
+        class DelayedTransferOptions : TransferOptions
+        {
+            [Option('c', "currentAccount", HelpText = "Id of the current account")]
+            public int IdCurrentAccount { get; set; }
+
+            [Option('s', "savingAccount", HelpText = "Id of the saving account")]
+            public int IdSavingAccount { get; set; }
+
+            [Option('a', "amount", Required = true, HelpText = "amount to transfer")]
+            public double Amount { get; set; }
+
+            [Option('d', "date", HelpText = "Execution date of the transfer")]
+            public String DatetExe { get; set; }
+
+        }
+
+        [Verb("instant", HelpText = "Make a instant transaction")]
+        class InstantTransferOptions : TransferOptions
+        {
+            [Option('c', "currentAccount", HelpText = "Id of the current account")]
+            public int IdCurrentAccount { get; set; }
+
+            [Option('s', "savingAccount", HelpText = "Id of the saving account")]
+            public int IdSavingAccount { get; set; }
+
+            [Option('a', "amount", Required = true, HelpText = "amount to transfer")]
+            public double Amount { get; set; }
         }
 
         [Verb("createC", HelpText = "Client creation")]
@@ -131,15 +177,20 @@ namespace Project_2
         class ExportOptions
         {
             
-        }*/
+        }
         static void Main(string[] args)
         {
-            /* Parser.Default.ParseArguments<WithdrawOptions, TransferOptions, CreateSavingsAccountOptions, DeleteSavingsAccountOptions,
+            Parser.Default.ParseArguments<WithdrawOptions, TransferOptions, InstantTransferOptions, DelayedTransferOptions, PermanentTransferOptions, CreateSavingsAccountOptions, DeleteSavingsAccountOptions,
                  InfoSavingAccountsOptions, InfoCurrentAccountsOptions, CreateClientOptions, DeleteClientOptions, ModifyPasssOptions, InfoUserOptions,
                  InfoTransactionOptions, ExportOptions>(args)
 
                 .WithParsed<WithdrawOptions>(RunWithdrawOptions)
-                .WithParsed<TransferOptions>(RunTransferOptions)
+                //.WithParsed<TransferOptions>(RunTransferOptions)
+
+                .WithParsed<InstantTransferOptions>(RunInstantTransferOptions)
+                .WithParsed<DelayedTransferOptions>(RunDelayedTransferOptions)
+                .WithParsed<PermanentTransferOptions>(RunPermanentTransferOptions)
+
                 .WithParsed<CreateClientOptions>(RunCreateClientOptions)
                 .WithParsed<DeleteClientOptions>(RunDeleteClientOptions)
                 .WithParsed<ModifyPasssOptions>(RunModifyPassOptions)
@@ -151,7 +202,7 @@ namespace Project_2
                 .WithParsed<InfoTransactionOptions>(RunInfoTransactionOptions)
                 .WithParsed<ExportOptions>(RunExportOptions);
 
-             ConnectionDB.GetConnectionString();*/
+             ConnectionDB.GetConnectionString();
 
             //Administrator admin = new Administrator();
             //admin.CreateAdmin("admin");
@@ -200,7 +251,7 @@ namespace Project_2
              trp.ExecutePermanentTransfer(300);*/
         }
 
-        /*static void RunWithdrawOptions(WithdrawOptions options)
+        static void RunWithdrawOptions(WithdrawOptions options)
         {
             Authentification authentification = new Authentification();
             int id = authentification.Login();
@@ -216,27 +267,60 @@ namespace Project_2
             }
         }
 
-        static void RunTransferOptions(TransferOptions options)
+        static void RunInstantTransferOptions(InstantTransferOptions options)
         {
-            Authentification authentification = new Authentification();
-            authentification.Login();
+            InstantTransfer instantTransfer = new InstantTransfer();
 
-            if (options.Delayed)
+            if (options.CurrentToCurrent)
             {
-                DelayedTransfer delayedTransfer = new DelayedTransfer();
-                delayedTransfer.ExecuteDelayedTransfer(options.Amount);
+                instantTransfer.RecordInstantTransferFromCurrentToCurrent(options.IdCurrentAccount, options.Amount);
             }
-            if (options.Instant)
+            if(options.CurrentToSaving)
             {
-                InstantTransfer instantTransfer = new InstantTransfer();
-                instantTransfer.ImmediateTransfer(options.Amount);
+                instantTransfer.RecordTransferFromCurrentToSaving(options.IdSavingAccount, options.Amount);
             }
-            if (options.Permanent)
+            if(options.SavingToCurrent)
             {
-                PermanentTransfer permanentTransfer = new PermanentTransfer();
-                permanentTransfer.ExecutePermanentTransfer(options.Amount);
+                instantTransfer.RecordTransferFromSavingToCurrent(options.IdSavingAccount, options.Amount);
             }
         }
+        static void RunDelayedTransferOptions(DelayedTransferOptions options)
+        {
+            DelayedTransfer delayedTransfer = new DelayedTransfer();
+
+            if (options.CurrentToCurrent)
+            {
+                delayedTransfer.RecordTransferFromCurrentToCurrent(options.IdCurrentAccount, options.Amount, options.DatetExe);
+            }
+            if (options.CurrentToSaving)
+            {
+                delayedTransfer.RecordTransferFromCurrentToSaving(options.IdSavingAccount, options.Amount, options.DatetExe);
+            }
+            if (options.SavingToCurrent)
+            {
+                delayedTransfer.RecordTransferFromSavingToCurrent(options.IdSavingAccount, options.Amount, options.DatetExe);
+            }
+        }
+
+        static void RunPermanentTransferOptions(PermanentTransferOptions options)
+        {
+            PermanentTransfer permanentTransfer = new PermanentTransfer();
+
+            if (options.CurrentToCurrent)
+            {
+                permanentTransfer.RecordPermanentTransferFromCurrentToCurrent(options.IdCurrentAccount, options.Amount, options.FirstExe, options.LastExe, options.Interval);
+            }
+            if (options.CurrentToSaving)
+            {
+                permanentTransfer.RecordPermanentTransferFromCurrentToSaving(options.IdSavingAccount, options.Amount, options.FirstExe, options.LastExe, options.Interval);
+            }
+            if (options.SavingToCurrent)
+            {
+                permanentTransfer.RecordPermanentTransferFromSavingToCurrent(options.IdSavingAccount, options.Amount, options.FirstExe, options.LastExe, options.Interval);
+            }
+        }
+
+
         static void RunCreateClientOptions(CreateClientOptions options)
         {
             Authentification authentification = new Authentification();
@@ -385,7 +469,7 @@ namespace Project_2
             {
                 Console.WriteLine("You can not acces to the export of the transaction");
             }
-        }*/
+        }
     }
 }
 
