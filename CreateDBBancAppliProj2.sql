@@ -112,13 +112,13 @@ SELECT * FROM "Transaction";
 INSERT INTO Donator
 (client_id, "name")
 VALUES
-(2, 'JEAN'),
-(2, 'GEORGE'),
-(2, 'JEAN'),
-(2, 'Ru_MAFIA'),
-(2, 'IT_MAFIA'),
-(3, 'PAPA'),
-(3, 'MAMA'),
-(3, 'VOISIN');
+(4, 'JEAN'),
+(4, 'GEORGE'),
+(4, 'JEAN'),
+(5, 'Ru_MAFIA'),
+(5, 'IT_MAFIA'),
+(5, 'PAPA'),
+(6, 'MAMA'),
+(7, 'VOISIN');
 
 SELECT * FROM Donator;
