@@ -14,17 +14,18 @@ namespace Project_2
             ConnectionDB.NonQuerySQL(queryString);
         }
 
-        public void CreateClient(string name, double amount)
-        {
+        public void CreateClient(string name, double amount, decimal overdraft)
+        {   
             PasswordGenerator();
             string password = CryptPassword(Password);
+
             string queryString = $"INSERT INTO Person (name, password) VALUES ('{name}', '{password}');";
             ConnectionDB.NonQuerySQL(queryString);
             queryString = $"SELECT id FROM Person WHERE name = '{name}' AND password='{password}';";
             int client_id = ConnectionDB.ReturnID(queryString);
 
             CurrentAccount currentAccount = new CurrentAccount();
-            currentAccount.CreateCurrentAccount(client_id, amount);
+            currentAccount.CreateCurrentAccount(client_id, amount, overdraft);
         }              
         public void DeleteClient(int client_id)
         {

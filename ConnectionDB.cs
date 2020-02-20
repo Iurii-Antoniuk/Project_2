@@ -2,7 +2,6 @@
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Collections.Generic;
-using System.IO;
 
 namespace Project_2
 {
@@ -68,7 +67,6 @@ namespace Project_2
                 id = dataread.GetInt32(0);
                 dataread.Close();
                 connection.Close();
-                Console.WriteLine("DONE");
                 return id;
             }
             catch (Exception)
