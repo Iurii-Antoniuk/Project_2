@@ -17,29 +17,6 @@ namespace Project_2
 
         }
 
-        [Verb("permanent", HelpText ="Make a permanent transaction")]
-        class PermanentTransferOptions :TransferOptions
-        {
-            [Option('c', "currentAccount", HelpText ="Id of the current account")]
-            public int IdCurrentAccount { get; set; }
-
-            [Option('s', "savingAccount", HelpText = "Id of the saving account")]
-            public int IdSavingAccount { get; set; }
-
-            [Option('a', "amount", Required = true, HelpText = "amount to transfer")]
-            public double Amount { get; set; }
-
-            [Option('f', "first date", HelpText = "Date first execution of the transfer")]
-            public String FirstExe { get; set; }
-
-            [Option('l', "last date", HelpText = "Date last execution of the transfer")]
-            public String LastExe { get; set; }
-
-            [Option('i', "interval", HelpText ="interval between your execution")]
-            public Int32 Interval { get; set; }
-
-        }
-
         [Verb("transfer", HelpText = "money transaction")]
         class TransferOptions
         {
@@ -53,6 +30,19 @@ namespace Project_2
             [Option('r', "SToC", HelpText = "Transaction from a saving account to a current account")]
             public bool SavingToCurrent { get; set; }
 
+        }
+
+        [Verb("instant", HelpText = "Make a instant transaction")]
+        class InstantTransferOptions : TransferOptions
+        {
+            [Option('c', "currentAccount", HelpText = "Id of the current account")]
+            public int IdCurrentAccount { get; set; }
+
+            [Option('s', "savingAccount", HelpText = "Id of the saving account")]
+            public int IdSavingAccount { get; set; }
+
+            [Option('a', "amount", Required = true, HelpText = "amount to transfer")]
+            public double Amount { get; set; }
         }
 
         [Verb("delayed", HelpText = "Make a delayed transaction")]
@@ -71,9 +61,8 @@ namespace Project_2
             public String DatetExe { get; set; }
 
         }
-
-        [Verb("instant", HelpText = "Make a instant transaction")]
-        class InstantTransferOptions : TransferOptions
+        [Verb("permanent", HelpText = "Make a permanent transaction")]
+        class PermanentTransferOptions : TransferOptions
         {
             [Option('c', "currentAccount", HelpText = "Id of the current account")]
             public int IdCurrentAccount { get; set; }
@@ -83,6 +72,16 @@ namespace Project_2
 
             [Option('a', "amount", Required = true, HelpText = "amount to transfer")]
             public double Amount { get; set; }
+
+            [Option('f', "first date", HelpText = "Date first execution of the transfer")]
+            public String FirstExe { get; set; }
+
+            [Option('l', "last date", HelpText = "Date last execution of the transfer")]
+            public String LastExe { get; set; }
+
+            [Option('i', "interval", HelpText = "interval between your execution")]
+            public Int32 Interval { get; set; }
+
         }
 
         [Verb("createC", HelpText = "Client creation")]
