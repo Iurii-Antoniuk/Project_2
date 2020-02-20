@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Project_2
 {
-    public class PermanentTransfer
+    public class PermanentTransfer : Transaction
     {
-        public void RecordPermanentTransferFromCurrentToCurrent(int creditCurrentAccount_id, double amount, string firstExecution, string lastExecution, Int32 interval)
+        public void RecordTransferFromCurrentToCurrent(int creditCurrentAccount_id, double amount, string firstExecution, string lastExecution, Int32 interval)
         {
             int debitClient_id = Person.ID;
-            DateTime firstExecutionDate = Transactor.CheckDate(firstExecution);
-            DateTime lastExecutionDate = Transactor.CheckDate(lastExecution);
+            DateTime firstExecutionDate = CheckDate(firstExecution);
+            DateTime lastExecutionDate = CheckDate(lastExecution);
 
             if (lastExecutionDate <= firstExecutionDate || firstExecutionDate < DateTime.Today)
             {
@@ -18,11 +18,11 @@ namespace Project_2
             }
             else
             {
-                QueryPermanentTransferFromCurrentToCurrent(creditCurrentAccount_id, amount, firstExecutionDate, lastExecutionDate, interval);
+                QueryTransferFromCurrentToCurrent(creditCurrentAccount_id, amount, firstExecutionDate, lastExecutionDate, interval);
             }
         }
 
-        public void QueryPermanentTransferFromCurrentToCurrent(int creditCurrentAccount_id, double amount, DateTime firstExecution, DateTime lastExecution, Int32 interval)
+        public void QueryTransferFromCurrentToCurrent(int creditCurrentAccount_id, double amount, DateTime firstExecution, DateTime lastExecution, Int32 interval)
         {
             int debitClient_id = Person.ID;
             string checkCurrentAccountContent = $"SELECT amount FROM CurrentAccounts WHERE client_id = {debitClient_id}";
@@ -47,12 +47,11 @@ namespace Project_2
             }
         }
 
-        public void RecordPermanentTransferFromSavingToCurrent(int debitSavingAccount_id, double amount, string firstExecution, string lastExecution, Int32 interval)
+        public void RecordTransferFromSavingToCurrent(int debitSavingAccount_id, double amount, string firstExecution, string lastExecution, Int32 interval)
         {
             int debitClient_id = Person.ID;
-            DateTime firstExecutionDate = Transactor.CheckDate(firstExecution);
-            DateTime lastExecutionDate = Transactor.CheckDate(lastExecution);
-
+            DateTime firstExecutionDate = CheckDate(firstExecution);
+            DateTime lastExecutionDate = CheckDate(lastExecution);
 
             if (lastExecutionDate <= firstExecutionDate || firstExecutionDate < DateTime.Today)
             {
@@ -60,11 +59,11 @@ namespace Project_2
             }
             else
             {
-                QueryPermanentTransferFromSavingToCurrent(debitSavingAccount_id, amount, firstExecutionDate, lastExecutionDate, interval);
+                QueryTransferFromSavingToCurrent(debitSavingAccount_id, amount, firstExecutionDate, lastExecutionDate, interval);
             }
         }
 
-        public void QueryPermanentTransferFromSavingToCurrent(int debitSavingAccount_id, double amount, DateTime firstExecution, DateTime lastExecution, Int32 interval)
+        public void QueryTransferFromSavingToCurrent(int debitSavingAccount_id, double amount, DateTime firstExecution, DateTime lastExecution, Int32 interval)
         {
             int debitClient_id = Person.ID;
             string checkSavingAccountContent = $"SELECT amount FROM SavingAccounts WHERE id = {debitSavingAccount_id}";
@@ -88,11 +87,11 @@ namespace Project_2
         }
 
 
-        public void RecordPermanentTransferFromCurrentToSaving(int SavingAccount_id, double amount, string firstExecution, string lastExecution, Int32 interval)
+        public void RecordTransferFromCurrentToSaving(int SavingAccount_id, double amount, string firstExecution, string lastExecution, Int32 interval)
         {
             int debitClient_id = Person.ID;
-            DateTime firstExecutionDate = Transactor.CheckDate(firstExecution);
-            DateTime lastExecutionDate = Transactor.CheckDate(lastExecution);
+            DateTime firstExecutionDate = CheckDate(firstExecution);
+            DateTime lastExecutionDate = CheckDate(lastExecution);
             
 
             if (lastExecutionDate <= firstExecutionDate || firstExecutionDate < DateTime.Today)
@@ -101,11 +100,11 @@ namespace Project_2
             }
             else
             {
-                QueryPermanentTransferFromCurrentToSaving(SavingAccount_id, amount, firstExecutionDate, lastExecutionDate, interval);
+                QueryTransferFromCurrentToSaving(SavingAccount_id, amount, firstExecutionDate, lastExecutionDate, interval);
             }
         }
 
-        public void QueryPermanentTransferFromCurrentToSaving(int SavingAccount_id, double amount, DateTime firstExecution, DateTime lastExecution, Int32 interval)
+        public void QueryTransferFromCurrentToSaving(int SavingAccount_id, double amount, DateTime firstExecution, DateTime lastExecution, Int32 interval)
         {
             int debitClient_id = Person.ID;
             string checkCurrentAccountContent = $"SELECT amount FROM CurrentAccounts WHERE client_id = {debitClient_id}";
