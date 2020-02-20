@@ -2,114 +2,116 @@
 
 namespace Project_2
 {
-    public class InstantTransfer : Transaction
-    {
-        public void ImmediateTransfer(double amount)
+    public class InstantTransfer
+    { 
+
+        public void RecordInstantTransferFromCurrentToCurrent(int creditCurrentAccount_id, double amount)
         {
             int debitClient_id = Person.ID;
-            DateTime transferDate = DateTime.Today;
+            DateTime executionDate = DateTime.Today;
 
-            char debitAccount = ChooseDebitAccount();
+            QueryTransferFromCurrentToCurrent(creditCurrentAccount_id, amount, executionDate);
+        }
 
-            int debitSavingAccount_id = 0;
-            char recipientAccount = 'a';
-            int recipientAccount_id = 0;
+        public void QueryTransferFromCurrentToCurrent(int creditCurrentAccount_id, double amount, DateTime executionDate)
+        {
+            int debitClient_id = Person.ID;
+            string checkCurrentAccountContent = $"SELECT amount FROM CurrentAccounts WHERE client_id = {debitClient_id}";
+            decimal CurrentAccountContent = ConnectionDB.ReturnDecimal(checkCurrentAccountContent);
+            string getCurrentAccountOverdraft = $"SELECT overdraft FROM CurrentAccounts WHERE client_id = {debitClient_id}";
+            decimal CurrentAccountOverdraft = ConnectionDB.ReturnDecimal(getCurrentAccountOverdraft);
 
-            if (debitAccount == 's')
+            if (Convert.ToDouble(CurrentAccountContent + CurrentAccountOverdraft) > amount)
             {
-                debitSavingAccount_id = Transactor.GetSavingAccountIdFromClientChoice(Person.ID);
+                string queryString =
+                                 $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, beneficiaryCurrentAccount_id, amount, executionDate, status) " +
+                                 $"VALUES (" +
+                                 $"(SELECT id FROM CurrentAccounts WHERE client_id = {debitClient_id}), " +
+                                 $"\'Money Transfer\', " +
+                                 $"{creditCurrentAccount_id}, " +
+                                 $"{amount}, " +
+                                 $"\'{executionDate}\'," +
+                                 $"\'pending\');";
+                ConnectionDB.NonQuerySQL(queryString);
             }
-            else
-            {
-                recipientAccount = ChooseRecipientAccount(debitClient_id);
-                recipientAccount_id = GetAccountIdFromAccountType(debitClient_id, recipientAccount);
-            }
+        }
+
+        public void RecordTransferFromSavingToCurrent(int debitSavingAccount_id, double amount)
+        {
+            int debitClient_id = Person.ID;
+            DateTime executionDate = DateTime.Today;
             
-
-            ExecuteTransfer(amount, transferDate, debitAccount, debitSavingAccount_id, recipientAccount, recipientAccount_id);
-
+            QueryInstantTransferFromSavingToCurrent(debitSavingAccount_id, amount, executionDate);
+            
         }
 
-        public override void DoTransferFromCurrentAccountToSavingAccountAccordingToDate(int debitClient_id, int SavingAccount_id, double amount, DateTime transferDate)
+        public void QueryInstantTransferFromSavingToCurrent(int debitSavingAccount_id, double amount, DateTime executionDate)
         {
-            Transactor.TransferFromCurrentAccountToSavingAccount(debitClient_id, SavingAccount_id, amount);
-        }
+            int debitClient_id = Person.ID;
+            string checkSavingAccountContent = $"SELECT amount FROM SavingAccounts WHERE id = {debitSavingAccount_id}";
+            decimal SavingAccountContent = ConnectionDB.ReturnDecimal(checkSavingAccountContent);
 
-        public override void DoTransferFromCurrentToOtherCurrentAccountAccordingToDate(int debitClient_id, int clientIdOfExternalAccount, double amount, DateTime transferDate)
-        {
-            Transactor.TransferFromCurrentToCurrentAccount(debitClient_id, clientIdOfExternalAccount, amount);
-        }
-
-        public override void DoTransferFromSavingToCurrentAccountAccordingToDate(int debitClient_id, int SavingAccount_id, int recipientAccount_id, double amount, DateTime transferDate)
-        {
-            Transactor.TransferFromSavingToCurrentAccount(debitClient_id, SavingAccount_id, amount);
-        }
-
-
-
-
-
-        /*public static void DoTransfer(double amount, DateTime transferDate)
-        {
-            Console.WriteLine("Specify from which account you want to transfer money:");
-            Console.WriteLine("Current account (c) or saving account (s)");
-            string debitAccount = Console.ReadLine();
-
-            // Récupère l'ID du client dans la propriété qui doit être définie lors de la connexion du client sur l'interface
-            int debitClient_id = 3;
-
-
-            if (debitAccount == "c")
+            if ((Convert.ToDouble(SavingAccountContent) - amount) >= 0)
             {
-                debitAccount = "CurrentAccounts";
-                Console.WriteLine("Do you wish to transfer money to one of your saving account (s) or to an external account (e) ?");
-                string creditAccount = Console.ReadLine();
+                string queryString =
+                                 $"INSERT INTO \"Transaction\" (savingAccount_id, transactionType, beneficiaryCurrentAccount_id, amount, executionDate, status) " +
+                                 $"VALUES (" +
+                                 $"{debitSavingAccount_id}, " +
+                                 $"\'Money Transfer\', " +
+                                 $"(SELECT id FROM CurrentAccounts WHERE client_id = {debitClient_id}), " +
+                                 $"{amount}, " +
+                                 $"\'{executionDate}\'," +
+                                 $"\'pending\');";
+                ConnectionDB.NonQuerySQL(queryString);
+            }
+        }
 
-                if (creditAccount == "s")
+        public void RecordTransferFromCurrentToSaving(int SavingAccount_id, double amount)
+        {
+            int debitClient_id = Person.ID;
+            DateTime executionDate = DateTime.Today;
+            
+            QueryInstantTransferFromCurrentToSaving(SavingAccount_id, amount, executionDate);
+        }
+
+        public void QueryInstantTransferFromCurrentToSaving(int SavingAccount_id, double amount, DateTime firstExecution)
+        {
+            int debitClient_id = Person.ID;
+            string checkCurrentAccountContent = $"SELECT amount FROM CurrentAccounts WHERE client_id = {debitClient_id}";
+            decimal CurrentAccountContent = ConnectionDB.ReturnDecimal(checkCurrentAccountContent);
+            string getCurrentAccountOverdraft = $"SELECT overdraft FROM CurrentAccounts WHERE client_id = {debitClient_id}";
+            decimal CurrentAccountOverdraft = ConnectionDB.ReturnDecimal(getCurrentAccountOverdraft);
+
+            string checkSavingAccountContent = $"SELECT amount FROM SavingAccounts WHERE id = {SavingAccount_id}";
+            decimal SavingAccountContent = ConnectionDB.ReturnDecimal(checkSavingAccountContent);
+            string checkSavingAccountCeiling = $"SELECT ceiling FROM SavingAccounts WHERE id = {SavingAccount_id}";
+            decimal SavingAccountCeiling = ConnectionDB.ReturnDecimal(checkSavingAccountCeiling);
+
+            if (Convert.ToDouble(CurrentAccountContent - CurrentAccountOverdraft) >= amount)
+            {
+                if (((Convert.ToDouble(SavingAccountContent)) + amount) > Convert.ToDouble(SavingAccountCeiling))
                 {
-                    int SavingAccount_id = Transaction.GetSavingAccountIdFromClientChoice(debitClient_id);
-                    Transaction.TransferFromCurrentAccountToSavingAccount(debitClient_id, SavingAccount_id, amount);
-                }
-                else if (creditAccount == "e")
-                {
-                    creditAccount = "CurrentAccounts";
-                    Console.WriteLine("Specify the id number of the beneficiary account");
-                    int externalAccount_id = Convert.ToInt32(Console.ReadLine());
-
-                    // Check if externalAccount is in DB if yes, get creditClient_id
-                    string queryStringIdFromOtherClient = $"SELECT client_id FROM CurrentAccounts WHERE id = {externalAccount_id}";
-                    int clientIdOfExternalAccount = ConnectionDB.ReturnID(queryStringIdFromOtherClient);
-
-                    if (clientIdOfExternalAccount > 0)
-                    {
-                        try
-                        {
-                            Transaction.TransferFromCurrentToCurrentAccount(debitClient_id, clientIdOfExternalAccount, amount, transferDate);
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine("An error occured. " + e);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Please specify a valid recipient account number.");
-                    }
+                    string queryString =
+                                 $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, beneficiaryAccount_id, amount, executionDate, status) " +
+                                 $"VALUES (" +
+                                 $"(SELECT id FROM CurrentAccounts WHERE client_id = {debitClient_id}), " +
+                                 $"\'Money Transfer\', " +
+                                 $"(SELECT id FROM SavingAccounts WHERE client_id = {debitClient_id}), " +
+                                 $"{amount}, " +
+                                 $"\'{firstExecution}\'," +
+                                 $"\'pending\');";
+                    ConnectionDB.NonQuerySQL(queryString);
                 }
                 else
                 {
-                    Console.WriteLine("Exiting program due to input error");
+                    Console.WriteLine($"Impossible transfer. Transfer would exceed ceiling limit.");
                 }
-            }
-            else if (debitAccount == "s")
-            {
-                int SavingAccount_id = Transaction.GetSavingAccountIdFromClientChoice(debitClient_id);
-                Transaction.TransferFromSavingToCurrentAccount(debitClient_id, SavingAccount_id, amount, transferDate);
             }
             else
             {
-                Console.WriteLine("Exiting program due to input error");
+                Console.WriteLine($"There is not enough money on current account to perform transfer");
             }
-        }*/
+        }
+
     }
 }

@@ -15,19 +15,18 @@ namespace Project_2
             return SavingAccount_id;
         }
 
-        public static DateTime GetCheckedDate()
+        public static DateTime CheckDate(string userInput)
         {
-            Console.WriteLine("Enter a date (accepted format DD/MM/YYYY): ");
-            string input = Console.ReadLine();
             CultureInfo fr = new CultureInfo("fr");
             DateTime dateValue;
-            while (!DateTime.TryParseExact(input, "d", fr, DateTimeStyles.AllowLeadingWhite, out dateValue))
+            if (!DateTime.TryParseExact(userInput, "d", fr, DateTimeStyles.AllowLeadingWhite, out dateValue))
             {
-                Console.WriteLine("The format of the time is not right");
-                Console.WriteLine("Give good format (accepted format DD/MM/YYYY) of date :");
-                input = Console.ReadLine();
+                throw new ArgumentException("Unvalid date format. Accepted format dd/mm/yyyy.");
             }
-            Console.WriteLine("Entered date: " + dateValue.ToString("d"));
+            else
+            {
+                dateValue = Convert.ToDateTime(userInput);
+            }
 
             return dateValue;
         }
@@ -115,6 +114,11 @@ namespace Project_2
                 Console.WriteLine($"There is not enough money on current account to perform transfer");
             }
             
+        }
+
+        public static void RecordOperationInDB()
+        {
+
         }
     }
 }
