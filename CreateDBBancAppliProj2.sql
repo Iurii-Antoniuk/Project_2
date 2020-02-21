@@ -92,21 +92,23 @@ VALUES (2, 1000, 0.1, 50000, '2019-04-05'),
 
 SELECT * FROM SavingAccounts;
 
+
+DELETE FROM "Transaction";
 INSERT INTO "Transaction" 
-(currentAccount_id, savingAccount_id, transactionType, beneficiaryAccount, amount, executionDate, lastExecutionDate, intervalDays, "status")
+(currentAccount_id, savingAccount_id, transactionType, beneficiaryCurrentAccount_id, beneficiarySavingAccount_id, amount, executionDate, lastExecutionDate, intervalDays, "status")
 VALUES
-(100, NULL, 'Withdrawal', NULL, 300, '2019-05-01', NULL, NULL, 'done'),
-(100, NULL, 'Withdrawal', NULL, 400, '2019-05-02', NULL, NULL, 'done'),
-(100, NULL, 'Withdrawal', NULL, 100, '2019-05-30', NULL, NULL, 'done'),
-(100, NULL, 'Money Transfer', 1000, 300, '2019-06-01', NULL, NULL, 'done'),
-(NULL, 1000, 'Money Transfer', 100, 300, '2019-06-01', NULL, NULL, 'done'),
-(101, NULL, 'Money Transfer', 100, 100, '2019-06-20', NULL, NULL, 'done'),
-(101, NULL, 'Money Transfer', 102, 50, '2019-06-21', '2020-01-05', 30, 'done'),
-(103, NULL, 'Withdrawal', NULL, 100, '2019-06-29', NULL, NULL, 'done'),
-(103, NULL, 'Withdrawal', NULL, 100, '2019-06-29', NULL, NULL, 'done'),
-(105, NULL, 'Withdrawal', NULL, 200, '2019-07-15', NULL, NULL, 'done'),
-(103, NULL, 'Money Transfer', 101, 1000, '2019-07-29', NULL, NULL, 'done'),
-(104, NULL, 'Money Transfer', 102, 100, '2019-08-01', '2019-12-31', 5, 'done')
+(100, NULL, 'Withdrawal', NULL, NULL, 300, '2019-05-01', NULL, NULL, 'done'),
+(100, NULL, 'Withdrawal', NULL, NULL, 400, '2019-05-02', NULL, NULL, 'done'),
+(100, NULL, 'Withdrawal', NULL, NULL, 100, '2019-05-30', NULL, NULL, 'done'),
+(100, NULL, 'Money Transfer', 101, NULL, 300, '2019-06-01', NULL, NULL, 'done'),
+(NULL, 1000, 'Money Transfer', 100, NULL, 300, '2019-06-01', NULL, NULL, 'done'),
+(101, NULL, 'Money Transfer', 100, NULL, 100, '2019-06-20', NULL, NULL, 'done'),
+(101, NULL, 'Money Transfer', 102, NULL, 50, '2019-06-21', '2020-01-05', 30, 'done'),
+(103, NULL, 'Withdrawal', NULL, NULL, 100, '2019-06-29', NULL, NULL, 'done'),
+(103, NULL, 'Withdrawal', NULL, NULL, 100, '2019-06-29', NULL, NULL, 'done'),
+(105, NULL, 'Withdrawal', NULL, NULL, 200, '2019-07-15', NULL, NULL, 'done'),
+(103, NULL, 'Money Transfer', 101, NULL, 1000, '2019-07-29', NULL, NULL, 'done'),
+(104, NULL, 'Money Transfer', 102, NULL, 100, '2019-08-01', '2019-12-31', 5, 'done')
 ;
 
 SELECT * FROM "Transaction";

@@ -69,11 +69,12 @@ namespace Project_2
                 connection.Close();
                 return id;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 Console.WriteLine("Not valid name or password" );
+                throw e;
                 return id;
-            }           
+            }             
         }
         public static decimal ReturnDecimal(string queryString)
         {
