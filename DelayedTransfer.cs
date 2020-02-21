@@ -7,23 +7,23 @@ namespace Project_2
     public class DelayedTransfer : Transaction
 
     { 
-        public void RecordTransferFromCurrentToCurrent(int creditCurrentAccount_id, double amount, string executionDate)
+        public void RecordTransferFromCurrentToCurrent(int creditCurrentAccount_id, int beneficiaryId, double amount, string executionDate)
         {
             int debitClient_id = Person.ID;
             DateTime trustableExecutionDate = CheckDate(executionDate);
-
+            
             if (trustableExecutionDate < DateTime.Today)
             {
                 throw new ArgumentException("Unvalid date");
             }
             else
             {
-                QueryTransferFromCurrentToCurrent(creditCurrentAccount_id, amount, trustableExecutionDate);
+                QueryTransferFromCurrentToCurrent(creditCurrentAccount_id, beneficiaryId, amount, trustableExecutionDate);
             }
         }
 
         
-        public void RecordTransferFromSavingToCurrent(int debitSavingAccount_id, double amount, string executionDate)
+        public void RecordTransferFromSavingToCurrent(int debitSavingAccount_id, int beneficiaryId, double amount, string executionDate)
         {
             int debitClient_id = Person.ID;
             DateTime trustableExecutionDate = CheckDate(executionDate);
@@ -35,13 +35,13 @@ namespace Project_2
             }
             else
             {
-                QueryTransferFromSavingToCurrent(debitSavingAccount_id, amount, trustableExecutionDate);
+                QueryTransferFromSavingToCurrent(debitSavingAccount_id, beneficiaryId, amount, trustableExecutionDate);
             }
         }
 
         
 
-        public void RecordTransferFromCurrentToSaving(int SavingAccount_id, double amount, string executionDate)
+        public void RecordTransferFromCurrentToSaving(int SavingAccount_id, int beneficiaryId, double amount, string executionDate)
         {
             int debitClient_id = Person.ID;
             DateTime trustableExecutionDate = CheckDate(executionDate);
@@ -53,7 +53,7 @@ namespace Project_2
             }
             else
             {
-                QueryTransferFromCurrentToSaving(SavingAccount_id, amount, trustableExecutionDate);
+                QueryTransferFromCurrentToSaving(SavingAccount_id, beneficiaryId, amount, trustableExecutionDate);
             }
         }
 

@@ -6,7 +6,7 @@ namespace Project_2
 {
     public class Authentification
     {
-        public int Login()
+        public void Login()
         {
             Console.WriteLine("Enter your name : ");
             string name = Console.ReadLine();
@@ -20,21 +20,9 @@ namespace Project_2
             password = Person.CryptPassword(password);
             string queryString = $"SELECT id FROM Person WHERE name = '{name}' AND password ='{password}';";
             int id = ConnectionDB.ReturnID(queryString);
-            if (id == 1)
-            {
-                Console.WriteLine("Hello admin");
-
-                Console.WriteLine("Give ID client : ");
-                Person.ID = Convert.ToInt32(Console.ReadLine());
-            }
-            else if (id > 1)
-            {
-                Console.WriteLine("Hello user");
-                Person.ID = id;
-                return id;
-            }
-            return id;
+            Person.ID = id;
         }
+
         public SecureString GetPassword()
         {
             SecureString password = new SecureString();

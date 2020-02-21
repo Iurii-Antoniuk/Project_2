@@ -12,43 +12,42 @@ namespace Project_2
 
 
 
-        public void QueryTransferFromCurrentToCurrent(int creditCurrentAccount_id, double amount, DateTime executionDate)
+        public void QueryTransferFromCurrentToCurrent(int emitterId, int beneficiaryId, double amount, DateTime executionDate)
         {
-            int debitClient_id = Person.ID;
-            string checkCurrentAccountContent = $"SELECT amount FROM CurrentAccounts WHERE client_id = {debitClient_id}";
-            decimal CurrentAccountContent = ConnectionDB.ReturnDecimal(checkCurrentAccountContent);
-            string getCurrentAccountOverdraft = $"SELECT overdraft FROM CurrentAccounts WHERE client_id = {debitClient_id}";
-            decimal CurrentAccountOverdraft = ConnectionDB.ReturnDecimal(getCurrentAccountOverdraft);
+            string checkCurrentAccountContent = $"SELECT amount FROM CurrentAccounts WHERE id = {emitterId}";
+            decimal currentAccountContent = ConnectionDB.ReturnDecimal(checkCurrentAccountContent);
+            string getCurrentAccountOverdraft = $"SELECT overdraft FROM CurrentAccounts WHERE id = {emitterId}";
+            decimal currentAccountOverdraft = ConnectionDB.ReturnDecimal(getCurrentAccountOverdraft);
 
-            if (Convert.ToDouble(CurrentAccountContent + CurrentAccountOverdraft) > amount)
+            if (Convert.ToDouble(currentAccountContent + currentAccountOverdraft) > amount)
             {
                 string queryString =
                                  $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, beneficiaryCurrentAccount_id, amount, executionDate, status) " +
                                  $"VALUES (" +
-                                 $"(SELECT id FROM CurrentAccounts WHERE client_id = {debitClient_id}), " +
+                                 $"{emitterId}, " +
                                  $"\'Money Transfer\', " +
-                                 $"{creditCurrentAccount_id}, " +
+                                 $"{beneficiaryId}, " +
                                  $"{amount}, " +
                                  $"\'{executionDate}\'," +
                                  $"\'pending\');";
+
                 ConnectionDB.NonQuerySQL(queryString);
             }
         }
 
-        public void QueryTransferFromSavingToCurrent(int debitSavingAccount_id, double amount, DateTime executionDate)
+        public void QueryTransferFromSavingToCurrent(int emitterId, int beneficiaryId, double amount, DateTime executionDate)
         {
-            int debitClient_id = Person.ID;
-            string checkSavingAccountContent = $"SELECT amount FROM SavingAccounts WHERE id = {debitSavingAccount_id}";
-            decimal SavingAccountContent = ConnectionDB.ReturnDecimal(checkSavingAccountContent);
+            string checkSavingAccountContent = $"SELECT amount FROM SavingAccounts WHERE id = {emitterId}";
+            decimal savingAccountAmount = ConnectionDB.ReturnDecimal(checkSavingAccountContent);
 
-            if ((Convert.ToDouble(SavingAccountContent) - amount) >= 0)
+            if ((Convert.ToDouble(savingAccountAmount) - amount) >= 0)
             {
                 string queryString =
                                  $"INSERT INTO \"Transaction\" (savingAccount_id, transactionType, beneficiaryCurrentAccount_id, amount, executionDate, status) " +
                                  $"VALUES (" +
-                                 $"{debitSavingAccount_id}, " +
+                                 $"{emitterId}, " +
                                  $"\'Money Transfer\', " +
-                                 $"(SELECT id FROM CurrentAccounts WHERE client_id = {debitClient_id}), " +
+                                 $"{beneficiaryId}, " +
                                  $"{amount}, " +
                                  $"\'{executionDate}\'," +
                                  $"\'pending\');";
@@ -56,32 +55,32 @@ namespace Project_2
             }
         }
 
-        public void QueryTransferFromCurrentToSaving(int SavingAccount_id, double amount, DateTime firstExecution)
+        public void QueryTransferFromCurrentToSaving(int emitterId, int beneficiaryId, double amount, DateTime firstExecution)
         {
-            int debitClient_id = Person.ID;
-            string checkCurrentAccountContent = $"SELECT amount FROM CurrentAccounts WHERE client_id = {debitClient_id}";
-            decimal CurrentAccountContent = ConnectionDB.ReturnDecimal(checkCurrentAccountContent);
-            string getCurrentAccountOverdraft = $"SELECT overdraft FROM CurrentAccounts WHERE client_id = {debitClient_id}";
-            decimal CurrentAccountOverdraft = ConnectionDB.ReturnDecimal(getCurrentAccountOverdraft);
+            string checkCurrentAccountContent = $"SELECT amount FROM CurrentAccounts WHERE id = {emitterId}";
+            decimal currentAccountAmount = ConnectionDB.ReturnDecimal(checkCurrentAccountContent);
+            string getCurrentAccountOverdraft = $"SELECT overdraft FROM CurrentAccounts WHERE id = {beneficiaryId}";
+            decimal currentAccountOverdraft = ConnectionDB.ReturnDecimal(getCurrentAccountOverdraft);
 
-            string checkSavingAccountContent = $"SELECT amount FROM SavingAccounts WHERE id = {SavingAccount_id}";
-            decimal SavingAccountContent = ConnectionDB.ReturnDecimal(checkSavingAccountContent);
-            string checkSavingAccountCeiling = $"SELECT ceiling FROM SavingAccounts WHERE id = {SavingAccount_id}";
-            decimal SavingAccountCeiling = ConnectionDB.ReturnDecimal(checkSavingAccountCeiling);
+            string checkSavingAccountContent = $"SELECT amount FROM SavingAccounts WHERE id = {emitterId}";
+            decimal savingAccountAmount = ConnectionDB.ReturnDecimal(checkSavingAccountContent);
+            string checkSavingAccountCeiling = $"SELECT ceiling FROM SavingAccounts WHERE id = {emitterId}";
+            decimal savingAccountCeiling = ConnectionDB.ReturnDecimal(checkSavingAccountCeiling);
 
-            if (Convert.ToDouble(CurrentAccountContent - CurrentAccountOverdraft) >= amount)
+            if (Convert.ToDouble(currentAccountAmount - currentAccountOverdraft) >= amount)
             {
-                if (((Convert.ToDouble(SavingAccountContent)) + amount) > Convert.ToDouble(SavingAccountCeiling))
+                if (((Convert.ToDouble(savingAccountAmount)) + amount) < Convert.ToDouble(savingAccountCeiling))
                 {
                     string queryString =
-                                 $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, beneficiaryAccount_id, amount, executionDate, status) " +
+                                 $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, beneficiarySavingAccount_id, amount, executionDate, status) " +
                                  $"VALUES (" +
-                                 $"(SELECT id FROM CurrentAccounts WHERE client_id = {debitClient_id}), " +
+                                 $"{emitterId}, " +
                                  $"\'Money Transfer\', " +
-                                 $"(SELECT id FROM SavingAccounts WHERE client_id = {debitClient_id}), " +
+                                 $"{beneficiaryId}, " +
                                  $"{amount}, " +
                                  $"\'{firstExecution}\'," +
                                  $"\'pending\');";
+                    Console.WriteLine(queryString);
                     ConnectionDB.NonQuerySQL(queryString);
                 }
                 else
@@ -98,16 +97,15 @@ namespace Project_2
         public static DateTime CheckDate(string userInput)
         {
             CultureInfo fr = new CultureInfo("fr");
-            DateTime dateValue;
-            if (!DateTime.TryParseExact(userInput, "d", fr, DateTimeStyles.AllowLeadingWhite, out dateValue))
+            DateTime dateValue = DateTime.Today;
+            try
             {
-                throw new ArgumentException("Unvalid date format. Accepted format dd/mm/yyyy.");
+                dateValue = DateTime.ParseExact(userInput, "d", fr, DateTimeStyles.AllowLeadingWhite);
             }
-            else
+            catch (Exception e)
             {
-                dateValue = Convert.ToDateTime(userInput);
+                Console.WriteLine(e);
             }
-
             return dateValue;
         }
 

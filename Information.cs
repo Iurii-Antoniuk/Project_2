@@ -30,7 +30,7 @@ namespace Project_2
         public static void GetInfoBySavingsAccountId(int savingsAccountId)
         {
             Console.WriteLine("Savings Accounts : ");
-            int client_id = Client.ID;
+            int client_id = GetAccountOwnerId(savingsAccountId, AccountType.Saving);
             string queryString = $"SELECT id, amount, rate, ceiling, openingDate FROM SavingAccounts WHERE client_id = '{client_id}' AND id='{savingsAccountId}';";
             List<string> savingAccountInfo = new List<string> { "id", "amount", "rate", "ceiling", "openingDate" };
             foreach (string item in savingAccountInfo)
@@ -43,14 +43,35 @@ namespace Project_2
         public static void GetInfoByCurrentAccountId(int currentAccountId)
         {
             Console.WriteLine("Current Accounts : ");
-            int client_id = Client.ID;
-            string queryString = $"SELECT id, amount, overdraft, openingDate FROM CurrentAccounts WHERE client_id = '{client_id}' AND id='{currentAccountId}';";
+            int ownerId = GetAccountOwnerId(currentAccountId, AccountType.Current);
+            string queryString = $"SELECT id, amount, overdraft, openingDate FROM CurrentAccounts WHERE client_id = '{ownerId}' AND id='{currentAccountId}';";
             List<string> currentAccountInfo = new List<string> { "id", "amount", "overdraft", "openingDate" };
             foreach (string item in currentAccountInfo)
             {
                 Console.Write(item + "\t");
             }
             ConnectionDB.SelectSQL(queryString, currentAccountInfo);
+        }
+
+        public static int GetAccountOwnerId(int currentAccountId, AccountType type)
+        {
+            String tableName;
+            if (type == AccountType.Current)
+            {
+                tableName = "CurrentAccounts";
+            }
+            else if (type == AccountType.Saving)
+            {
+                tableName = "SavingAccounts";
+            }
+            else
+            {
+                throw new ArgumentException("Account type not valid");
+            }
+
+            string queryString = $"SELECT client_id FROM {tableName} WHERE id=" + currentAccountId;
+            int accountOwnerId = ConnectionDB.ReturnID(queryString);
+            return accountOwnerId;
         }
     }
 }

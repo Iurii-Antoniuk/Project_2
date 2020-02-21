@@ -17,10 +17,8 @@ namespace Project_2
 
         }
 
-        [Verb("transfer", HelpText = "money transaction")]
         class TransferOptions
         {
-
             [Option('t', "CToC", HelpText = "Transaction from a current account to a current account")]
             public bool CurrentToCurrent { get; set; }
 
@@ -29,50 +27,34 @@ namespace Project_2
 
             [Option('r', "SToC", HelpText = "Transaction from a saving account to a current account")]
             public bool SavingToCurrent { get; set; }
+         
+            [Option("emitter", Required = true, HelpText = "Id of the emitter account")]
+            public int EmitterId { get; set; }
+
+            [Option("beneficiary", Required = true, HelpText = "Id of the beneficiary account")]
+            public int BeneficiaryId { get; set; }
+
+            [Option("amount", Required = true, HelpText = "amount to transfer")]
+            public double Amount { get; set; }
+
 
         }
 
         [Verb("instant", HelpText = "Make a instant transaction")]
         class InstantTransferOptions : TransferOptions
         {
-            [Option('c', "currentAccount", HelpText = "Id of the current account")]
-            public int IdCurrentAccount { get; set; }
-
-            [Option('s', "savingAccount", HelpText = "Id of the saving account")]
-            public int IdSavingAccount { get; set; }
-
-            [Option('a', "amount", Required = true, HelpText = "amount to transfer")]
-            public double Amount { get; set; }
         }
 
         [Verb("delayed", HelpText = "Make a delayed transaction")]
         class DelayedTransferOptions : TransferOptions
         {
-            [Option('c', "currentAccount", HelpText = "Id of the current account")]
-            public int IdCurrentAccount { get; set; }
-
-            [Option('s', "savingAccount", HelpText = "Id of the saving account")]
-            public int IdSavingAccount { get; set; }
-
-            [Option('a', "amount", Required = true, HelpText = "amount to transfer")]
-            public double Amount { get; set; }
-
             [Option('d', "date", HelpText = "Execution date of the transfer")]
-            public String DatetExe { get; set; }
-
+            public String DatetExe { get; set; }   
         }
+
         [Verb("permanent", HelpText = "Make a permanent transaction")]
         class PermanentTransferOptions : TransferOptions
         {
-            [Option('c', "currentAccount", HelpText = "Id of the current account")]
-            public int IdCurrentAccount { get; set; }
-
-            [Option('s', "savingAccount", HelpText = "Id of the saving account")]
-            public int IdSavingAccount { get; set; }
-
-            [Option('a', "amount", Required = true, HelpText = "amount to transfer")]
-            public double Amount { get; set; }
-
             [Option('f', "first date", HelpText = "Date first execution of the transfer")]
             public String FirstExe { get; set; }
 
@@ -137,7 +119,7 @@ namespace Project_2
         class InfoSavingAccountsOptions
 
         {
-            [Option('i', "client id", Required = true, HelpText = "Enter your client id")]
+            [Option('i', "client id", HelpText = "Enter your client id")]
             public int IdClient { get; set; }
 
             [Option('s', "id saving account", Required = true, HelpText = "Enter your saving account id")]
@@ -147,7 +129,7 @@ namespace Project_2
         class InfoCurrentAccountsOptions
 
         {
-            [Option('i', "client id", Required = true, HelpText = "Enter your client id")]
+            [Option('i', "client id", HelpText = "Enter your client id")]
             public int IdClient { get; set; }
 
             [Option('c', "id current account", HelpText = "Enter your current account id")]
@@ -179,6 +161,9 @@ namespace Project_2
         }
         static void Main(string[] args)
         {
+            Authentification authentification = new Authentification();
+            authentification.Login();
+            
             Parser.Default.ParseArguments<WithdrawOptions, TransferOptions, InstantTransferOptions, DelayedTransferOptions, PermanentTransferOptions, CreateSavingsAccountOptions, DeleteSavingsAccountOptions,
                  InfoSavingAccountsOptions, InfoCurrentAccountsOptions, CreateClientOptions, DeleteClientOptions, ModifyPasssOptions, InfoUserOptions,
                  InfoTransactionOptions, ExportOptions>(args)
@@ -201,7 +186,7 @@ namespace Project_2
                 .WithParsed<InfoTransactionOptions>(RunInfoTransactionOptions)
                 .WithParsed<ExportOptions>(RunExportOptions);
 
-             ConnectionDB.GetConnectionString();
+            ConnectionDB.GetConnectionString();
 
             //Administrator admin = new Administrator();
             //admin.CreateAdmin("admin");
@@ -253,9 +238,9 @@ namespace Project_2
         static void RunWithdrawOptions(WithdrawOptions options)
         {
             Authentification authentification = new Authentification();
-            int id = authentification.Login();
+            authentification.Login();
 
-            if (id == options.IdClient)
+            if (Person.ID == options.IdClient)
             {
                 Client client = new Client();
                 client.WithdrawMoney(options.Amount);
@@ -272,15 +257,15 @@ namespace Project_2
 
             if (options.CurrentToCurrent)
             {
-                instantTransfer.RecordTransferFromCurrentToCurrent(options.IdCurrentAccount, options.Amount);
+                instantTransfer.RecordTransferFromCurrentToCurrent(options.EmitterId, options.BeneficiaryId, options.Amount);
             }
             if(options.CurrentToSaving)
             {
-                instantTransfer.RecordTransferFromCurrentToSaving(options.IdSavingAccount, options.Amount);
+                instantTransfer.RecordTransferFromCurrentToSaving(options.EmitterId, options.BeneficiaryId, options.Amount);
             }
             if(options.SavingToCurrent)
             {
-                instantTransfer.RecordTransferFromSavingToCurrent(options.IdSavingAccount, options.Amount);
+                instantTransfer.RecordTransferFromSavingToCurrent(options.EmitterId, options.BeneficiaryId, options.Amount);
             }
         }
         static void RunDelayedTransferOptions(DelayedTransferOptions options)
@@ -289,15 +274,15 @@ namespace Project_2
 
             if (options.CurrentToCurrent)
             {
-                delayedTransfer.RecordTransferFromCurrentToCurrent(options.IdCurrentAccount, options.Amount, options.DatetExe);
+                delayedTransfer.RecordTransferFromCurrentToCurrent(options.EmitterId, options.BeneficiaryId, options.Amount, options.DatetExe);
             }
             if (options.CurrentToSaving)
             {
-                delayedTransfer.RecordTransferFromCurrentToSaving(options.IdSavingAccount, options.Amount, options.DatetExe);
+                delayedTransfer.RecordTransferFromCurrentToSaving(options.EmitterId, options.BeneficiaryId, options.Amount, options.DatetExe);
             }
             if (options.SavingToCurrent)
             {
-                delayedTransfer.RecordTransferFromSavingToCurrent(options.IdSavingAccount, options.Amount, options.DatetExe);
+                delayedTransfer.RecordTransferFromSavingToCurrent(options.EmitterId, options.BeneficiaryId, options.Amount, options.DatetExe);
             }
         }
 
@@ -307,25 +292,22 @@ namespace Project_2
 
             if (options.CurrentToCurrent)
             {
-                permanentTransfer.RecordTransferFromCurrentToCurrent(options.IdCurrentAccount, options.Amount, options.FirstExe, options.LastExe, options.Interval);
+                permanentTransfer.RecordTransferFromCurrentToCurrent(options.EmitterId, options.Amount, options.FirstExe, options.LastExe, options.Interval);
             }
             if (options.CurrentToSaving)
             {
-                permanentTransfer.RecordTransferFromCurrentToSaving(options.IdSavingAccount, options.Amount, options.FirstExe, options.LastExe, options.Interval);
+                permanentTransfer.RecordTransferFromCurrentToSaving(options.EmitterId, options.Amount, options.FirstExe, options.LastExe, options.Interval);
             }
             if (options.SavingToCurrent)
             {
-                permanentTransfer.RecordTransferFromSavingToCurrent(options.IdSavingAccount, options.Amount, options.FirstExe, options.LastExe, options.Interval);
+                permanentTransfer.RecordTransferFromSavingToCurrent(options.EmitterId, options.Amount, options.FirstExe, options.LastExe, options.Interval);
             }
         }
 
 
         static void RunCreateClientOptions(CreateClientOptions options)
         {
-            Authentification authentification = new Authentification();
-            int id = authentification.Login();
-
-            if (id == 1)
+            if (Person.ID == 1)
             {
                 Administrator administrator = new Administrator();
                 administrator.CreateClient(options.ClientName, options.Amount, options.Overdraft);
@@ -340,10 +322,7 @@ namespace Project_2
 
         static void RunDeleteClientOptions(DeleteClientOptions options)
         {
-            Authentification authentification = new Authentification();
-            int id = authentification.Login();
-
-            if (id == 1)
+            if (Person.ID == 1)
             {
                 Administrator administrator = new Administrator();
                 administrator.DeleteClient(options.IdClient);
@@ -356,10 +335,9 @@ namespace Project_2
 
         static void RunModifyPassOptions (ModifyPasssOptions options)
         {
-            Authentification authentification = new Authentification();
-            int id = authentification.Login();
-            if (id == options.IdClient)
+            if (Person.ID == options.IdClient)
             {
+                Authentification authentification = new Authentification();
                 authentification.ModifyPassword();
             }
             else
@@ -370,10 +348,7 @@ namespace Project_2
 
         static void RunCreateSavingsAccountOptions(CreateSavingsAccountOptions options)
         {
-            Authentification authentification = new Authentification();
-            int id = authentification.Login();
-
-            if (id == 1)
+            if (Person.ID == 1)
             {
                 SavingsAccount savingsAccount = new SavingsAccount();
                 savingsAccount.CreateSavingAccount(options.IdClient, options.Amount, options.Ceiling);
@@ -386,10 +361,7 @@ namespace Project_2
 
         static void RunDeleteSavingsAccountOptions(DeleteSavingsAccountOptions options)
         {
-            Authentification authentification = new Authentification();
-            int id = authentification.Login();
-
-            if (id == 1)
+            if (Person.ID == 1)
             {
                 SavingsAccount savingsAccount = new SavingsAccount();
                 savingsAccount.DeleteSavingAccount(options.IdSavingsAccount);
@@ -401,10 +373,8 @@ namespace Project_2
         }
 
         static void RunSavingAccountsInfoOptions(InfoSavingAccountsOptions options)
-        {
-            Authentification authentification = new Authentification();
-            int id = authentification.Login();
-            if (id == options.IdClient || id==1)
+        {   
+            if (Person.ID == options.IdClient || Person.ID == 1)
             {
                 Information.GetInfoBySavingsAccountId(options.IdSavingAccount);
             }
@@ -415,10 +385,8 @@ namespace Project_2
         }
 
         static void RunCurrentAccountsInfoOptions(InfoCurrentAccountsOptions options)
-        {
-            Authentification authentification = new Authentification();
-            int id = authentification.Login();
-            if (id == options.IdClient || id==1)
+        {   
+            if (Person.ID == options.IdClient || Person.ID == 1)
             {
                 Information.GetInfoByCurrentAccountId(options.IdCurrentAccount);
             }
@@ -431,8 +399,9 @@ namespace Project_2
         static void RunInfoUserOptions (InfoUserOptions options)
         {
             Authentification authentification = new Authentification();
-            int id = authentification.Login();
-            if (id == 1)
+            authentification.Login();
+            
+            if (Person.ID == 1)
             {
                 Information.GetInfoByUserId(options.IdClient);
             }
@@ -445,8 +414,9 @@ namespace Project_2
         static void RunInfoTransactionOptions(InfoTransactionOptions options)
         {
             Authentification authentification = new Authentification();
-            int id = authentification.Login();
-            if (id == 1 || id==options.IdClient)
+            authentification.Login();
+            
+            if (Person.ID == 1 || Person.ID == options.IdClient)
             {
                 Information.GetInfoByTransactionDate(options.Date);
             }
@@ -458,9 +428,7 @@ namespace Project_2
 
         static void RunExportOptions(ExportOptions options)
         {
-            Authentification authentification = new Authentification();
-            int id = authentification.Login();
-            if (id == 1)
+            if (Person.ID == 1)
             {
                 CSVFileExport.ExportCSVFile();
             }
