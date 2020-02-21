@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.SqlClient;
-using System.Text;
 using System.Timers;
 
 namespace Project_2
@@ -13,18 +11,13 @@ namespace Project_2
         public decimal Interest { get; set; }
         public List<Account> AllowedCreditors { get; set; } = new List<Account>();
 
-        public void CreateSavingAccount(int client_id, double amount)
-        {
-            Console.WriteLine("Enter the rate (decimal) of the new account : ");
-            Interest = Convert.ToDecimal(Console.ReadLine());
-            
-            Console.WriteLine("Enter the maximum amount you can have on the new account : ");
-            Ceiling = Convert.ToDecimal(Console.ReadLine());
+        public void CreateSavingAccount(int client_id, decimal amount, decimal ceiling)
+        {            
 
             DateTime openingDate = DateTime.Now;
 
             string queryString = $"INSERT INTO SavingAccounts (client_id, amount, rate, ceiling, openingDate) " +
-                                $" VALUES ('{client_id}', '{amount}','{Interest}','{Ceiling}','{openingDate}');";
+                                $" VALUES ('{client_id}', '{amount}','{Interest}','{ceiling}','{openingDate}');";
             ConnectionDB.NonQuerySQL(queryString);
         }
 
@@ -49,14 +42,14 @@ namespace Project_2
             }*/
 
             // Create a timer
-            Timer aTimer = new System.Timers.Timer(interval);
+            Timer aTimer = new Timer(interval);
             // Hook up the Elapsed event for the timer. 
-            aTimer.Elapsed += interestAddition;
+            aTimer.Elapsed += InterestAddition;
             aTimer.AutoReset = true;
             aTimer.Enabled = true;
         }
 
-        private static void interestAddition(object source, ElapsedEventArgs e) 
+        private static void InterestAddition(object source, ElapsedEventArgs e) 
         {
             int numberOFAccounts = CountRows("SavingAccounts");
             if (numberOFAccounts > 0)
