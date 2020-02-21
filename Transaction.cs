@@ -59,12 +59,12 @@ namespace Project_2
         {
             string checkCurrentAccountContent = $"SELECT amount FROM CurrentAccounts WHERE id = {emitterId}";
             decimal currentAccountAmount = ConnectionDB.ReturnDecimal(checkCurrentAccountContent);
-            string getCurrentAccountOverdraft = $"SELECT overdraft FROM CurrentAccounts WHERE id = {beneficiaryId}";
+            string getCurrentAccountOverdraft = $"SELECT overdraft FROM CurrentAccounts WHERE id = {emitterId}";
             decimal currentAccountOverdraft = ConnectionDB.ReturnDecimal(getCurrentAccountOverdraft);
 
-            string checkSavingAccountContent = $"SELECT amount FROM SavingAccounts WHERE id = {emitterId}";
+            string checkSavingAccountContent = $"SELECT amount FROM SavingAccounts WHERE id = {beneficiaryId}";
             decimal savingAccountAmount = ConnectionDB.ReturnDecimal(checkSavingAccountContent);
-            string checkSavingAccountCeiling = $"SELECT ceiling FROM SavingAccounts WHERE id = {emitterId}";
+            string checkSavingAccountCeiling = $"SELECT ceiling FROM SavingAccounts WHERE id = {beneficiaryId}";
             decimal savingAccountCeiling = ConnectionDB.ReturnDecimal(checkSavingAccountCeiling);
 
             if (Convert.ToDouble(currentAccountAmount - currentAccountOverdraft) >= amount)

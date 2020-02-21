@@ -13,11 +13,10 @@ namespace Project_2
 
         public void CreateSavingAccount(int client_id, decimal amount, decimal ceiling)
         {            
-
             DateTime openingDate = DateTime.Now;
 
             string queryString = $"INSERT INTO SavingAccounts (client_id, amount, rate, ceiling, openingDate) " +
-                                $" VALUES ('{client_id}', '{amount}','{Interest}','{ceiling}','{openingDate}');";
+                                 $"VALUES ({client_id}, {amount}, {Interest}, {ceiling},'{openingDate}');";
             ConnectionDB.NonQuerySQL(queryString);
         }
 

@@ -19,10 +19,10 @@ namespace Project_2
 
         public void CreateCurrentAccount(int client_id, double amount, decimal overdraft)
         {
-            DateTime openingDate = DateTime.Now;
+            DateTime openingDate = DateTime.Today;
 
             string queryString = $"INSERT INTO CurrentAccounts (client_id, amount, overdraft, openingDate) " +
-                                $" VALUES ('{client_id}', '{amount}','{overdraft}','{openingDate}');";
+                                $" VALUES ({client_id}, {amount}, {overdraft}, '{openingDate}');";
             ConnectionDB.NonQuerySQL(queryString);
         }
 

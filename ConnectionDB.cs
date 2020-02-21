@@ -14,88 +14,58 @@ namespace Project_2
         }
         public static void NonQuerySQL(string queryString)
         {
-            try
-            {
-                SqlConnection connection = new SqlConnection(GetConnectionString());
-                connection.Open();
-                SqlCommand command = new SqlCommand(queryString, connection);
-                command.ExecuteNonQuery();
-                connection.Close();
-                Console.WriteLine("Command executed");
-                Console.ReadLine();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error " + e.Message);
-            }
+            SqlConnection connection = new SqlConnection(GetConnectionString());
+            connection.Open();
+            SqlCommand command = new SqlCommand(queryString, connection);
+            command.ExecuteNonQuery();
+            connection.Close();
+            Console.WriteLine("Command executed");
+            Console.ReadLine();
         }
+
         public static void SelectSQL(string queryString, List<string> columnsName)
         {
-            try
+            SqlConnection connection = new SqlConnection(GetConnectionString());
+            connection.Open();
+            SqlCommand command = new SqlCommand(queryString, connection);
+            SqlDataReader dataread = command.ExecuteReader();
+            while (dataread.Read())
             {
-                SqlConnection connection = new SqlConnection(GetConnectionString());
-                connection.Open();
-                SqlCommand command = new SqlCommand(queryString, connection);
-                SqlDataReader dataread = command.ExecuteReader();
-                while (dataread.Read())
+                foreach (string item in columnsName)
                 {
-                    foreach (string item in columnsName)
-                    {
-                        Console.Write(dataread[item].ToString() + "  ");
-                    }
-                    Console.WriteLine();
+                    Console.Write(dataread[item].ToString() + "  ");
                 }
-                dataread.Close();
-                connection.Close();
-                Console.WriteLine("DONE");
+                Console.WriteLine();
             }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error " + e.Message);
-            }            
+            dataread.Close();
+            connection.Close();
+            Console.WriteLine("DONE");         
         }
+
         public static int ReturnID(string queryString)
         {
             int id = 0;
-            try
-            {
-                SqlConnection connection = new SqlConnection(GetConnectionString());
-                connection.Open();
-                SqlCommand command = new SqlCommand(queryString, connection);
-                SqlDataReader dataread = command.ExecuteReader();
-                dataread.Read();
-                id = dataread.GetInt32(0);
-                dataread.Close();
-                connection.Close();
-                return id;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Not valid name or password" );
-                throw e;
-                return id;
-            }             
+            SqlConnection connection = new SqlConnection(GetConnectionString());
+            connection.Open();
+            SqlCommand command = new SqlCommand(queryString, connection);
+            SqlDataReader dataread = command.ExecuteReader();
+            dataread.Read();
+            id = dataread.GetInt32(0);
+            dataread.Close();
+            connection.Close();
+            return id;        
         }
         public static decimal ReturnDecimal(string queryString)
         {
-            decimal decim = 0;
-            try
-            {
-               SqlConnection connection = new SqlConnection(GetConnectionString());
-                connection.Open();
-                SqlCommand command = new SqlCommand(queryString, connection);
-                SqlDataReader dataread = command.ExecuteReader();
-                dataread.Read();
-                decimal amount = dataread.GetDecimal(0);
-                dataread.Close();
-                connection.Close();
-                return amount;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error" + e.Message);
-                return decim;
-            }
+            SqlConnection connection = new SqlConnection(GetConnectionString());
+            connection.Open();
+            SqlCommand command = new SqlCommand(queryString, connection);
+            SqlDataReader dataread = command.ExecuteReader();
+            dataread.Read();
+            decimal amount = dataread.GetDecimal(0);
+            dataread.Close();
+            connection.Close();
+            return amount;
         }
 
         /*public static decimal ReturnOverdraft(string queryString)

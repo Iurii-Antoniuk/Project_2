@@ -21,7 +21,7 @@ namespace Project_2
 
             string queryString = $"INSERT INTO Person (name, password) VALUES ('{name}', '{password}');";
             ConnectionDB.NonQuerySQL(queryString);
-            queryString = $"SELECT id FROM Person WHERE name = '{name}' AND password='{password}';";
+            queryString = $"SELECT id FROM Person WHERE name = '{name}' AND password = '{password}';";
             int client_id = ConnectionDB.ReturnID(queryString);
 
             CurrentAccount currentAccount = new CurrentAccount();

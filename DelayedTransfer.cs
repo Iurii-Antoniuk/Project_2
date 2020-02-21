@@ -46,7 +46,6 @@ namespace Project_2
             int debitClient_id = Person.ID;
             DateTime trustableExecutionDate = CheckDate(executionDate);
 
-
             if (trustableExecutionDate < DateTime.Today)
             {
                 throw new ArgumentException("Unvalid date");

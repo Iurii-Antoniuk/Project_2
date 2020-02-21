@@ -6,7 +6,7 @@ namespace Project_2
 {
     public class PermanentTransfer : Transaction
     {
-        public void RecordTransferFromCurrentToCurrent(int creditCurrentAccount_id, double amount, string firstExecution, string lastExecution, Int32 interval)
+        public void RecordTransferFromCurrentToCurrent(int emitterId, int beneficiaryId, double amount, string firstExecution, string lastExecution, Int32 interval)
         {
             int debitClient_id = Person.ID;
             DateTime firstExecutionDate = CheckDate(firstExecution);
@@ -18,16 +18,16 @@ namespace Project_2
             }
             else
             {
-                QueryTransferFromCurrentToCurrent(creditCurrentAccount_id, amount, firstExecutionDate, lastExecutionDate, interval);
+                QueryTransferFromCurrentToCurrent(emitterId, beneficiaryId, amount, firstExecutionDate, lastExecutionDate, interval);
             }
         }
 
-        public void QueryTransferFromCurrentToCurrent(int creditCurrentAccount_id, double amount, DateTime firstExecution, DateTime lastExecution, Int32 interval)
+        public void QueryTransferFromCurrentToCurrent(int emitterId, int beneficiaryId, double amount, DateTime firstExecution, DateTime lastExecution, Int32 interval)
         {
             int debitClient_id = Person.ID;
-            string checkCurrentAccountContent = $"SELECT amount FROM CurrentAccounts WHERE client_id = {debitClient_id}";
+            string checkCurrentAccountContent = $"SELECT amount FROM CurrentAccounts WHERE id = {emitterId}";
             decimal CurrentAccountContent = ConnectionDB.ReturnDecimal(checkCurrentAccountContent);
-            string getCurrentAccountOverdraft = $"SELECT overdraft FROM CurrentAccounts WHERE client_id = {debitClient_id}";
+            string getCurrentAccountOverdraft = $"SELECT overdraft FROM CurrentAccounts WHERE id = {emitterId}";
             decimal CurrentAccountOverdraft = ConnectionDB.ReturnDecimal(getCurrentAccountOverdraft);
 
             if (Convert.ToDouble(CurrentAccountContent + CurrentAccountOverdraft) > amount)
@@ -35,21 +35,21 @@ namespace Project_2
                 string queryString =
                                  $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, beneficiaryCurrentAccount_id, amount, executionDate, lastExecutionDate, intervalDays, status) " +
                                  $"VALUES (" +
-                                 $"(SELECT id FROM CurrentAccounts WHERE client_id = {debitClient_id}), " +
-                                 $"\'Money Transfer\', " +
-                                 $"{creditCurrentAccount_id}, " +
+                                 $"{emitterId}, " +
+                                 $"'Money Transfer', " +
+                                 $"{beneficiaryId}, " +
                                  $"{amount}, " +
-                                 $"\'{firstExecution}\'," +
-                                 $"\'{lastExecution}\'," +
-                                 $"{interval}" +
-                                 $"\'pending\');";
+                                 $"'{firstExecution}'," +
+                                 $"'{lastExecution}'," +
+                                 $"{interval}," +
+                                 $"'pending');";
+                Console.WriteLine(queryString);
                 ConnectionDB.NonQuerySQL(queryString);
             }
         }
 
-        public void RecordTransferFromSavingToCurrent(int debitSavingAccount_id, double amount, string firstExecution, string lastExecution, Int32 interval)
+        public void RecordTransferFromSavingToCurrent(int emitterId, int beneficiaryId, double amount, string firstExecution, string lastExecution, Int32 interval)
         {
-            int debitClient_id = Person.ID;
             DateTime firstExecutionDate = CheckDate(firstExecution);
             DateTime lastExecutionDate = CheckDate(lastExecution);
 
@@ -59,14 +59,13 @@ namespace Project_2
             }
             else
             {
-                QueryTransferFromSavingToCurrent(debitSavingAccount_id, amount, firstExecutionDate, lastExecutionDate, interval);
+                QueryTransferFromSavingToCurrent(emitterId, beneficiaryId, amount, firstExecutionDate, lastExecutionDate, interval);
             }
         }
 
-        public void QueryTransferFromSavingToCurrent(int debitSavingAccount_id, double amount, DateTime firstExecution, DateTime lastExecution, Int32 interval)
+        public void QueryTransferFromSavingToCurrent(int emitterId, int beneficiaryId, double amount, DateTime firstExecution, DateTime lastExecution, Int32 interval)
         {
-            int debitClient_id = Person.ID;
-            string checkSavingAccountContent = $"SELECT amount FROM SavingAccounts WHERE id = {debitSavingAccount_id}";
+            string checkSavingAccountContent = $"SELECT amount FROM SavingAccounts WHERE id = {emitterId}";
             decimal SavingAccountContent = ConnectionDB.ReturnDecimal(checkSavingAccountContent);
 
             if ((Convert.ToDouble(SavingAccountContent) - amount) >= 0)
@@ -74,22 +73,21 @@ namespace Project_2
                 string queryString =
                                  $"INSERT INTO \"Transaction\" (savingAccount_id, transactionType, beneficiaryCurrentAccount_id, amount, executionDate, lastExecutionDate, intervalDays, status) " +
                                  $"VALUES (" +
-                                 $"{debitSavingAccount_id}, " +
-                                 $"\'Money Transfer\', " +
-                                 $"(SELECT id FROM CurrentAccounts WHERE client_id = {debitClient_id}), " +
+                                 $"{emitterId}, " +
+                                 $"'Money Transfer', " +
+                                 $"{beneficiaryId}, " +
                                  $"{amount}, " +
-                                 $"\'{firstExecution}\'," +
-                                 $"\'{lastExecution}\'," +
-                                 $"{interval}" +
-                                 $"\'pending\');";
+                                 $"'{firstExecution}'," +
+                                 $"'{lastExecution}'," +
+                                 $"{interval}," +
+                                 $"'pending');";
                 ConnectionDB.NonQuerySQL(queryString);
             }
         }
 
 
-        public void RecordTransferFromCurrentToSaving(int SavingAccount_id, double amount, string firstExecution, string lastExecution, Int32 interval)
+        public void RecordTransferFromCurrentToSaving(int emitterId, int beneficiaryId, double amount, string firstExecution, string lastExecution, Int32 interval)
         {
-            int debitClient_id = Person.ID;
             DateTime firstExecutionDate = CheckDate(firstExecution);
             DateTime lastExecutionDate = CheckDate(lastExecution);
             
@@ -100,38 +98,37 @@ namespace Project_2
             }
             else
             {
-                QueryTransferFromCurrentToSaving(SavingAccount_id, amount, firstExecutionDate, lastExecutionDate, interval);
+                QueryTransferFromCurrentToSaving(emitterId, beneficiaryId, amount, firstExecutionDate, lastExecutionDate, interval);
             }
         }
 
-        public void QueryTransferFromCurrentToSaving(int SavingAccount_id, double amount, DateTime firstExecution, DateTime lastExecution, Int32 interval)
+        public void QueryTransferFromCurrentToSaving(int emitterId, int beneficiaryId, double amount, DateTime firstExecution, DateTime lastExecution, Int32 interval)
         {
-            int debitClient_id = Person.ID;
-            string checkCurrentAccountContent = $"SELECT amount FROM CurrentAccounts WHERE client_id = {debitClient_id}";
+            string checkCurrentAccountContent = $"SELECT amount FROM CurrentAccounts WHERE id = {emitterId}";
             decimal CurrentAccountContent = ConnectionDB.ReturnDecimal(checkCurrentAccountContent);
-            string getCurrentAccountOverdraft = $"SELECT overdraft FROM CurrentAccounts WHERE client_id = {debitClient_id}";
+            string getCurrentAccountOverdraft = $"SELECT overdraft FROM CurrentAccounts WHERE id = {emitterId}";
             decimal CurrentAccountOverdraft = ConnectionDB.ReturnDecimal(getCurrentAccountOverdraft);
 
-            string checkSavingAccountContent = $"SELECT amount FROM SavingAccounts WHERE id = {SavingAccount_id}";
+            string checkSavingAccountContent = $"SELECT amount FROM SavingAccounts WHERE id = {beneficiaryId}";
             decimal SavingAccountContent = ConnectionDB.ReturnDecimal(checkSavingAccountContent);
-            string checkSavingAccountCeiling = $"SELECT ceiling FROM SavingAccounts WHERE id = {SavingAccount_id}";
+            string checkSavingAccountCeiling = $"SELECT ceiling FROM SavingAccounts WHERE id = {beneficiaryId}";
             decimal SavingAccountCeiling = ConnectionDB.ReturnDecimal(checkSavingAccountCeiling);
 
             if (Convert.ToDouble(CurrentAccountContent - CurrentAccountOverdraft) >= amount)
             {
-                if(((Convert.ToDouble(SavingAccountContent)) + amount) > Convert.ToDouble(SavingAccountCeiling) )
+                if(((Convert.ToDouble(SavingAccountContent)) + amount) < Convert.ToDouble(SavingAccountCeiling) )
                 {
                     string queryString =
-                                 $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, beneficiaryAccount_id, amount, executionDate, lastExecutionDate, intervalDays, status) " +
+                                 $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, beneficiarySavingAccount_id, amount, executionDate, lastExecutionDate, intervalDays, status) " +
                                  $"VALUES (" +
-                                 $"(SELECT id FROM CurrentAccounts WHERE client_id = {debitClient_id}), " +
-                                 $"\'Money Transfer\', " +
-                                 $"(SELECT id FROM SavingAccounts WHERE client_id = {debitClient_id}), " +
+                                 $"{emitterId}, " +
+                                 $"'Money Transfer', " +
+                                 $"{beneficiaryId}, " +
                                  $"{amount}, " +
-                                 $"\'{firstExecution}\'," +
-                                 $"\'{lastExecution}\'," +
+                                 $"'{firstExecution}'," +
+                                 $"'{lastExecution}'," +
                                  $"{interval}," +
-                                 $"\'pending\');";
+                                 $"'pending');";
                     ConnectionDB.NonQuerySQL(queryString);
                 }
                 else

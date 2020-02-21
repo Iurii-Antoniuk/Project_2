@@ -6,24 +6,21 @@ namespace Project_2
 {
     public class Authentification
     {
-        public void Login()
+        public static void Login(String userName)
         {
-            Console.WriteLine("Enter your name : ");
-            string name = Console.ReadLine();
-
-            Console.WriteLine("Enter your password : ");
+            Console.Write("Enter your password : ");
             SecureString passwordHide = GetPassword();
 
             IntPtr bstr = Marshal.SecureStringToBSTR(passwordHide);
             string password = Marshal.PtrToStringBSTR(bstr);
 
             password = Person.CryptPassword(password);
-            string queryString = $"SELECT id FROM Person WHERE name = '{name}' AND password ='{password}';";
+            string queryString = $"SELECT id FROM Person WHERE name = '{userName}' AND password ='{password}';";
             int id = ConnectionDB.ReturnID(queryString);
             Person.ID = id;
         }
 
-        public SecureString GetPassword()
+        public static SecureString GetPassword()
         {
             SecureString password = new SecureString();
             ConsoleKeyInfo nextKey = Console.ReadKey(true);
@@ -42,7 +39,6 @@ namespace Project_2
                 else
                 {
                     password.AppendChar(nextKey.KeyChar);
-                    Console.Write("*");
                 }
                 nextKey = Console.ReadKey(true);
             }
@@ -50,7 +46,7 @@ namespace Project_2
             password.MakeReadOnly();
             return password;
         }
-        public void ModifyPassword()
+        public static void ModifyPassword()
         {
             int ID = Person.ID;
             Console.WriteLine("Enter your password : ");
