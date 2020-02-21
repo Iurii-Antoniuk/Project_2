@@ -49,8 +49,8 @@ namespace Project_2
             {
                 DateTime dateOp = DateTime.Now;
                 string queryString = $"UPDATE CurrentAccounts SET amount = (amount - {amount}) WHERE  client_id = {  client_id }; " +
-                                     $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, amount, \"date\") " +
-                                     $"VALUES({currentAccountID}, 'withdraw', {amount}, '{dateOp}')";
+                                     $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, amount, executionDate, \"status\") " +
+                                     $"VALUES({currentAccountID}, 'withdraw', {amount}, '{dateOp}', \'done\')";
                 ConnectionDB.NonQuerySQL(queryString);
             }
             else
@@ -81,8 +81,8 @@ namespace Project_2
                 {
                     DateTime dateOp = DateTime.Now;
                     string queryString = $"UPDATE SavingAccounts SET amount = (amount + {amount}) WHERE  client_id = { client_id }; " +
-                                         $"INSERT INTO \"Transaction\" (savingAccount_id, transactionType, amount, \"date\") " +
-                                         $"VALUES({savingAccountID}, 'Donor_{id}', {amount}, '{dateOp}')";
+                                         $"INSERT INTO \"Transaction\" (savingAccount_id, transactionType, amount, executionDate, \"status\") " +
+                                         $"VALUES({savingAccountID}, 'Donor_{id}', {amount}, '{dateOp}', \'done\')";
                     ConnectionDB.NonQuerySQL(queryString);
                 }
                 else
