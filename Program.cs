@@ -272,7 +272,7 @@ namespace Project_2
 
             if (options.CurrentToCurrent)
             {
-                instantTransfer.RecordInstantTransferFromCurrentToCurrent(options.IdCurrentAccount, options.Amount);
+                instantTransfer.RecordTransferFromCurrentToCurrent(options.IdCurrentAccount, options.Amount);
             }
             if(options.CurrentToSaving)
             {
@@ -307,15 +307,15 @@ namespace Project_2
 
             if (options.CurrentToCurrent)
             {
-                permanentTransfer.RecordPermanentTransferFromCurrentToCurrent(options.IdCurrentAccount, options.Amount, options.FirstExe, options.LastExe, options.Interval);
+                permanentTransfer.RecordTransferFromCurrentToCurrent(options.IdCurrentAccount, options.Amount, options.FirstExe, options.LastExe, options.Interval);
             }
             if (options.CurrentToSaving)
             {
-                permanentTransfer.RecordPermanentTransferFromCurrentToSaving(options.IdSavingAccount, options.Amount, options.FirstExe, options.LastExe, options.Interval);
+                permanentTransfer.RecordTransferFromCurrentToSaving(options.IdSavingAccount, options.Amount, options.FirstExe, options.LastExe, options.Interval);
             }
             if (options.SavingToCurrent)
             {
-                permanentTransfer.RecordPermanentTransferFromSavingToCurrent(options.IdSavingAccount, options.Amount, options.FirstExe, options.LastExe, options.Interval);
+                permanentTransfer.RecordTransferFromSavingToCurrent(options.IdSavingAccount, options.Amount, options.FirstExe, options.LastExe, options.Interval);
             }
         }
 
