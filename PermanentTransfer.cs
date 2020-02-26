@@ -43,7 +43,6 @@ namespace Project_2
                                  $"'{lastExecution}'," +
                                  $"{interval}," +
                                  $"'pending');";
-                Console.WriteLine(queryString);
                 ConnectionDB.NonQuerySQL(queryString);
             }
         }
@@ -114,7 +113,9 @@ namespace Project_2
             string checkSavingAccountCeiling = $"SELECT ceiling FROM SavingAccounts WHERE id = {beneficiaryId}";
             decimal SavingAccountCeiling = ConnectionDB.ReturnDecimal(checkSavingAccountCeiling);
 
-            if (Convert.ToDouble(CurrentAccountContent - CurrentAccountOverdraft) >= amount)
+            bool IsValidDonator = Client.AddFromBeneficiary(emitterId, beneficiaryId);
+
+            if (Convert.ToDouble(CurrentAccountContent - CurrentAccountOverdraft) >= amount && IsValidDonator)
             {
                 if(((Convert.ToDouble(SavingAccountContent)) + amount) < Convert.ToDouble(SavingAccountCeiling) )
                 {
@@ -141,8 +142,5 @@ namespace Project_2
                 Console.WriteLine($"There is not enough money on current account to perform transfer");
             }
         }
-        
     }
-
-    
 }

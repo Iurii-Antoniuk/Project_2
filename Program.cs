@@ -12,11 +12,12 @@ namespace Project_2
             [Option('a', "amount", Required = true, HelpText = "amount to withdraw")]
             public double Amount { get; set; }
 
-            [Option('c', "client id", Required = true, HelpText = "Enter your client id")]
+           [Option('c', "clientId", Required = true, HelpText = "Enter your client id")]
             public int IdClient { get; set; }
 
         }
 
+       
         class TransferOptions : LoginOptions
         {
             [Option('t', "CToC", HelpText = "Transaction from a current account to a current account")]
@@ -37,6 +38,8 @@ namespace Project_2
             [Option("amount", Required = true, HelpText = "amount to transfer")]
             public double Amount { get; set; }
 
+            [Option('i', "clientId", Required = true, HelpText = "Enter your client id")]
+            public int IdClient { get; set; }
 
         }
 
@@ -61,7 +64,7 @@ namespace Project_2
             [Option('l', "last", HelpText = "Date last execution of the transfer")]
             public String LastExe { get; set; }
 
-            [Option('i', "interval", HelpText = "interval between your execution")]
+            [Option('i', "interval", HelpText = "interval (days) between your execution")]
             public Int32 Interval { get; set; }
 
         }
@@ -84,12 +87,15 @@ namespace Project_2
         {
             [Option('i', "id", Required = true, HelpText = "id Client to delete")]
             public int IdClient { get; set; }
+
+            [Option('d',"destinaryAccount", Required =true,HelpText ="destinary account")]
+            public int DestinaryAccount { get; set; }
         }
 
         [Verb("modifyPass", HelpText ="Modify your password")]
         class ModifyPasssOptions : LoginOptions
         {
-            [Option('i', "id", Required = true, HelpText = "id Client to delete")]
+            [Option('i', "id", Required = true, HelpText = "id Client")]
             public int IdClient { get; set; }
         }
 
@@ -119,21 +125,21 @@ namespace Project_2
         class InfoSavingAccountsOptions : LoginOptions
 
         {
-            [Option('s', "id saving account", Required = true, HelpText = "Enter your saving account id")]
+            [Option('s', "idSA", Required = true, HelpText = "Enter your saving account id")]
             public int IdSavingAccount { get; set; }
         }
 
         [Verb("infoCurrentAccounts", HelpText = "Get information about your current account")]
         class InfoCurrentAccountsOptions : LoginOptions
         {
-            [Option('c', "id current account", HelpText = "Enter your current account id")]
+            [Option('c', "idCA", Required = true, HelpText = "Enter your current account id")]
             public int IdCurrentAccount { get; set; }
         }
 
         [Verb("infoUser", HelpText ="Get informations about your users")]
         class InfoUserOptions : LoginOptions
         {
-            [Option('i', "client id", Required = true, HelpText = "Enter your client id")]
+            [Option('i', "clientId", Required = true, HelpText = "Enter your client id")]
             public int IdClient { get; set; }
         }
 
@@ -141,16 +147,17 @@ namespace Project_2
         class InfoTransactionOptions : LoginOptions
         {
             [Option('d', "date", Required = true, HelpText ="Enter the date of the transaction")]
-            public DateTime Date { get; set; }
+            public string Date { get; set; }
 
-            [Option('i', "client id", Required = true, HelpText = "Enter your client id")]
+            [Option('i', "clientId", HelpText = "Enter your client id")]
             public int IdClient { get; set; }
         }
 
         [Verb("export", HelpText ="Export the informations about transactions")]
         class ExportOptions : LoginOptions
         {
-            
+            [Option('p', "path", Required = true, HelpText ="Path to save the csv file")]
+            public string Path { get; set; }
         }
 
         class LoginOptions
@@ -159,15 +166,23 @@ namespace Project_2
             public String UserName { get; set; }
         }
 
+        [Verb("addDonators", HelpText = "Add a donator")]
+        class AddDonatorsOptions : LoginOptions
+        {
+            [Option('d', "donator", Required = true, HelpText = "Current account id of donator" )]
+            public int Donator { get; set; }
+            [Option('i', "clientId", Required = true, HelpText = "Enter your client id")]
+            public int ClientId { get; set; }
+        }
+
         static void Main(string[] args)
         {   
-            Parser.Default.ParseArguments<LoginOptions, WithdrawOptions, TransferOptions, InstantTransferOptions, DelayedTransferOptions, PermanentTransferOptions, CreateSavingsAccountOptions, DeleteSavingsAccountOptions,
-                 InfoSavingAccountsOptions, InfoCurrentAccountsOptions, CreateClientOptions, DeleteClientOptions, ModifyPasssOptions, InfoUserOptions,
-                 InfoTransactionOptions, ExportOptions>(args)
+            Parser.Default.ParseArguments<LoginOptions, WithdrawOptions, InstantTransferOptions, DelayedTransferOptions, 
+                PermanentTransferOptions, CreateSavingsAccountOptions, DeleteSavingsAccountOptions, InfoSavingAccountsOptions, 
+                InfoCurrentAccountsOptions, CreateClientOptions, DeleteClientOptions, ModifyPasssOptions, InfoUserOptions,
+                 InfoTransactionOptions, ExportOptions, AddDonatorsOptions>(args)
                  .WithParsed<LoginOptions>(RunLoginUser)
                 .WithParsed<WithdrawOptions>(RunWithdrawOptions)
-                //.WithParsed<TransferOptions>(RunTransferOptions)
-
                 .WithParsed<InstantTransferOptions>(RunInstantTransferOptions)
                 .WithParsed<DelayedTransferOptions>(RunDelayedTransferOptions)
                 .WithParsed<PermanentTransferOptions>(RunPermanentTransferOptions)
@@ -181,7 +196,8 @@ namespace Project_2
                 .WithParsed<InfoCurrentAccountsOptions>(RunCurrentAccountsInfoOptions)
                 .WithParsed<InfoUserOptions>(RunInfoUserOptions)
                 .WithParsed<InfoTransactionOptions>(RunInfoTransactionOptions)
-                .WithParsed<ExportOptions>(RunExportOptions);
+                .WithParsed<ExportOptions>(RunExportOptions)
+                .WithParsed<AddDonatorsOptions>(RunAddDonatorOptions);
 
             ConnectionDB.GetConnectionString();
 
@@ -254,17 +270,24 @@ namespace Project_2
         {
             InstantTransfer instantTransfer = new InstantTransfer();
 
-            if (options.CurrentToCurrent)
+            if (Person.ID == options.IdClient)
             {
-                instantTransfer.RecordTransferFromCurrentToCurrent(options.EmitterId, options.BeneficiaryId, options.Amount);
+                if (options.CurrentToCurrent)
+                {
+                    instantTransfer.RecordTransferFromCurrentToCurrent(options.EmitterId, options.BeneficiaryId, options.Amount);
+                }
+                if (options.CurrentToSaving)
+                {
+                    instantTransfer.RecordTransferFromCurrentToSaving(options.EmitterId, options.BeneficiaryId, options.Amount);
+                }
+                if (options.SavingToCurrent)
+                {
+                    instantTransfer.RecordTransferFromSavingToCurrent(options.EmitterId, options.BeneficiaryId, options.Amount);
+                }
             }
-            if(options.CurrentToSaving)
+            else
             {
-                instantTransfer.RecordTransferFromCurrentToSaving(options.EmitterId, options.BeneficiaryId, options.Amount);
-            }
-            if(options.SavingToCurrent)
-            {
-                instantTransfer.RecordTransferFromSavingToCurrent(options.EmitterId, options.BeneficiaryId, options.Amount);
+                Console.WriteLine("Wrong id");
             }
         }
         static void RunDelayedTransferOptions(DelayedTransferOptions options)
@@ -324,7 +347,7 @@ namespace Project_2
             if (Person.ID == 1)
             {
                 Administrator administrator = new Administrator();
-                administrator.DeleteClient(options.IdClient);
+                administrator.DeleteClient(options.IdClient, options.DestinaryAccount);
             }
             else
             {
@@ -353,7 +376,7 @@ namespace Project_2
             }
             else
             {
-                Console.WriteLine("You can not create a new current account");
+                Console.WriteLine("You can not create a new saving account");
             }
         }
 
@@ -424,11 +447,23 @@ namespace Project_2
         {
             if (Person.ID == 1)
             {
-                CSVFileExport.ExportCSVFile();
+                CSVFileExport.ExportCSVFile(options.Path);
             }
             else
             {
                 Console.WriteLine("You can not acces to the export of the transaction");
+            }
+        }
+
+        static void RunAddDonatorOptions(AddDonatorsOptions options)
+        {
+            if (Person.ID == options.ClientId)
+            {
+                SavingsAccount.AddDonators(options.Donator);
+            }
+            else
+            {
+                Console.WriteLine("Donator is invalid");
             }
         }
     }

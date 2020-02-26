@@ -39,8 +39,6 @@ namespace Project_2
             }
         }
 
-        
-
         public void RecordTransferFromCurrentToSaving(int SavingAccount_id, int beneficiaryId, double amount, string executionDate)
         {
             int debitClient_id = Person.ID;

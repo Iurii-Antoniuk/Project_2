@@ -6,7 +6,6 @@ namespace Project_2
 {
     public class Person
     {
-        protected static string Name { get; set; }
         public static int ID { get; set; }
         public static string Password { get; set; }
         

@@ -5,12 +5,6 @@ namespace Project_2
 {
     public abstract class Transaction
     {
-        protected Account ActualAccount { get; set; }
-        protected DateTime DateTransaction { get; set; }
-        protected double Amount { get; set; }
-        protected Account DestinationAccount { get; set; }
-
-
 
         public void QueryTransferFromCurrentToCurrent(int emitterId, int beneficiaryId, double amount, DateTime executionDate)
         {
@@ -19,7 +13,7 @@ namespace Project_2
             string getCurrentAccountOverdraft = $"SELECT overdraft FROM CurrentAccounts WHERE id = {emitterId}";
             decimal currentAccountOverdraft = ConnectionDB.ReturnDecimal(getCurrentAccountOverdraft);
 
-            if (Convert.ToDouble(currentAccountContent + currentAccountOverdraft) > amount)
+            if (Convert.ToDouble(currentAccountContent - currentAccountOverdraft) > amount)
             {
                 string queryString =
                                  $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, beneficiaryCurrentAccount_id, amount, executionDate, status) " +
@@ -54,7 +48,6 @@ namespace Project_2
                 ConnectionDB.NonQuerySQL(queryString);
             }
         }
-
         public void QueryTransferFromCurrentToSaving(int emitterId, int beneficiaryId, double amount, DateTime firstExecution)
         {
             string checkCurrentAccountContent = $"SELECT amount FROM CurrentAccounts WHERE id = {emitterId}";
@@ -67,7 +60,10 @@ namespace Project_2
             string checkSavingAccountCeiling = $"SELECT ceiling FROM SavingAccounts WHERE id = {beneficiaryId}";
             decimal savingAccountCeiling = ConnectionDB.ReturnDecimal(checkSavingAccountCeiling);
 
-            if (Convert.ToDouble(currentAccountAmount - currentAccountOverdraft) >= amount)
+            
+            bool IsValidDonator = Client.AddFromBeneficiary(emitterId, beneficiaryId);
+
+            if (Convert.ToDouble(currentAccountAmount - currentAccountOverdraft) >= amount && IsValidDonator==true)
             {
                 if (((Convert.ToDouble(savingAccountAmount)) + amount) < Convert.ToDouble(savingAccountCeiling))
                 {
@@ -80,7 +76,6 @@ namespace Project_2
                                  $"{amount}, " +
                                  $"\'{firstExecution}\'," +
                                  $"\'pending\');";
-                    Console.WriteLine(queryString);
                     ConnectionDB.NonQuerySQL(queryString);
                 }
                 else
@@ -97,32 +92,12 @@ namespace Project_2
         public static DateTime CheckDate(string userInput)
         {
             CultureInfo fr = new CultureInfo("fr");
-            DateTime dateValue = DateTime.Today;
-            try
+            DateTime dateValue;
+            if ((!DateTime.TryParseExact(userInput, "d", fr, DateTimeStyles.AllowLeadingWhite, out dateValue)))
             {
-                dateValue = DateTime.ParseExact(userInput, "d", fr, DateTimeStyles.AllowLeadingWhite);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
+                throw new ArgumentException("Invalid Date");
             }
             return dateValue;
-        }
-
-
-        public int GetClientIDFromAccountId(int account_id)
-        {
-            string queryStringIdFromOtherClient = $"SELECT client_id FROM CurrentAccounts WHERE id = {account_id}";
-            int clientIdOfExternalAccount = ConnectionDB.ReturnID(queryStringIdFromOtherClient);
-
-            if (clientIdOfExternalAccount > 0)
-            {
-                return clientIdOfExternalAccount;
-            }
-            else
-            {
-                return 0;
-            }
         }
     }
 }

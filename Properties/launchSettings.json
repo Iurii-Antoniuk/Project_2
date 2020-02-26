@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Project_2": {
-      "commandName": "Project",
-      "commandLineArgs": "infoCurrentAccounts --user admin -c 100"
-    }
-  }
-}

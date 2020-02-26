@@ -13,8 +13,6 @@ namespace Project_2
             QueryTransferFromCurrentToCurrent(emitterId, beneficiaryId, amount, executionDate);
         }
 
-        
-
         public void RecordTransferFromSavingToCurrent(int debitSavingAccount_id, int beneficiaryId, double amount)
         {
             int debitClient_id = Person.ID;
@@ -30,8 +28,5 @@ namespace Project_2
             
             QueryTransferFromCurrentToSaving(SavingAccount_id, beneficiaryId, amount, executionDate);
         }
-
-        
-
     }
 }

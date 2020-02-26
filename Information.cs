@@ -12,18 +12,27 @@ namespace Project_2
             List<string> clientInfo = new List<string> { "id", "name"};
             foreach (string item in clientInfo)
             {
-                Console.Write(item + "\t");
+                Console.Write("\t" + item);
             }
+            Console.WriteLine();
             ConnectionDB.SelectSQL(queryString, clientInfo);
         }
 
-        public static void GetInfoByTransactionDate(DateTime date)
+        public static void GetInfoByTransactionDate(string date)
         {
-            //Modifier le format DATETIME en DATE dans le script SQL
-            
+
+            DateTime dateValue = Transaction.CheckDate(date);
+
             Console.WriteLine("Transaction Information : ");
-            string queryString = $"SELECT id, currentAccount_id, savingAccount_id, transactionType, beneficiaryAccount_id, amount, \"date\" FROM \"Transaction\" WHERE date = '{date}';";
-            List<string> transactionInfo = new List<string> { "id", "currentAccount_id", "savingAccount_id",  "transactionType", "beneficiaryAccount_id", "amount", "date" };
+            string queryString = $"SELECT id, currentAccount_id, savingAccount_id, transactionType, beneficiaryCurrentAccount_id, beneficiarySavingAccount_id, amount, executionDate, " +
+                                $"lastExecutionDate, intervalDays, status FROM \"Transaction\" WHERE executionDate = '{dateValue}';";
+            List<string> transactionInfo = new List<string> { "id", "currentAccount_id", "savingAccount_id",  "transactionType", "beneficiaryCurrentAccount_id",
+                                                        "beneficiarySavingAccount_id", "amount", "executionDate", "lastExecutionDate", "intervalDays", "status" };
+            foreach (string item in transactionInfo)
+            {
+                Console.Write("\t" + item +"," );
+            }
+            Console.WriteLine();
             ConnectionDB.SelectSQL(queryString, transactionInfo);
         }
 
@@ -35,8 +44,10 @@ namespace Project_2
             List<string> savingAccountInfo = new List<string> { "id", "amount", "rate", "ceiling", "openingDate" };
             foreach (string item in savingAccountInfo)
             {
-                Console.Write(item + "\t");
+                Console.Write("\t" + item);
             }
+            Console.WriteLine();
+
             ConnectionDB.SelectSQL(queryString, savingAccountInfo);
         }
 
@@ -48,8 +59,10 @@ namespace Project_2
             List<string> currentAccountInfo = new List<string> { "id", "amount", "overdraft", "openingDate" };
             foreach (string item in currentAccountInfo)
             {
-                Console.Write(item + "\t");
+                Console.Write("\t" + item);
             }
+            Console.WriteLine();
+
             ConnectionDB.SelectSQL(queryString, currentAccountInfo);
         }
 

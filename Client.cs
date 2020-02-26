@@ -4,35 +4,7 @@ using System.Collections.Generic;
 namespace Project_2
 {
     public class Client : Person
-
-    { 
-        /*public void CheckCurrentAccounts()
-        {
-            Console.WriteLine("Current Accounts : ");
-            int client_id = ID;
-            string queryString = $"SELECT id, amount, overdraft, openingDate FROM CurrentAccounts WHERE client_id = '{client_id}';";
-            List<string> currentAccountInfo = new List<string> { "id", "amount", "overdraft", "openingDate" };
-            foreach (string item in currentAccountInfo)
-            {
-                Console.Write(item + "\t");
-            }
-            Console.WriteLine();
-            ConnectionDB.SelectSQL(queryString, currentAccountInfo);
-        }*/
-        public void CheckSavingAccounts(int debitClient_id)
-        {
-            Console.WriteLine("Savings Accounts : ");
-            int client_id = Person.ID;
-            string queryString = $"SELECT id, amount, rate, ceiling, openingDate FROM SavingAccounts WHERE client_id = '{client_id}';";
-            List<string> savingAccountInfo = new List<string> { "id", "amount", "rate", "ceiling", "openingDate" };
-            foreach (string item in savingAccountInfo)
-            {
-                Console.Write(item + "\t");
-            }
-            Console.WriteLine();
-            ConnectionDB.SelectSQL(queryString, savingAccountInfo);
-        }
-        
+    {
         public void WithdrawMoney(double amount)
         {
             int client_id = ID;
@@ -59,47 +31,22 @@ namespace Project_2
             }
         }
 
-        public void AddFromBeneficiary(double amount, int id_donator)
+        public static bool AddFromBeneficiary(int emitterId, int beneficiaryId)
         {
-            int client_id = ID;
-            string queryString1 = $"SELECT amount FROM SavingAccounts WHERE client_id={ client_id};";
-            decimal currentAmount = ConnectionDB.ReturnDecimal(queryString1);
+            string queryString1 = $"SELECT client_id FROM SavingAccounts WHERE id={beneficiaryId};";
+            int client_id = ConnectionDB.ReturnID(queryString1);
+            string queryString = $"SELECT id FROM Donator WHERE client_id={client_id} and donatorCA_id={emitterId} ;";
 
-            string queryString2 = $"SELECT ceiling FROM SavingAccounts WHERE client_id={ client_id};";
-            decimal ceiling = ConnectionDB.ReturnDecimal(queryString2);
-
-            string queryString3 = $"SELECT id FROM SavingAccounts WHERE client_id={ client_id};";
-            int savingAccountID = ConnectionDB.ReturnID(queryString3);
-
-            string queryString4 = $"SELECT id FROM Donator WHERE client_id={ client_id} and id={id_donator} ;";
-            int id = ConnectionDB.ReturnID(queryString4);
-
-            if (id_donator == id)
+            try
             {
-                Console.WriteLine("donor ok");
-                if ((currentAmount + (decimal)amount) <= ceiling)
-                {
-                    DateTime dateOp = DateTime.Now;
-                    string queryString = $"UPDATE SavingAccounts SET amount = (amount + {amount}) WHERE  client_id = { client_id }; " +
-                                         $"INSERT INTO \"Transaction\" (savingAccount_id, transactionType, amount, executionDate, \"status\") " +
-                                         $"VALUES({savingAccountID}, 'Donor_{id}', {amount}, '{dateOp}', \'done\')";
-                    ConnectionDB.NonQuerySQL(queryString);
-                }
-                else
-                {
-                    Console.WriteLine("Invalid transaction - exceeding ceilling");
-                }
+                int id = ConnectionDB.ReturnID(queryString);
+                return true;
             }
-            else
+            catch
             {
-                Console.WriteLine("there is no information about this donor");
-            }
-
-
-            
+                throw new ArgumentException("Selected Account is invalid");
+            }      
         }
-
-
     }
 }
  

@@ -1,35 +1,39 @@
--- DROP TABLE "Transaction", CurrentAccounts, SavingAccounts, Person;
-
--- CREATE DATABASE Projet2_BancAppli;
+--DROP TABLE "Transaction", CurrentAccounts, SavingAccounts, Person;
+--DROP DATABASE Projet2_BancAppli;
+--CREATE DATABASE Projet2_BancAppli;
 
 USE Projet2_BancAppli;
 
 CREATE TABLE Person (
 id INT PRIMARY KEY IDENTITY(1,1),
 "name" VARCHAR(50) NOT NULL,
-"password" VARCHAR(255) NOT NULL
+"password" VARCHAR(255) NOT NULL,
+"IsActive" BIT DEFAULT 1
 );
 
 CREATE TABLE CurrentAccounts (
 id INT PRIMARY KEY IDENTITY (100, 1),
-client_id INT NOT NULL,
-CONSTRAINT FK_CurrentAccounts FOREIGN KEY (client_id) REFERENCES Person(id),
 amount DECIMAL(10,2) NOT NULL,
 overdraft DECIMAL NOT NULL,
 openingDate DATETIME NOT NULL,
-closeDate DATETIME
+closeDate DATETIME,
+client_id INT NOT NULL,
+CONSTRAINT FK_CurrentAccounts FOREIGN KEY (client_id) REFERENCES Person(id)
+ON UPDATE CASCADE
 );
 
 CREATE TABLE SavingAccounts (
 id INT PRIMARY KEY IDENTITY (1000, 1),
 client_id INT NOT NULL,
-CONSTRAINT FK_SavingAccounts FOREIGN KEY (client_id) REFERENCES Person(id),
 amount DECIMAL(10,2) NOT NULL,
 rate DECIMAL(10, 2),
 "ceiling" DECIMAL NOT NULL,
 openingDate DATETIME NOT NULL,
 closeDate DATETIME
+CONSTRAINT FK_SavingAccounts FOREIGN KEY (client_id) REFERENCES Person(id)
+ON UPDATE CASCADE
 );
+
 
 CREATE TABLE "Transaction" (
 id INT PRIMARY KEY IDENTITY (1, 1),
@@ -50,21 +54,20 @@ intervalDays INT,
 CREATE TABLE Donator (
 id INT PRIMARY KEY IDENTITY (1, 1),
 client_id INT NOT NULL,
-"name" VARCHAR(50) NOT NULL,
-FOREIGN KEY (client_id) REFERENCES Person(id)
-ON UPDATE CASCADE 
-ON DELETE CASCADE
+donatorCA_id INT NOT NULL,
+FOREIGN KEY (client_id) REFERENCES Person(id),
+FOREIGN KEY (donatorCA_id) REFERENCES CurrentAccounts(id)
 );
 
 INSERT INTO Person ("name", "password")
 VALUES 
-('admin', '?gB??\v???U?g?6#????E??x??F?'),
-('georges', '?gB??\v???U?g?6#????E??x??F?'),
-('Daniel', '?gB??\v???U?g?6#????E??x??F?'),
-('Franck', '?gB??\v???U?g?6#????E??x??F?'),
-('Maxime', '?gB??\v???U?g?6#????E??x??F?'),
-('Joel', '?gB??\v???U?g?6#????E??x??F?'),
-('Jeannot', '?gB??\v???U?g?6#????E??x??F?');
+('admin','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4'),
+('georges','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4'),
+('Daniel','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4'),
+('Franck','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4'),
+('Maxime','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4'),
+('Joel','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4'),
+('Jeannot','03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4');
 
 SELECT * FROM Person;
 
@@ -77,7 +80,8 @@ VALUES (2, 1000, -500, '2019-04-05'),
 (7, 6000, -500, '2019-04-10');
 
 SELECT * FROM CurrentAccounts;
-
+--SELECT id FROM SavingAccounts WHERE client_id = 2;
+--UPDATE Person SET IsActive = 0 WHERE id = 2;
 INSERT INTO SavingAccounts (client_id, amount, rate,  "ceiling", openingDate)
 VALUES (2, 1000, 0.1, 50000, '2019-04-05'),
 (2, 1000, 0.1, 50000, '2019-04-05'),
@@ -92,8 +96,6 @@ VALUES (2, 1000, 0.1, 50000, '2019-04-05'),
 
 SELECT * FROM SavingAccounts;
 
-
-DELETE FROM "Transaction";
 INSERT INTO "Transaction" 
 (currentAccount_id, savingAccount_id, transactionType, beneficiaryCurrentAccount_id, beneficiarySavingAccount_id, amount, executionDate, lastExecutionDate, intervalDays, "status")
 VALUES
@@ -114,15 +116,19 @@ VALUES
 SELECT * FROM "Transaction";
 
 INSERT INTO Donator
-(client_id, "name")
+(client_id, donatorCA_id)
 VALUES
-(4, 'JEAN'),
-(4, 'GEORGE'),
-(4, 'JEAN'),
-(5, 'Ru_MAFIA'),
-(5, 'IT_MAFIA'),
-(5, 'PAPA'),
-(6, 'MAMA'),
-(7, 'VOISIN');
+(2, 100),
+(2, 101),
+(2, 102),
+(2, 103),
+(2, 104),
+(2, 105),
+(3, 101),
+(3, 102),
+(4, 102),
+(5, 103),
+(6, 104),
+(7, 105);
 
 SELECT * FROM Donator;
