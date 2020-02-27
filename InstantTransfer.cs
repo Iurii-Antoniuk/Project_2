@@ -3,113 +3,30 @@
 namespace Project_2
 {
     public class InstantTransfer : Transaction
-    {
-        public void ImmediateTransfer(double amount)
+    { 
+
+        public void RecordTransferFromCurrentToCurrent(int emitterId, int beneficiaryId, double amount)
         {
             int debitClient_id = Person.ID;
-            DateTime transferDate = DateTime.Today;
+            DateTime executionDate = DateTime.Today;
 
-            char debitAccount = ChooseDebitAccount();
+            QueryTransferFromCurrentToCurrent(emitterId, beneficiaryId, amount, executionDate);
+        }
 
-            int debitSavingAccount_id = 0;
-            char recipientAccount = 'a';
-            int recipientAccount_id = 0;
-
-            if (debitAccount == 's')
-            {
-                debitSavingAccount_id = Transactor.GetSavingAccountIdFromClientChoice(Person.ID);
-            }
-            else
-            {
-                recipientAccount = ChooseRecipientAccount(debitClient_id);
-                recipientAccount_id = GetAccountIdFromAccountType(debitClient_id, recipientAccount);
-            }
+        public void RecordTransferFromSavingToCurrent(int debitSavingAccount_id, int beneficiaryId, double amount)
+        {
+            int debitClient_id = Person.ID;
+            DateTime executionDate = DateTime.Today;
             
-
-            ExecuteTransfer(amount, transferDate, debitAccount, debitSavingAccount_id, recipientAccount, recipientAccount_id);
-
+            QueryTransferFromSavingToCurrent(debitSavingAccount_id, beneficiaryId, amount, executionDate);
         }
 
-        public override void DoTransferFromCurrentAccountToSavingAccountAccordingToDate(int debitClient_id, int SavingAccount_id, double amount, DateTime transferDate)
+        public void RecordTransferFromCurrentToSaving(int SavingAccount_id, int beneficiaryId, double amount)
         {
-            Transactor.TransferFromCurrentAccountToSavingAccount(debitClient_id, SavingAccount_id, amount);
+            int debitClient_id = Person.ID;
+            DateTime executionDate = DateTime.Today;
+            
+            QueryTransferFromCurrentToSaving(SavingAccount_id, beneficiaryId, amount, executionDate);
         }
-
-        public override void DoTransferFromCurrentToOtherCurrentAccountAccordingToDate(int debitClient_id, int clientIdOfExternalAccount, double amount, DateTime transferDate)
-        {
-            Transactor.TransferFromCurrentToCurrentAccount(debitClient_id, clientIdOfExternalAccount, amount);
-        }
-
-        public override void DoTransferFromSavingToCurrentAccountAccordingToDate(int debitClient_id, int SavingAccount_id, int recipientAccount_id, double amount, DateTime transferDate)
-        {
-            Transactor.TransferFromSavingToCurrentAccount(debitClient_id, SavingAccount_id, amount);
-        }
-
-
-
-
-
-        /*public static void DoTransfer(double amount, DateTime transferDate)
-        {
-            Console.WriteLine("Specify from which account you want to transfer money:");
-            Console.WriteLine("Current account (c) or saving account (s)");
-            string debitAccount = Console.ReadLine();
-
-            // Récupère l'ID du client dans la propriété qui doit être définie lors de la connexion du client sur l'interface
-            int debitClient_id = 3;
-
-
-            if (debitAccount == "c")
-            {
-                debitAccount = "CurrentAccounts";
-                Console.WriteLine("Do you wish to transfer money to one of your saving account (s) or to an external account (e) ?");
-                string creditAccount = Console.ReadLine();
-
-                if (creditAccount == "s")
-                {
-                    int SavingAccount_id = Transaction.GetSavingAccountIdFromClientChoice(debitClient_id);
-                    Transaction.TransferFromCurrentAccountToSavingAccount(debitClient_id, SavingAccount_id, amount);
-                }
-                else if (creditAccount == "e")
-                {
-                    creditAccount = "CurrentAccounts";
-                    Console.WriteLine("Specify the id number of the beneficiary account");
-                    int externalAccount_id = Convert.ToInt32(Console.ReadLine());
-
-                    // Check if externalAccount is in DB if yes, get creditClient_id
-                    string queryStringIdFromOtherClient = $"SELECT client_id FROM CurrentAccounts WHERE id = {externalAccount_id}";
-                    int clientIdOfExternalAccount = ConnectionDB.ReturnID(queryStringIdFromOtherClient);
-
-                    if (clientIdOfExternalAccount > 0)
-                    {
-                        try
-                        {
-                            Transaction.TransferFromCurrentToCurrentAccount(debitClient_id, clientIdOfExternalAccount, amount, transferDate);
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine("An error occured. " + e);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Please specify a valid recipient account number.");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Exiting program due to input error");
-                }
-            }
-            else if (debitAccount == "s")
-            {
-                int SavingAccount_id = Transaction.GetSavingAccountIdFromClientChoice(debitClient_id);
-                Transaction.TransferFromSavingToCurrentAccount(debitClient_id, SavingAccount_id, amount, transferDate);
-            }
-            else
-            {
-                Console.WriteLine("Exiting program due to input error");
-            }
-        }*/
     }
 }
