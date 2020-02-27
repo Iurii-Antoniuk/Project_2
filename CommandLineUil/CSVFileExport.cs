@@ -2,7 +2,7 @@
 using System.Data.SqlClient;
 using System.IO;
 
-namespace Project_2
+namespace IKEACmdUtil
 {
     class CSVFileExport
     {

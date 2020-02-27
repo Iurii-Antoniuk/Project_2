@@ -2,7 +2,7 @@
 using System.Text;
 using System.Security.Cryptography;
 
-namespace Project_2
+namespace IKEACmdUtil
 {
     public class Person
     {

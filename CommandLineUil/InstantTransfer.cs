@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Project_2
+namespace IKEACmdUtil
 {
     public class InstantTransfer : Transaction
     { 

@@ -1,80 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Project_2.Person">
+  <Class Name="IKEACmdUtil.Person">
     <Position X="1.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgAAABAAAAAQAAIAAAAACAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAgAAABAAAAAAAAIAAAAACAAAAAAAAAAA=</HashCode>
       <FileName>Person.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Project_2.Administrator">
+  <Class Name="IKEACmdUtil.Administrator">
     <Position X="13.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAIBAAAAABA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAEAACAAAAABAAAAAAAABAAAAAAA=</HashCode>
       <FileName>Administrator.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Project_2.Client">
+  <Class Name="IKEACmdUtil.Client">
     <Position X="1.75" Y="6" Width="1.5" />
-    <InheritanceLine Type="Project_2.Person" ManuallyRouted="true" FixedToPoint="true">
-      <Path>
-        <Point X="2.5" Y="5.382" />
-        <Point X="2.5" Y="5.7" />
-        <Point X="2.562" Y="5.7" />
-        <Point X="2.562" Y="6" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAACAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <HashCode>AAAAQAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Client.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Project_2.Account">
+  <Class Name="IKEACmdUtil.Account">
     <Position X="9.5" Y="8" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAAAAAAAAAAAAAAAAAAACAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Account.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Project_2.CurrentAccount">
+  <Class Name="IKEACmdUtil.CurrentAccount">
     <Position X="7.75" Y="10.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
       <FileName>CurrentAccount.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Project_2.SavingsAccount">
+  <Class Name="IKEACmdUtil.SavingsAccount">
     <Position X="10.75" Y="10.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAIAAAAEAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAACAAAAABAAAAAAIAAAAAAAA=</HashCode>
       <FileName>SavingsAccount.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Project_2.Transaction">
+  <Class Name="IKEACmdUtil.Transaction">
     <Position X="8.75" Y="12.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ABkAABAAAAAIACAQABAAAAGABAAAAABCEBAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAEEAAAAAAAQAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>Transaction.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Project_2.InstantTransfer">
+  <Class Name="IKEACmdUtil.InstantTransfer">
     <Position X="6.75" Y="15" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <HashCode>AAAAAAAAgAAgAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
       <FileName>InstantTransfer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Project_2.DelayedTransfer">
+  <Class Name="IKEACmdUtil.DelayedTransfer">
     <Position X="9" Y="16.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAgAAAAAAAAAAAAQABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAgAAgAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
       <FileName>DelayedTransfer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Project_2.PermanentTransfer">
+  <Class Name="IKEACmdUtil.PermanentTransfer">
     <Position X="12" Y="15" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAkAAgAAAAAQAAAAAAAAAIAAAAIAAAAAAAAAA=</HashCode>
       <FileName>PermanentTransfer.cs</FileName>
     </TypeIdentifier>
   </Class>

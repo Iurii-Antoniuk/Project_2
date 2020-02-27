@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
 
-namespace Project_2
+namespace IKEACmdUtil
 {
     public class Administrator : Person
     {

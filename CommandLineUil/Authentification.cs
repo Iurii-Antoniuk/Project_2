@@ -2,7 +2,7 @@
 using System.Security;
 using System.Runtime.InteropServices;
 
-namespace Project_2
+namespace IKEACmdUtil
 {
     public class Authentification
     {

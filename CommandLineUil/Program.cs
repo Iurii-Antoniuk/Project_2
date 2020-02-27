@@ -1,7 +1,7 @@
 ﻿using System;
 using CommandLine;
 
-namespace Project_2
+namespace IKEACmdUtil
 {
     class Program
     {
