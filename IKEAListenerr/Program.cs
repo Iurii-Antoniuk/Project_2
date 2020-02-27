@@ -14,16 +14,27 @@ namespace IKEAListenerr
         /// </summary>
         static void Main()
         {
-            Database.TestDBConnection();
-
-            ServiceBase[] ServicesToRun;
+            /*ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
                 new Service1()
             };
-            ServiceBase.Run(ServicesToRun);
+            ServiceBase.Run(ServicesToRun);*/
+            /*
+                        Database.GetPendingTransactions();
 
-            
+                        List<object[]> list = Database.GetPendingTransactions();
+
+                        foreach (object[] item in list)
+                        {
+                            Console.WriteLine(string.Join("\t\t", item));
+                        }
+                        Console.WriteLine("fini");*/
+
+            TransactionExecutor.ExecuteTransaction();
+
+            Console.WriteLine("fini");
+
         }
     }
 }
