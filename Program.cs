@@ -38,7 +38,7 @@ namespace Project_2
             [Option("amount", Required = true, HelpText = "amount to transfer")]
             public double Amount { get; set; }
 
-            [Option('i', "clientId", Required = true, HelpText = "Enter your client id")]
+            [Option('c', "clientId", Required = true, HelpText = "Enter your client id")]
             public int IdClient { get; set; }
 
         }
@@ -46,25 +46,26 @@ namespace Project_2
         [Verb("instant", HelpText = "Make a instant transaction")]
         class InstantTransferOptions : TransferOptions
         {
+
         }
 
         [Verb("delayed", HelpText = "Make a delayed transaction")]
         class DelayedTransferOptions : TransferOptions
         {
-            [Option('d', "date", HelpText = "Execution date of the transfer")]
+            [Option('d', "date", Required = true, HelpText = "Execution date of the transfer")]
             public String DatetExe { get; set; }   
         }
 
         [Verb("permanent", HelpText = "Make a permanent transaction")]
         class PermanentTransferOptions : TransferOptions
         {
-            [Option('f', "first", HelpText = "Date first execution of the transfer")]
+            [Option('f', "first", Required = true, HelpText = "Date first execution of the transfer")]
             public String FirstExe { get; set; }
 
-            [Option('l', "last", HelpText = "Date last execution of the transfer")]
+            [Option('l', "last", Required = true, HelpText = "Date last execution of the transfer")]
             public String LastExe { get; set; }
 
-            [Option('i', "interval", HelpText = "interval (days) between your execution")]
+            [Option('i', "interval", Required = true, HelpText = "interval (days) between your execution")]
             public Int32 Interval { get; set; }
 
         }
@@ -200,52 +201,6 @@ namespace Project_2
                 .WithParsed<AddDonatorsOptions>(RunAddDonatorOptions);
 
             ConnectionDB.GetConnectionString();
-
-            //Administrator admin = new Administrator();
-            //admin.CreateAdmin("admin");
-            //admin.CreateClient("jus", 200);
-            //Console.WriteLine(Person.Password);
-          
-
-
-            //string queryString = $"SELECT * FROM CurrentAccounts";
-            //string queryString = $"SELECT * FROM \"Transaction\" ";
-            //string queryString = $"SELECT * FROM \"Transaction\" WHERE id = 2 ";
-
-            //SavingsAccount.AddInterest(10000);
-
-            /*Authentification authentification = new Authentification();
-            authentification.Login();
-            Client client = new Client();
-            client.AddFromBeneficiary(7001, 1003);*/
-
-            //authentification.ModifyPassword();
-
-            //Client client = new Client();
-            //client.AddFromBeneficiary(200);
-
-            //Client.WithdrawMoney(102, 20);
-            //Client client = new Client();
-            //client.ImmediateTransfer(100);
-
-            //int rows = ConnectionDB.CountRows("SavingAccounts");
-            //Console.WriteLine(rows);
-            //List<decimal> values = ConnectionDB.GetAccountColumnValues("SavingAccounts", "rate");
-            //foreach (decimal value in values)
-            //{
-            //    Console.WriteLine(value);
-            //}
-            //Console.ReadLine();
-
-            /*InstantTransfer ins = new InstantTransfer();
-            ins.ImmediateTransfer(1);*/
-
-            /*DelayedTransfer trs = new DelayedTransfer();
-            trs.ExecuteDelayedTransfer(1);*/
-
-
-            /*PermanentTransfer trp = new PermanentTransfer();
-             trp.ExecutePermanentTransfer(300);*/
         }
 
         static void RunLoginUser(LoginOptions loginOptions)
@@ -294,35 +249,50 @@ namespace Project_2
         {
             DelayedTransfer delayedTransfer = new DelayedTransfer();
 
-            if (options.CurrentToCurrent)
+            if (Person.ID == options.IdClient)
             {
-                delayedTransfer.RecordTransferFromCurrentToCurrent(options.EmitterId, options.BeneficiaryId, options.Amount, options.DatetExe);
+                if (options.CurrentToCurrent)
+                {
+                    delayedTransfer.RecordTransferFromCurrentToCurrent(options.EmitterId, options.BeneficiaryId, options.Amount, options.DatetExe);
+                }
+                if (options.CurrentToSaving)
+                {
+                    delayedTransfer.RecordTransferFromCurrentToSaving(options.EmitterId, options.BeneficiaryId, options.Amount, options.DatetExe);
+                }
+                if (options.SavingToCurrent)
+                {
+                    delayedTransfer.RecordTransferFromSavingToCurrent(options.EmitterId, options.BeneficiaryId, options.Amount, options.DatetExe);
+                }
             }
-            if (options.CurrentToSaving)
+            else
             {
-                delayedTransfer.RecordTransferFromCurrentToSaving(options.EmitterId, options.BeneficiaryId, options.Amount, options.DatetExe);
+                Console.WriteLine("Wrong id");
             }
-            if (options.SavingToCurrent)
-            {
-                delayedTransfer.RecordTransferFromSavingToCurrent(options.EmitterId, options.BeneficiaryId, options.Amount, options.DatetExe);
-            }
+
         }
 
         static void RunPermanentTransferOptions(PermanentTransferOptions options)
         {
             PermanentTransfer permanentTransfer = new PermanentTransfer();
 
-            if (options.CurrentToCurrent)
+            if (Person.ID == options.IdClient)
             {
-                permanentTransfer.RecordTransferFromCurrentToCurrent(options.EmitterId, options.BeneficiaryId, options.Amount, options.FirstExe, options.LastExe, options.Interval);
+                if (options.CurrentToCurrent)
+                {
+                    permanentTransfer.RecordTransferFromCurrentToCurrent(options.EmitterId, options.BeneficiaryId, options.Amount, options.FirstExe, options.LastExe, options.Interval);
+                }
+                if (options.CurrentToSaving)
+                {
+                    permanentTransfer.RecordTransferFromCurrentToSaving(options.EmitterId, options.BeneficiaryId, options.Amount, options.FirstExe, options.LastExe, options.Interval);
+                }
+                if (options.SavingToCurrent)
+                {
+                    permanentTransfer.RecordTransferFromSavingToCurrent(options.EmitterId, options.BeneficiaryId, options.Amount, options.FirstExe, options.LastExe, options.Interval);
+                }
             }
-            if (options.CurrentToSaving)
+            else
             {
-                permanentTransfer.RecordTransferFromCurrentToSaving(options.EmitterId, options.BeneficiaryId, options.Amount, options.FirstExe, options.LastExe, options.Interval);
-            }
-            if (options.SavingToCurrent)
-            {
-                permanentTransfer.RecordTransferFromSavingToCurrent(options.EmitterId, options.BeneficiaryId, options.Amount, options.FirstExe, options.LastExe, options.Interval);
+                Console.WriteLine("Wrong id");
             }
         }
 

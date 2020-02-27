@@ -34,6 +34,7 @@ CONSTRAINT FK_SavingAccounts FOREIGN KEY (client_id) REFERENCES Person(id)
 ON UPDATE CASCADE
 );
 
+SELECT * FROm SavingAccounts;
 
 CREATE TABLE "Transaction" (
 id INT PRIMARY KEY IDENTITY (1, 1),
@@ -128,7 +129,8 @@ VALUES
 (3, 102),
 (4, 102),
 (5, 103),
-(6, 104),
-(7, 105);
+(6, 104);
+--(7, 105);
 
 SELECT * FROM Donator;
+TRUNCATE TABLE Donator;
