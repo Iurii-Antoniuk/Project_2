@@ -14,12 +14,16 @@ namespace IKEAListenerr
         /// </summary>
         static void Main()
         {
+            Database.TestDBConnection();
+
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[]
             {
                 new Service1()
             };
             ServiceBase.Run(ServicesToRun);
+
+            
         }
     }
 }

@@ -9,8 +9,11 @@ namespace IKEAListenerr
     class TransactionExecutor
     {
         public Database _database { get; set; }
+        
         public bool TransactionHasToBeExecuted(Transaction transaction)
-        { }
+        { 
+            return true;
+        }
 
         public void ExecuteTransaction(Transaction transaction)
         {
