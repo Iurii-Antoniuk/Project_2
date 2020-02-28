@@ -39,6 +39,8 @@ namespace IKEAListenerr
 
         private void AddEventHandler(ElapsedEventHandler handler, TimeSpan timeSpan)
         {
+            _logger.Info("Adding event handler " + handler);
+
             Timer timer = new Timer();
             timer.Elapsed += handler;
             timer.Interval = timeSpan.TotalMilliseconds; //number in milisecinds  
@@ -53,7 +55,16 @@ namespace IKEAListenerr
 
         private void ListenTransactions(object source, ElapsedEventArgs e)
         {
-            _logger.Info("Listening transactions");
+            try
+            {
+                _logger.Info("Executing transaction execution");
+                TransactionExecutor.ExecuteTransaction();
+            }
+            catch(Exception exception)
+            {
+                String message = exception.Message + "\n" + exception.StackTrace;
+                _logger.Error(message);
+            }
         }
 
         protected override void OnStop()

@@ -125,8 +125,6 @@ namespace IKEAListenerr
                                     $"beneficiarySavingAccount_id, executionDate, lastExecutionDate, intervalDays, id, amount " +
                                     $" FROM \"Transaction\" " +
                                     $"WHERE \"status\" = 'pending'; ";
-            // set done to pending
-         
 
             SqlConnection connection = new SqlConnection(GetConnectionString());
             connection.Open();
@@ -142,22 +140,6 @@ namespace IKEAListenerr
             }
             dataread.Close();
             return data;
-
-
-
-           /* SelectSQL(queryString, columnsName);
-
-            IEnumerable<Transaction> transactionList = new List<Transaction>();
-
-            return transactionList;*/
-        }
-
-
-
-
-        public void UpdateTransaction(Transaction transaction)
-        {
-
         }
     }
 }

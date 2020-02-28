@@ -19,21 +19,23 @@ namespace IKEAListenerr
 
         public static void ExecuteTransaction()
         {
+            
             List<Transaction> transactionList = Database.GetPendingTransactionsInTransaction();
 
             foreach (Transaction item in transactionList)
             {
+                Logger.Instance.Info("Pending transaction " + item.id);
                 if (item.StartDate == DateTime.Today)
                 {
                     if (item.intervalDate != 0)
                     {
                         // Permanent transfer
-                        
+
                         // Type de compte émetteur
                         if (item.emitterCurrentAccountId != 0)
                         {
                             // Type de compte destinataire
-                            if(item.beneficiaryCurrentAccountId != 0)
+                            if (item.beneficiaryCurrentAccountId != 0)
                             {
                                 // CToC transfer
                                 ExecutePermanentTransferCurrentToCurrent(item.emitterCurrentAccountId, item.beneficiaryCurrentAccountId, item.amount, item.id, item.EndDate, item.intervalDate);
@@ -52,7 +54,7 @@ namespace IKEAListenerr
                                 ExecutePermanentTransferSavingToCurrent(item.emitterSavingAccountId, item.beneficiaryCurrentAccountId, item.amount, item.id, item.EndDate, item.intervalDate);
                             }
                         }
-                        
+
                     }
                     else
                     {
@@ -80,11 +82,9 @@ namespace IKEAListenerr
                                 ExecuteInstantTransferSavingToCurrent(item.emitterSavingAccountId, item.beneficiaryCurrentAccountId, item.amount, item.id);
                             }
                         }
-
                     }
                 }
             }
-           // _database.UpdateTransaction(transaction);
         }
 
         public static void ExecuteInstantTransferCurrentToCurrent(int debitCurrentAccount_id, int beneficiaryCurrentAccount_id, decimal amount, int transaction_id)
@@ -102,10 +102,11 @@ namespace IKEAListenerr
                     new SqlParameter("beneficiaryCurrentAccount_id", beneficiaryCurrentAccount_id),
                 };
                 Database.NonQuerySQL(queryString, parameters);
+                Logger.Instance.Info($"Executing instant transaction n°{transaction_id} from {debitCurrentAccount_id} to {beneficiaryCurrentAccount_id}. Amount = {amount}");
             }
             else
             {
-                throw new Exception("Overtaking overdraft. ");
+               Logger.Instance.Info($"Cannot perform transaction n°{transaction_id}. Overdraft overtaken from current account n°{debitCurrentAccount_id}. Transaction amount = {amount}. ");
             }
         }
 
@@ -124,10 +125,13 @@ namespace IKEAListenerr
                 new SqlParameter("beneficiarySavingAccount_id", beneficiarySavingAccount_id),
                 };
                 Database.NonQuerySQL(queryString, parameters);
+                Logger.Instance.Info($"Executing instant transaction n°{transaction_id} from current account n°{debitCurrentAccount_id} " +
+                                        $"to saving account n°{beneficiarySavingAccount_id}. Amount = {amount}");
             }
             else
             {
-                throw new Exception("Overtaking overdraft. ");
+                Logger.Instance.Info($"Cannot perform transaction n°{transaction_id}. Overdraft of current account n°{debitCurrentAccount_id} may be reached " +
+                                    $"or ceiling of saving account n° {beneficiarySavingAccount_id} may be reached.");
             }
 
 
@@ -149,15 +153,14 @@ namespace IKEAListenerr
                 new SqlParameter("beneficiaryCurrentAccount_id", beneficiaryCurrentAccount_id),
                 };
                 Database.NonQuerySQL(queryString, parameters);
+                Logger.Instance.Info($"Executing instant transaction n°{transaction_id} from saving account n°{debitSavingAccount_id} " +
+                                    $"to current account n°{beneficiaryCurrentAccount_id}. Amount = {amount}");
             }
             else
             { 
-                throw new Exception("Not enough cash stranger ");
+                Logger.Instance.Info($"There is not enough money on saving account n°{debitSavingAccount_id} to perform transaction n°{transaction_id}.");
             }
         }
-
-        /// Permanent
-
 
         public static void ExecutePermanentTransferCurrentToCurrent(int debitCurrentAccount_id, int beneficiaryCurrentAccount_id, decimal amount, int transaction_id, DateTime lastExecutionDate, int intervalDays)
         {
@@ -180,13 +183,13 @@ namespace IKEAListenerr
                 new SqlParameter("intervalDays", intervalDays),
             };
                 Database.NonQuerySQL(queryString, parameters);
+                Logger.Instance.Info($"Executing permanent transaction n°{transaction_id} from current account n°{debitCurrentAccount_id} " +
+                                        $"to current account n°{beneficiaryCurrentAccount_id}. Amount = {amount}");
             }
             else
             {
-                throw new Exception("Overtaking overdraft.");
-
+                Logger.Instance.Info($"Cannot perform transaction n°{transaction_id}. Overdraft of current account n°{debitCurrentAccount_id} may be overtaken.");
             }
-
         }
 
         public static void ExecutePermanentTransferCurrentToSaving(int debitCurrentAccount_id, int beneficiarySavingAccount_id, decimal amount, int transaction_id, DateTime lastExecutionDate, int intervalDays)
@@ -210,10 +213,13 @@ namespace IKEAListenerr
                 new SqlParameter("intervalDays", intervalDays),
                 };
                 Database.NonQuerySQL(queryString, parameters);
+                Logger.Instance.Info($"Executing permanent transaction n°{transaction_id} from current accout n°{debitCurrentAccount_id} " +
+                                        $"to saving account n°{beneficiarySavingAccount_id}. Amount = {amount}");
             }
             else
             {
-                throw new Exception("Unallowed operation");
+                Logger.Instance.Info($"Cannot perform transaction n°{transaction_id}. Overdraft of current account n°{debitCurrentAccount_id} may be overtaked or " +
+                                        $"ceiling of saving account n°{beneficiarySavingAccount_id} may be reached.");
             }
 
         }
@@ -239,10 +245,12 @@ namespace IKEAListenerr
                 new SqlParameter("intervalDays", intervalDays),
             };
                 Database.NonQuerySQL(queryString, parameters);
+                Logger.Instance.Info($"Executing permanent transaction n°{transaction_id} from saving account n°{debitSavingAccount_id} " +
+                                        $"to current account n°{beneficiaryCurrentAccount_id}. Amount = {amount}");
             }
             else
             {
-                throw new Exception("Unallowed operation");
+                Logger.Instance.Info($"Cannot perform transaction n°{transaction_id}. There is not enough credits on saving account n°{debitSavingAccount_id}.");
             }
 
         }
