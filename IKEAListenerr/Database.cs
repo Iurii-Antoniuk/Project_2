@@ -30,6 +30,20 @@ namespace IKEAListenerr
             Console.WriteLine("Command executed");
         }
 
+        public static int ReturnID(string queryString)
+        {
+            int id = 0;
+            SqlConnection connection = new SqlConnection(GetConnectionString());
+            connection.Open();
+            SqlCommand command = new SqlCommand(queryString, connection);
+            SqlDataReader dataread = command.ExecuteReader();
+            dataread.Read();
+            id = dataread.GetInt32(0);
+            dataread.Close();
+            connection.Close();
+            return id;
+        }
+
         public static decimal ReturnDecimal(string queryString)
         {
             SqlConnection connection = new SqlConnection(GetConnectionString());
