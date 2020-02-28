@@ -20,16 +20,18 @@ namespace IKEAListenerr
                 new Service1()
             };
             ServiceBase.Run(ServicesToRun);*/
-            /*
-                        Database.GetPendingTransactions();
 
-                        List<object[]> list = Database.GetPendingTransactions();
+            //Database.GetPendingTransactions();
 
-                        foreach (object[] item in list)
-                        {
-                            Console.WriteLine(string.Join("\t\t", item));
-                        }
-                        Console.WriteLine("fini");*/
+            /*List<object[]> list = Database.GetPendingTransactions();
+
+            foreach (object[] item in list)
+            {
+                Console.WriteLine(string.Join("\t\t", item));
+            }
+            Console.WriteLine("fini");*/
+
+            //Database.GetPendingTransactionsFromDB();
 
             TransactionExecutor.ExecuteTransaction();
 

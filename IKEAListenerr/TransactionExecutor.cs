@@ -165,7 +165,7 @@ namespace IKEAListenerr
             {
                 string queryString = $"UPDATE CurrentAccounts SET amount = (amount - @amount) WHERE id = @debitCurrentAccount_id " +
                                  $"UPDATE CurrentAccounts SET amount = (amount + @amount) WHERE id = @beneficiaryCurrentAccount_id " +
-                                 $"UPDATE \"Transaction\" SET status = 'done' WHERE id = @transaction_id" +
+                                 $"UPDATE \"Transaction\" SET status = 'done' WHERE id = @transaction_id " +
                                  $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, beneficiaryCurrentAccount_id, amount, executionDate, lastExecutionDate, intervalDays, status) " +
                                  $"VALUES " +
                                  $"(@debitCurrentAccount_id, 'Money Transfer', @beneficiaryCurrentAccount_id, @amount, @executionDate, @lastExecutionDate, @intervalDays, 'pending'); ";
@@ -195,7 +195,7 @@ namespace IKEAListenerr
             {
                 string queryString = $"UPDATE CurrentAccounts SET amount = (amount - @amount) WHERE id = @debitCurrentAccount_id " +
                                  $"UPDATE SavingAccounts SET amount = (amount + @amount) WHERE id = @beneficiarySavingAccount_id " +
-                                 $"UPDATE \"Transaction\" SET status = 'done' WHERE id = @transaction_id" +
+                                 $"UPDATE \"Transaction\" SET status = 'done' WHERE id = @transaction_id " +
                                  $"INSERT INTO \"Transaction\" (currentAccount_id, transactionType, beneficiarySavingAccount_id, amount, executionDate, lastExecutionDate, intervalDays, status) " +
                                  $"VALUES " +
                                  $"(@debitCurrentAccount_id, 'Money Transfer', @beneficiarySavingAccount_id, @amount, @executionDate, @lastExecutionDate, @intervalDays, 'pending'); ";
@@ -224,7 +224,7 @@ namespace IKEAListenerr
             {
                 string queryString = $"UPDATE SavingAccounts SET amount = (amount - @amount) WHERE id = @debitSavingAccount_id " +
                                  $"UPDATE CurrentAccounts SET amount = (amount + @amount) WHERE id = @beneficiaryCurrentAccount_id " +
-                                 $"UPDATE \"Transaction\" SET status = 'done' WHERE id = @transaction_id" +
+                                 $"UPDATE \"Transaction\" SET status = 'done' WHERE id = @transaction_id " +
                                  $"INSERT INTO \"Transaction\" (savingAccount_id, transactionType, beneficiaryCurrentAccount_id, amount, executionDate, lastExecutionDate, intervalDays, status) " +
                                  $"VALUES " +
                                  $"(@debitSavingAccount_id, 'Money Transfer', @beneficiaryCurrentAccount_id, @amount, @executionDate, @lastExecutionDate, @intervalDays, 'pending'); ";
