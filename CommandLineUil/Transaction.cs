@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace Project_2
+namespace IKEACmdUtil
 {
     public abstract class Transaction
     {

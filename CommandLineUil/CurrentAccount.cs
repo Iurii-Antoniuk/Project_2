@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Project_2
+namespace IKEACmdUtil
 {
     public class CurrentAccount : Account
     {

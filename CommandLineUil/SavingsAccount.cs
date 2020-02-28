@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Timers;
 
-namespace Project_2
+namespace IKEACmdUtil
 {
     public class SavingsAccount : Account
     {
@@ -48,46 +48,6 @@ namespace Project_2
             string queryStringDonator = $"INSERT INTO Donator (client_id, donatorCA_id) VALUES ({Client.ID},{donatorCurrentAccountId});";
             ConnectionDB.NonQuerySQL(queryStringDonator);
         }
-
-        // Tout le reste sert à ajouter les interets. A bouger dans seconde appli.
-        public static void AddInterest(int interval)
-        {
-            // Create a timer
-            Timer aTimer = new Timer(interval);
-            // Hook up the Elapsed event for the timer. 
-            aTimer.Elapsed += InterestAddition;
-            aTimer.AutoReset = true;
-            aTimer.Enabled = true;
-        }
-
-        private static void InterestAddition(object source, ElapsedEventArgs e) 
-        {
-            int numberOFAccounts = CountRows("SavingAccounts");
-            if (numberOFAccounts > 0)
-            {
-                UpdateSavingAmounts();
-            }  
-        }
-
-        public static void UpdateSavingAmounts()
-        {
-            int numberOFAccounts = CountRows("SavingAccounts");
-            SqlConnection connection = new SqlConnection(ConnectionDB.GetConnectionString());
-            connection.Open();
-            for (int i = 0; i < numberOFAccounts; i++)
-            {
-                string queryString = $"UPDATE SavingAccounts SET amount = (amount + amount * rate) WHERE id = 100 + {i};";
-                SqlCommand command = new SqlCommand(queryString, connection);
-                command.ExecuteNonQuery();
-            }
-            connection.Close();
-        }
-
-        public static int CountRows(string tableName)
-        {
-            string queryString = $"SELECT COUNT(*) FROM {tableName}; ";
-            int numberRows = ConnectionDB.ReturnID(queryString);
-            return numberRows;
-        }
+        
     }
 }

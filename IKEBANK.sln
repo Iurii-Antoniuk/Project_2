@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IKEACmdUtil", "CommandLineUil\IKEACmdUtil.csproj", "{B88C4D99-0D5E-4811-B1FF-85FB0901DF95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IKEAListenerr", "IKEAListenerr\IKEAListenerr.csproj", "{47B44E65-FE4F-4B11-BCA5-82EB52301295}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B88C4D99-0D5E-4811-B1FF-85FB0901DF95} = {B88C4D99-0D5E-4811-B1FF-85FB0901DF95}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B88C4D99-0D5E-4811-B1FF-85FB0901DF95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B88C4D99-0D5E-4811-B1FF-85FB0901DF95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B88C4D99-0D5E-4811-B1FF-85FB0901DF95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B88C4D99-0D5E-4811-B1FF-85FB0901DF95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47B44E65-FE4F-4B11-BCA5-82EB52301295}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47B44E65-FE4F-4B11-BCA5-82EB52301295}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47B44E65-FE4F-4B11-BCA5-82EB52301295}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47B44E65-FE4F-4B11-BCA5-82EB52301295}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7784B08E-D4D9-4F7A-AFED-EF863ACAADF5}
+	EndGlobalSection
+EndGlobal

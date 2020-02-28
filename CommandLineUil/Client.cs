@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Project_2
+namespace IKEACmdUtil
 {
     public class Client : Person
     {
