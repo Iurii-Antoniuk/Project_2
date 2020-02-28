@@ -1,0 +1,19 @@
+id, currentAccount_id, savingAccount_id, transactionType, beneficiaryCurrentAccount_id, beneficiarySavingAccount_id, amount, executionDate, lastExecutionDate, intervalDays, status
+1, 100, , Withdrawal, , , 300.00, 2/28/2020 12:00:00 AM, , , done
+2, 100, , Withdrawal, , , 400.00, 2/28/2020 12:00:00 AM, , , done
+3, 100, , Withdrawal, , , 100.00, 2/28/2020 12:00:00 AM, , , done
+4, 100, , Money Transfer, 101, , 300.00, 2/28/2020 12:00:00 AM, , , done
+5, , 1000, Money Transfer, 100, , 300.00, 2/28/2020 12:00:00 AM, , , pending
+6, 101, , Money Transfer, 100, , 100.00, 2/28/2020 12:00:00 AM, , , done
+7, 101, , Money Transfer, 102, , 50.00, 2/28/2020 12:00:00 AM, 1/5/2020 12:00:00 AM, 30, done
+8, 103, , Withdrawal, , , 100.00, 2/28/2020 12:00:00 AM, , , done
+9, 103, , Withdrawal, , , 100.00, 2/28/2020 12:00:00 AM, , , done
+10, 105, , Withdrawal, , , 200.00, 2/28/2020 12:00:00 AM, , , done
+11, 103, , Money Transfer, 101, , 1000.00, 2/28/2020 12:00:00 AM, , , done
+12, 104, , Money Transfer, 102, , 100.00, 2/28/2020 12:00:00 AM, 12/31/2019 12:00:00 AM, 5, done
+13, 101, , Money Transfer, 102, , 50.00, 3/29/2020 12:00:00 AM, 1/5/2020 12:00:00 AM, 30, pending
+14, 104, , Money Transfer, 102, , 100.00, 3/4/2020 12:00:00 AM, 12/31/2019 12:00:00 AM, 5, pending
+15, 100, , Money Transfer, 101, , 50.00, 2/28/2020 12:00:00 AM, 5/3/2020 12:00:00 AM, 30, done
+16, 100, , Money Transfer, 101, , 50.00, 3/29/2020 12:00:00 AM, 5/3/2020 12:00:00 AM, 30, pending
+17, 100, , Money Transfer, 101, , 50.00, 2/28/2020 12:00:00 AM, 5/3/2020 12:00:00 AM, 30, done
+18, 100, , Money Transfer, 101, , 50.00, 3/29/2020 12:00:00 AM, 5/3/2020 12:00:00 AM, 30, pending

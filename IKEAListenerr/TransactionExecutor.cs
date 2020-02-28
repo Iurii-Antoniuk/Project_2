@@ -300,5 +300,32 @@ namespace IKEAListenerr
             return savingAccountAmount;
             
         }
+        public static void InterestAddition()
+        {
+            int numberOFAccounts = CountRows("SavingAccounts");
+            if (numberOFAccounts > 0)
+            {
+                UpdateSavingAmounts();
+            }
+        }
+        public static void UpdateSavingAmounts()
+        {
+            int numberOFAccounts = CountRows("SavingAccounts");
+            SqlConnection connection = new SqlConnection(Database.GetConnectionString());
+            connection.Open();
+            for (int i = 0; i < numberOFAccounts; i++)
+            {
+                string queryString = $"UPDATE SavingAccounts SET amount = (amount + amount * rate) WHERE id = 1000 + {i};";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.ExecuteNonQuery();
+            }
+            connection.Close();
+        }
+        public static int CountRows(string tableName)
+        {
+            string queryString = $"SELECT COUNT(*) FROM {tableName}; ";
+            int numberRows = Database.ReturnID(queryString);
+            return numberRows;
+        }
     }
 }

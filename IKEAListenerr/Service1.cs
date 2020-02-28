@@ -32,7 +32,7 @@ namespace IKEAListenerr
         {
             _logger.Info("Service started");
             AddEventHandler(ListenTransactions, TimeSpan.FromSeconds(10));
-            AddEventHandler(ListenInterest, TimeSpan.FromHours(1));
+            AddEventHandler(ListenInterest, TimeSpan.FromSeconds(10));
         }
 
         
@@ -50,7 +50,8 @@ namespace IKEAListenerr
 
         private void ListenInterest(object source, ElapsedEventArgs e)
         {
-            _logger.Info("Listening interest");
+            _logger.Info("Interests added to current Saving accounts");
+            TransactionExecutor.InterestAddition();
         }
 
         private void ListenTransactions(object source, ElapsedEventArgs e)
@@ -71,46 +72,5 @@ namespace IKEAListenerr
         {
             _logger.Info("Stopping service");
         }
-
-        /*
-        private static void InterestAddition(object source, ElapsedEventArgs e)
-        {
-            int numberOFAccounts = CountRows("SavingAccounts");
-            if (numberOFAccounts > 0)
-            {
-                UpdateSavingAmounts();
-            }
-        }
-
-        
-        public static void UpdateSavingAmounts()
-        {
-            int numberOFAccounts = CountRows("SavingAccounts");
-            SqlConnection connection = new SqlConnection(ConnectionDB.GetConnectionString());
-            connection.Open();
-            for (int i = 0; i < numberOFAccounts; i++)
-            {
-                string queryString = $"UPDATE SavingAccounts SET amount = (amount + amount * rate) WHERE id = 100 + {i};";
-                SqlCommand command = new SqlCommand(queryString, connection);
-                command.ExecuteNonQuery();
-            }
-            connection.Close();
-        }
-
-        public static int CountRows(string tableName)
-        {
-            string queryString = $"SELECT COUNT(*) FROM {tableName}; ";
-            int numberRows = ConnectionDB.ReturnID(queryString);
-            return numberRows;
-        }
-
-        public static void DoWithdrawal()
-        {
-            //Regarder dans la base si pending
-            //Regarder si méthode withdraw
-
-            string queryWithdraw = $"";
-        }
-        */
     }
 }
